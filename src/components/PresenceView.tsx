@@ -88,14 +88,14 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
 
           {/* Speaking & Mentorship */}
           <div style={{ marginBottom: "6rem" }}>
-            <div className="scroll-reveal" style={{ ...styles.lbl, marginBottom: "3rem" }}>Speaking & Mentorship</div>
+            <div className="scroll-reveal stagger-1" style={{ marginBottom: "3rem" }}>Speaking & Mentorship</div>
             
             <div className="scroll-reveal stagger-1" style={{ marginBottom: "4rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
                 <span style={styles.entryT}>Kanvas Conference 2025</span>
                 <span style={styles.entryR}>Guest Speaker</span>
               </div>
-              <p style={styles.entryD}>Workshop lead on Inclusivity Design Mapping. Focused on teaching participants the mechanics of intent-based interface design and Wizard of Oz testing for AI systems.</p>
+              <p className="scroll-reveal stagger-2" style={styles.entryD}>Workshop lead on Inclusivity Design Mapping. Focused on teaching participants the mechanics of intent-based interface design and Wizard of Oz testing for AI systems.</p>
             </div>
 
             <div className="scroll-reveal stagger-2" style={{ marginBottom: "4rem" }}>
@@ -103,7 +103,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 <span style={styles.entryT}>MSIB Kampus Merdeka</span>
                 <span style={styles.entryR}>Design Mentor</span>
               </div>
-              <p style={styles.entryD}>Mentoring cross-disciplinary students in UI/UX fundamentals. Supporting the transition from academic theory to industry-ready product execution through structured projects.</p>
+              <p className="scroll-reveal stagger-3" style={styles.entryD}>Mentoring cross-disciplinary students in UI/UX fundamentals. Supporting the transition from academic theory to industry-ready product execution through structured projects.</p>
             </div>
             
             <div className="scroll-reveal img-reveal stagger-3" style={{ padding: "2rem 0 0" }}>
@@ -164,12 +164,12 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
               </div>
             </div>
 
-            <div className="scroll-reveal stagger-1">
+            <div className="scroll-reveal stagger-4">
               <div style={{ marginBottom: "1rem" }}>
                 <div style={styles.entryT}>Clarke Quay, Singapore</div>
                 <div style={styles.cap}>REF: STARTUP SUMMIT 01</div>
               </div>
-              <p style={styles.entryD}>
+              <p className="scroll-reveal stagger-5" style={styles.entryD}>
                 Engaging in cross-border startup pitching and regional summits. First international expansion of operational perspective, visiting regional offices and tech hubs.
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
 
           {/* Closing Narrative & Reel */}
           <div style={{ marginBottom: "4rem" }}>
-            <h2 className="scroll-reveal" style={{ 
+            <h2 className="scroll-reveal stagger-1" style={{ 
               fontSize: "2.5rem", 
               lineHeight: 1.2, 
               fontWeight: 600, 
@@ -187,8 +187,8 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
               color: "#1a1a1a",
               marginBottom: "3rem"
             }}>
-              <div>It’s never just the work.</div>
-              <div style={{ color: "rgba(0,0,0,0.35)" }}>It’s the rooms you choose to be in.</div>
+              <div className="scroll-reveal stagger-1">It’s never just the work.</div>
+              <div className="scroll-reveal stagger-2" style={{ color: "rgba(0,0,0,0.35)" }}>It’s the rooms you choose to be in.</div>
             </h2>
           </div>
 
@@ -235,8 +235,8 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
           <hr className="scroll-reveal" style={{ ...styles.rule, marginBottom: "4rem" }} />
 
           <div className="scroll-reveal stagger-1" style={{ textAlign: "center", padding: "0 2rem" }}>
-            <p style={{ ...styles.pull, marginBottom: "1.5rem" }}>Live In the Future Then Build What's Missing - Y.C</p>
-            <span style={styles.cap}>V. VENDIRA // 2026</span>
+            <p className="scroll-reveal stagger-2" style={{ ...styles.pull, marginBottom: "1.5rem" }}>Live In the Future Then Build What's Missing - Y.C</p>
+            <span className="scroll-reveal stagger-3" style={styles.cap}>V. VENDIRA // 2026</span>
           </div>
         </div>
       </div>

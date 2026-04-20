@@ -33,7 +33,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description: "A social fitness rewards platform that tracks habits like walking, running, eating, sleeping, and workouts, rewarding users with redeemable points.",
     outcome: "Designed an end-to-end MVP for an application with 5+ core features, including 5 product policy slides.",
     color: "#D4F0E8",
-    image: "/images/Glance Fit Thumnail.png",
+    image: "/images/glance-fit-thumbanail.png",
     slug: ""
   },
   {
@@ -67,7 +67,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description: "A social commerce experience built on real discovery and trust, blending content, conversation, and community to drive engagement and confident purchasing decisions.",
     outcome: "Successfully designed a social commerce app and deployed 3 MVPs early in his career, while gaining valuable lessons learned.",
     color: "#FFE8EC",
-    image: "/images/K-Shop Thumnail.png",
+    image: "/images/k-shop-thumbnail.png",
     slug: ""
   }
 ].map(cs => ({ ...cs, slug: slugify(cs.title) }));
