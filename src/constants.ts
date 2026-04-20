@@ -33,7 +33,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     description: "A social fitness rewards platform that tracks habits like walking, running, eating, sleeping, and workouts, rewarding users with redeemable points.",
     outcome: "Designed an end-to-end MVP for an application with 5+ core features, including 5 product policy slides.",
     color: "#D4F0E8",
-    image: "/images/glance-fit-thumbanail.png",
+    image: "/images/glance-fit-thumbnail.png",
     slug: ""
   },
   {
