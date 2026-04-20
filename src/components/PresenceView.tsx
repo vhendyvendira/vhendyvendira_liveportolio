@@ -216,7 +216,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 }}>
                   <img 
                     src={`https://picsum.photos/seed/vhendy-presence-${seed}/800/1000`} 
-                    alt="Presence moment" 
+                    alt={`${seed} presence moment`} 
                     referrerPolicy="no-referrer"
                     style={{ 
                       width: "100%", 

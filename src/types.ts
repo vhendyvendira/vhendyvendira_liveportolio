@@ -10,7 +10,14 @@ export interface CaseStudy {
   role: string;
   event: string;
   description: string;
+  problem: string;
+  challenge: string;
+  approach: string;
   outcome: string;
+  team: string;
+  tools: string[];
+  projectType: string;
+  gallery?: string[];
   color: string;
   image: string;
   slug: string;

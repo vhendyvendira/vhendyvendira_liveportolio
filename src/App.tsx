@@ -211,12 +211,6 @@ export default function App() {
   }, []);
 
   /* ── Home Layout State ── */
-  const [vis, setVis] = useState(false);
-  const [currentHeadline, setCurrentHeadline] = useState(headlineData.headline);
-  const [currentSubhead, setCurrentSubhead] = useState(headlineData.subhead);
-  const [opacity, setOpacity] = useState(1);
-
-  useEffect(() => { const t = setTimeout(() => setVis(true), 100); return () => clearTimeout(t); }, []);
 
   return (
     <>
@@ -236,47 +230,120 @@ export default function App() {
             <div style={{ position: "absolute", inset: 0, opacity: 0.6, pointerEvents: "none" }}>
               <OrbitalCanvas />
             </div>
-            <div className="left-panel-intro" style={{ position: "relative", zIndex: 2 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "4rem" }}>
-                <div style={{ width: "8px", height: "8px", borderRadius: "2px", background: "#f26522" }} />
+            <motion.div 
+              className="left-panel-intro" 
+              style={{ position: "relative", zIndex: 2 }}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.15
+                  }
+                }
+              }}
+            >
+              <motion.div 
+                style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "4rem" }}
+                variants={{
+                  hidden: { opacity: 0, x: -10 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div style={{ position: "relative", width: "8px", height: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <motion.div 
+                    style={{ 
+                      position: "absolute",
+                      width: "100%", 
+                      height: "100%", 
+                      borderRadius: "50%", 
+                      background: "#22c55e",
+                      zIndex: 2,
+                      boxShadow: "0 0 8px rgba(34, 197, 94, 0.4)"
+                    }} 
+                    animate={{
+                      opacity: [0.7, 1, 0.7],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  <motion.div 
+                    style={{ 
+                      position: "absolute",
+                      width: "100%", 
+                      height: "100%", 
+                      borderRadius: "50%", 
+                      background: "#22c55e",
+                      zIndex: 1
+                    }} 
+                    animate={{ 
+                      scale: [1, 2.8],
+                      opacity: [0.5, 0]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeOut"
+                    }}
+                  />
+                </div>
                 <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-                  ARTEMIS II "ALL" 2026
+                  VHENDY VENDIRA.
                 </span>
-              </div>
+              </motion.div>
+              
               <h1 style={{ fontSize: "2.5rem", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: "#1a1a1a", marginBottom: "1.5rem" }}>
                 <div style={{ transition: "opacity 0.4s ease" }}>
                   {typedTitle}
                   {!titleDone && <span className="type-cursor" />}
                 </div>
               </h1>
-              <p style={{ 
-                fontSize: "16px", 
-                lineHeight: 1.6, 
-                color: "rgba(0,0,0,0.6)", 
-                opacity: subheadVisible ? 1 : 0, 
-                transform: subheadVisible ? "translateY(0)" : "translateY(14px)", 
-                transition: "transform 0.6s ease-out, opacity 0.5s ease-out" 
-              }}>
-                {headlineData.subhead}
-              </p>
-            </div>
 
-            <div style={{ position: "relative", zIndex: 2, opacity: vis ? 1 : 0, transform: vis ? "translateY(0)" : "translateY(8px)", transition: "all 0.5s ease 0.1s" }}>
+              <AnimatePresence>
+                {subheadVisible && (
+                  <motion.p 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ 
+                      fontSize: "16px", 
+                      lineHeight: 1.6, 
+                      color: "rgba(0,0,0,0.6)", 
+                    }}
+                  >
+                    {headlineData.subhead}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            <div style={{ position: "relative", zIndex: 2 }}>
               <nav style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 {[
                   { label: "Selected Work", path: "home" },
                   { label: "About Story", path: "about" },
                   { label: "Public Presence", path: "presence" }
-                ].map(item => {
+                ].map((item, i) => {
                   const isActive = (route.page === item.path) || (route.page === "work" && item.path === "home") || (route.page === "home" && item.path === "home");
                   return (
-                    <button
+                    <motion.button
                       key={item.label}
                       className={`nav-item${isActive ? " active" : ""}`}
                       onClick={() => navigate(item.path === "home" ? "/" : `/${item.path}`)}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={subheadVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
+                      transition={{ 
+                        duration: 0.5, 
+                        delay: subheadVisible ? 0.3 + (i * 0.1) : 0,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
                     >
                       {item.label}
-                    </button>
+                    </motion.button>
                   );
                 })}
               </nav>
@@ -299,7 +366,7 @@ export default function App() {
                 animate={listVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>CUREATED MISSIONS</span>
+                <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>MISSION LAUNCHED </span>
                 <span style={{ fontSize: "11px", color: "rgba(0,0,0,0.3)", fontFamily: "var(--font-mono)" }}>0{CASE_STUDIES.length} // OPS</span>
               </motion.div>
               {CASE_STUDIES.map((cs, i) => (
