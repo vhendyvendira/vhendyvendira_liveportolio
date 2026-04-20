@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const LOG_LINES = [
-  "INITIALIZING SAT OPS 01...",
-  "ESTABLISHING SECURE UPLINK...",
-  "CALIBRATING ORBITAL SENSORS...",
-  "SYNCING VHENDY VENDIRA. DATA...",
-  "READY FOR DEPLOYMENT."
+  "Welcome in, glad you're here.",
+  "Preparing a glimpse of my work...",
+  "Let’s begin."
 ];
 
 export default function LoadingScreen({ onFinished }: { onFinished: () => void }) {
@@ -18,12 +16,14 @@ export default function LoadingScreen({ onFinished }: { onFinished: () => void }
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onFinished, 600);
+          setTimeout(onFinished, 1200); // Slightly longer pause at the end for "warmth"
           return 100;
         }
-        return prev + Math.random() * 15;
+        // Organic progress steps
+        const step = prev < 30 ? Math.random() * 8 : prev < 70 ? Math.random() * 5 : Math.random() * 15;
+        return prev + step;
       });
-    }, 150);
+    }, 150); // Slightly slower progress to match slower logs
 
     return () => clearInterval(timer);
   }, [onFinished]);
@@ -31,7 +31,7 @@ export default function LoadingScreen({ onFinished }: { onFinished: () => void }
   useEffect(() => {
     const lineTimer = setInterval(() => {
       setCurrentLine(prev => (prev < LOG_LINES.length - 1 ? prev + 1 : prev));
-    }, 400);
+    }, 1800); // Much slower log transitions
     return () => clearInterval(lineTimer);
   }, []);
 
@@ -39,94 +39,134 @@ export default function LoadingScreen({ onFinished }: { onFinished: () => void }
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#f5f4f2',
+        background: '#f9f8f6', // Warmer background
         zIndex: 5000,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem',
+        overflow: 'hidden'
       }}
     >
-      <div style={{ width: '100%', maxWidth: '300px' }}>
+      {/* Breathing soft glow */}
+      <motion.div 
+        style={{
+          position: 'absolute',
+          width: '600px',
+          height: '600px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(242, 101, 34, 0.04) 0%, transparent 70%)',
+          pointerEvents: 'none'
+        }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.6, 0.3]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+
+      <div style={{ width: '100%', maxWidth: '340px', position: 'relative', zIndex: 1 }}>
         <div style={{ 
           display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'baseline',
-          marginBottom: '1rem'
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '2.5rem'
         }}>
-          <span style={{ 
-            fontSize: '10px', 
-            fontFamily: 'var(--font-mono)', 
-            color: '#f26522',
-            fontWeight: 600
-          }}>
-            SYSTEM BOOT
-          </span>
-          <span style={{ 
-            fontSize: '10px', 
-            fontFamily: 'var(--font-mono)', 
-            color: 'rgba(0,0,0,0.4)'
-          }}>
-            {Math.floor(progress)}%
-          </span>
-        </div>
+          {/* Subtle Branding */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{ textAlign: 'center' }}
+          >
+            <span style={{ 
+              fontSize: '11px', 
+              fontFamily: 'var(--font-mono)', 
+              color: 'rgba(0,0,0,0.3)',
+              letterSpacing: '0.2em',
+              fontWeight: 500
+            }}>
+              VHENDY VENDIRA.
+            </span>
+          </motion.div>
 
-        {/* Outer Bar */}
-        <div style={{ 
-          width: '100%', 
-          height: '2px', 
-          background: 'rgba(0,0,0,0.05)',
-          position: 'relative',
-          marginBottom: '2rem',
-          overflow: 'hidden'
-        }}>
-          {/* Inner Fill */}
-          <motion.div 
-            style={{ 
-              position: 'absolute',
-              inset: 0,
-              background: '#1a1a1a',
-              originX: 0
-            }}
-            animate={{ scaleX: progress / 100 }}
-            transition={{ type: 'spring', damping: 20, stiffness: 50 }}
-          />
-        </div>
+          {/* Centered Progress Indicator */}
+          <div style={{ width: '100%' }}>
+            {/* Minimal Bar */}
+            <div style={{ 
+              width: '100%', 
+              height: '1px', 
+              background: 'rgba(0,0,0,0.06)',
+              position: 'relative',
+              borderRadius: '2px',
+              overflow: 'hidden'
+            }}>
+              <motion.div 
+                style={{ 
+                  position: 'absolute',
+                  inset: 0,
+                  background: '#f26522', // Accent color
+                  originX: 0
+                }}
+                animate={{ scaleX: progress / 100 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 40 }}
+              />
+            </div>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              marginTop: '0.75rem'
+            }}>
+              <span style={{ 
+                fontSize: '10px', 
+                fontFamily: 'var(--font-mono)', 
+                color: 'rgba(0,0,0,0.4)',
+                letterSpacing: '0.1em'
+              }}>
+                {Math.floor(progress).toString().padStart(3, '0')}
+              </span>
+            </div>
+          </div>
 
-        <div style={{ height: '20px', overflow: 'hidden' }}>
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={currentLine}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-                color: 'rgba(0,0,0,0.5)',
-                textAlign: 'center',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
-              }}
-            >
-              {LOG_LINES[currentLine]}
-            </motion.p>
-          </AnimatePresence>
+          {/* Log Lines with Fade/Slide */}
+          <div style={{ height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={currentLine}
+                initial={{ y: 8, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -8, opacity: 0 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-mono)',
+                  color: 'rgba(0,0,0,0.6)',
+                  textAlign: 'center',
+                  fontWeight: 400
+                }}
+              >
+                {LOG_LINES[currentLine]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
-      {/* Grid Pattern Overlay */}
+      {/* Grid Pattern Overlay - Subtle Texture */}
       <div style={{ 
         position: 'absolute', 
         inset: 0, 
-        backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px)', 
-        backgroundSize: '40px 40px',
+        backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.02) 0.5px, transparent 0.5px)', 
+        backgroundSize: '32px 32px',
         pointerEvents: 'none'
       }} />
     </motion.div>

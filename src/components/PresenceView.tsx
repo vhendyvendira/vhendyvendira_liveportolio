@@ -63,8 +63,8 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
             <div style={{ marginBottom: "2.5rem" }}>
               <div className="scroll-reveal img-reveal stagger-1" style={{ width: "100%", borderRadius: "8px", background: "#f5f5f5", overflow: "hidden", aspectRatio: "16/9" }}>
                 <img
-                  src="https://picsum.photos/seed/presence/1200/800"
-                  alt="Featured Moment"
+                  src="/presence-images/iddr-apple-event-2025.png"
+                  alt="Apple Developer Academy Event 2025"
                   referrerPolicy="no-referrer"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -92,7 +92,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
             
             <div className="scroll-reveal stagger-1" style={{ marginBottom: "4rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
-                <span style={styles.entryT}>Kanvas Conference 2025</span>
+                <span style={styles.entryT}>Kanvas Conference 2025, MyEduSolve</span>
                 <span style={styles.entryR}>Guest Speaker</span>
               </div>
               <p className="scroll-reveal stagger-2" style={styles.entryD}>Workshop lead on Inclusivity Design Mapping. Focused on teaching participants the mechanics of intent-based interface design and Wizard of Oz testing for AI systems.</p>
@@ -100,7 +100,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
 
             <div className="scroll-reveal stagger-2" style={{ marginBottom: "4rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
-                <span style={styles.entryT}>MSIB Kampus Merdeka</span>
+                <span style={styles.entryT}>MSIB Kampus Merdeka, Binar Academy</span>
                 <span style={styles.entryR}>Design Mentor</span>
               </div>
               <p className="scroll-reveal stagger-3" style={styles.entryD}>Mentoring cross-disciplinary students in UI/UX fundamentals. Supporting the transition from academic theory to industry-ready product execution through structured projects.</p>

@@ -98,15 +98,15 @@ export default function App() {
 
   const HEADLINES = {
     first_visit: { 
-      headline: "Hello from the Flight Deck, I’m Vhendy Vendira!", 
+      headline: "Hello from the Flight Deck, I’m Vhendy .V", 
       subhead: "6+ years in satellite life, helping startups find their orbit through collaborative & intentional product design." 
     },
     from_about: { 
-      headline: "Back on the Deck — informed by real signals.", 
+      headline: "Back on the Deck, informed by real signals.", 
       subhead: "I translate customer insights into clear product decisions, balancing user needs, business impact, and technical constraints." 
     },
     from_presence: { 
-      headline: "Back in Orbit — focused on outcomes.", 
+      headline: "Back in Orbit, focused on outcomes.", 
       subhead: "I drive products from ambiguous ideas to shipped solutions, aligning teams and delivering measurable impact at scale." 
     }
   };
@@ -165,17 +165,17 @@ export default function App() {
 
   const headlineData = HEADLINES[hlId];
 
-  const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(headlineData.headline, 45, 400, !isLoading);
+  const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(headlineData.headline, 35, 800, !isLoading);
 
   const [listVisible, setListVisible] = useState(false);
   const [subheadVisible, setSubheadVisible] = useState(false);
 
   useEffect(() => {
-    if (titleProgress >= 0.5 && !listVisible) {
-      setListVisible(true);
-    }
-    if (titleProgress >= 0.75 && !subheadVisible) {
+    if (titleProgress >= 0.4 && !subheadVisible) {
       setSubheadVisible(true);
+    }
+    if (titleProgress >= 0.8 && !listVisible) {
+      setListVisible(true);
     }
   }, [titleProgress, listVisible, subheadVisible]);
 
@@ -296,7 +296,18 @@ export default function App() {
                 </span>
               </motion.div>
               
-              <h1 style={{ fontSize: "2.5rem", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: "#1a1a1a", marginBottom: "1.5rem" }}>
+              <h1 style={{ 
+                fontSize: "2.5rem", 
+                fontWeight: 600, 
+                lineHeight: 1.1, 
+                letterSpacing: "-0.04em", 
+                color: "#1a1a1a", 
+                marginBottom: "1.5rem",
+                minHeight: "3.3em", // Adjust based on longest headline
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end"
+              }}>
                 <div style={{ transition: "opacity 0.4s ease" }}>
                   {typedTitle}
                   {!titleDone && <span className="type-cursor" />}

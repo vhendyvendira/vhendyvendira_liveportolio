@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
 import { CaseStudy } from '../types';
 import ProgressiveImage from './ProgressiveImage';
 
@@ -11,6 +11,7 @@ interface CaseStudyModalProps {
 export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
   const [ctaHov, setCtaHov] = useState(false);
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -23,8 +24,10 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
     restDelta: 0.001
   });
 
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
+  // Cinematic Hero transforms
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.15, 0.25], [1, 0.8, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.2]);
+  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, 40]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -88,16 +91,35 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
         {/* Close Button UI fixed at top */}
         <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">✕</button>
 
-        {/* Hero image with inner zoom effect */}
-        <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", background: "#f5f5f5" }}>
-          <motion.div
-            style={{ width: "100%", height: "100%", opacity: heroOpacity, scale: heroScale }}
-          >
-            <ProgressiveImage 
-              src={cs.image} 
-              alt={cs.title} 
+        {/* Hero image or Video with inner zoom effect */}
+        <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", background: "#f5f5f5", position: "relative" }}>
+          {cs.videoUrl ? (
+            <iframe
+              width="100%"
+              height="100%"
+              src={cs.videoUrl}
+              title={`${cs.title} Video`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ position: "absolute", top: 0, left: 0 }}
             />
-          </motion.div>
+          ) : (
+            <motion.div
+              style={{ 
+                width: "100%", 
+                height: "100%", 
+                opacity: heroOpacity, 
+                scale: heroScale,
+                y: heroY 
+              }}
+            >
+              <ProgressiveImage 
+                src={cs.image} 
+                alt={cs.title} 
+              />
+            </motion.div>
+          )}
         </div>
 
         {/* Body content */}
@@ -222,93 +244,119 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
             >
             {cs.gallery && cs.gallery.length === 4 && (() => {
               const imgs = cs.gallery;
-              const imgStyle: React.CSSProperties = {
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-                borderRadius: "6px"
-              };
               const ph: React.CSSProperties = {
                 borderRadius: "6px",
                 overflow: "hidden",
-                background: "#f5f5f5"
+                background: "#f5f5f5",
+                position: "relative",
+                cursor: "zoom-in"
               };
 
-              // Layout 1: Gotham — 1 large top + 2 small bottom
+              const GalleryItem = ({ src, height, style = {} }: { src: string, height: string, style?: any, key?: any }) => {
+                const [hovered, setHovered] = useState(false);
+                // Subtle parallax shift based on global modal scroll
+                const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+
+                return (
+                  <div 
+                    style={{ ...ph, height, ...style }} 
+                    onMouseEnter={() => setHovered(true)} 
+                    onMouseLeave={() => setHovered(false)}
+                    onClick={() => setLightboxImg(src)}
+                  >
+                    <motion.div
+                      style={{ 
+                        height: "140%", // More room for parallax
+                        width: "100%", 
+                        position: "absolute", 
+                        top: "-20%",
+                        y: parallaxY
+                      }}
+                      animate={{ 
+                        scale: hovered ? 1.08 : 1,
+                      }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <ProgressiveImage src={src} alt="" />
+                    </motion.div>
+                  </div>
+                );
+              };
+
+              // Layout 1: Gotham
               if (cs.id === 1) return (
                 <div style={{ marginBottom: "2.5rem" }}>
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <div style={{ ...ph, height: "220px" }}><ProgressiveImage src={imgs[0]} alt="" /></div>
+                    <GalleryItem src={imgs[0]} height="220px" />
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
-                      <div style={{ ...ph, height: "120px" }}><ProgressiveImage src={imgs[1]} alt="" /></div>
-                      <div style={{ ...ph, height: "120px" }}><ProgressiveImage src={imgs[2]} alt="" /></div>
+                      <GalleryItem src={imgs[1]} height="120px" />
+                      <GalleryItem src={imgs[2]} height="120px" />
                     </div>
                   </div>
                 </div>
               );
 
-              // Layout 2: MetaGo — masonry 3 kolom
+              // Layout 2: MetaGo
               if (cs.id === 2) return (
                 <div style={{ marginBottom: "2.5rem" }}>
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px", alignItems: "start" }}>
-                    <div style={{ ...ph, height: "200px" }}><ProgressiveImage src={imgs[0]} alt="" /></div>
+                    <GalleryItem src={imgs[0]} height="200px" />
                     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      <div style={{ ...ph, height: "96px" }}><ProgressiveImage src={imgs[1]} alt="" /></div>
-                      <div style={{ ...ph, height: "96px" }}><ProgressiveImage src={imgs[2]} alt="" /></div>
+                      <GalleryItem src={imgs[1]} height="96px" />
+                      <GalleryItem src={imgs[2]} height="96px" />
                     </div>
-                    <div style={{ ...ph, height: "160px", marginTop: "20px" }}><ProgressiveImage src={imgs[3]} alt="" /></div>
+                    <GalleryItem src={imgs[3]} height="160px" style={{ marginTop: "20px" }} />
                   </div>
                 </div>
               );
 
-              // Layout 3: Glance Fit — 4 portrait sejajar (cocok mobile screenshot)
+              // Layout 3: Glance Fit
               if (cs.id === 3) return (
                 <div style={{ marginBottom: "2.5rem" }}>
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px" }}>
                     {imgs.map((src, i) => (
-                      <div key={i} style={{ ...ph, height: "180px" }}><ProgressiveImage src={src} alt="" style={{ borderRadius: "10px" }} /></div>
+                      <GalleryItem key={i} src={src} height="180px" />
                     ))}
                   </div>
                 </div>
               );
 
-              // Layout 4: Privy — editorial split (3fr + 2fr stack)
+              // Layout 4: Privy
               if (cs.id === 4) return (
                 <div style={{ marginBottom: "2.5rem" }}>
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
                   <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "6px" }}>
-                    <div style={{ ...ph, height: "230px" }}><ProgressiveImage src={imgs[0]} alt="" /></div>
+                    <GalleryItem src={imgs[0]} height="230px" />
                     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      <div style={{ ...ph, height: "112px" }}><ProgressiveImage src={imgs[1]} alt="" /></div>
-                      <div style={{ ...ph, height: "112px" }}><ProgressiveImage src={imgs[2]} alt="" /></div>
+                      <GalleryItem src={imgs[1]} height="112px" />
+                      <GalleryItem src={imgs[2]} height="112px" />
                     </div>
                   </div>
                 </div>
               );
 
-              // Layout 5: TV Research — 2 landscape sinematik
+              // Layout 5: TV Research
               if (cs.id === 5) return (
                 <div style={{ marginBottom: "2.5rem" }}>
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <div style={{ ...ph, height: "130px" }}><ProgressiveImage src={imgs[0]} alt="" /></div>
-                    <div style={{ ...ph, height: "130px" }}><ProgressiveImage src={imgs[1]} alt="" /></div>
+                    <GalleryItem src={imgs[0]} height="130px" />
+                    <GalleryItem src={imgs[1]} height="130px" />
                   </div>
                 </div>
               );
 
-              // Layout 6: K-Shop — offset overlap (tengah naik)
+              // Layout 6: K-Shop
               if (cs.id === 6) return (
                 <div style={{ marginBottom: "2.5rem" }}>
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", alignItems: "center", padding: "16px 0" }}>
-                    <div style={{ ...ph, height: "150px" }}><ProgressiveImage src={imgs[0]} alt="" /></div>
-                    <div style={{ ...ph, height: "150px", transform: "translateY(-16px)", boxShadow: "0 12px 28px rgba(0,0,0,0.1)" }}><ProgressiveImage src={imgs[1]} alt="" /></div>
-                    <div style={{ ...ph, height: "150px", transform: "translateY(8px)" }}><ProgressiveImage src={imgs[2]} alt="" /></div>
+                    <GalleryItem src={imgs[0]} height="150px" />
+                    <GalleryItem src={imgs[1]} height="150px" style={{ transform: "translateY(-16px)", boxShadow: "0 12px 28px rgba(0,0,0,0.1)" }} />
+                    <GalleryItem src={imgs[2]} height="150px" style={{ transform: "translateY(8px)" }} />
                   </div>
                 </div>
               );
@@ -367,6 +415,33 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
             </motion.div>
           </div>
         </div>
+
+        {/* Lightbox Overlay */}
+        <AnimatePresence>
+          {lightboxImg && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[1000] flex items-center justify-center p-8 bg-black/90 cursor-zoom-out"
+              onClick={() => setLightboxImg(null)}
+            >
+              <motion.img
+                src={lightboxImg}
+                alt="Enlarged gallery view"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "8px" }}
+                onClick={(e) => e.stopPropagation()}
+              />
+              <button 
+                onClick={() => setLightboxImg(null)}
+                style={{ position: "absolute", top: "2rem", right: "2rem", color: "white", fontSize: "2rem" }}
+              >✕</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   );

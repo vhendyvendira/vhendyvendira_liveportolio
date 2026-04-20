@@ -21,6 +21,7 @@ export interface CaseStudy {
   color: string;
   image: string;
   slug: string;
+  videoUrl?: string;
   externalLink?: string;
 }
 

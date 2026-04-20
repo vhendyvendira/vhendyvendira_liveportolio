@@ -90,8 +90,8 @@ export default function AboutView({ navigate }: AboutViewProps) {
           <div className="about-story-item" style={{ marginBottom: '6rem' }}>
             <div style={{ width: '100%', aspectRatio: '16/10', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5' }}>
               <img 
-                src="https://picsum.photos/seed/operational/1200/750" 
-                alt="Working environment"
+                src="/about-images/google-singapore-2022.png" 
+                alt="Working environment at Google Singapore"
                 referrerPolicy="no-referrer"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />

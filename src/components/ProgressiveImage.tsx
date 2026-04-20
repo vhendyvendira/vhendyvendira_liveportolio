@@ -49,9 +49,9 @@ export default function ProgressiveImage({ src, alt, className, style }: Progres
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          filter: highResLoaded ? "blur(0px)" : "blur(10px)",
-          opacity: lowResLoaded ? 1 : 0,
-          transition: "filter 0.8s ease-in-out, opacity 0.4s ease-in",
+          filter: "blur(10px)", // Keep blurred until fully replaced
+          opacity: highResLoaded ? 0 : (lowResLoaded ? 1 : 0),
+          transition: "opacity 0.8s ease-in-out",
           zIndex: 2,
           transform: "scale(1.1)" // Scale slightly to hide blurred edges
         }}

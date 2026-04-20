@@ -46,7 +46,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/meta4/800/600"
     ],
     color: "#C8D8FF",
-    image: "https://picsum.photos/seed/metago/1200/800",
+    image: "/case-study-images/film-studio-metago-thumnail.png",
     slug: ""
   },
   {
@@ -69,7 +69,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/glance4/800/600"
     ],
     color: "#D4F0E8",
-    image: "/images/glance-fit-thumbanail.png",
+    image: "/case-study-images/glance-fit-thumbanail.png",
     slug: ""
   },
   {
@@ -92,7 +92,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/privy4/800/600"
     ],
     color: "#F0E8FF",
-    image: "https://picsum.photos/seed/privy/1200/800",
+    image: "/case-study-images/privy-acc-thumnail.png",
+    videoUrl: "https://www.youtube.com/embed/MT-0AktCUaE",
     slug: ""
   },
   {
@@ -139,7 +140,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/kshop4/800/600"
     ],
     color: "#FFE8EC",
-    image: "/images/k-shop-thumbnail.png",
+    image: "/case-study-images/k-shop-thumbnail.png",
     slug: ""
   }
 ].map(cs => ({ ...cs, slug: slugify(cs.title) }));
