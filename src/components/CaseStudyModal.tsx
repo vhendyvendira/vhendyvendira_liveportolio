@@ -6,13 +6,15 @@ import ProgressiveImage from './ProgressiveImage';
 interface CaseStudyModalProps {
   cs: CaseStudy;
   onClose: () => void;
+  navigate: (path: string) => void;
 }
 
-export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
+export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModalProps) {
   const [ctaHov, setCtaHov] = useState(false);
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const outcomeRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     container: containerRef,
@@ -187,14 +189,18 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
               transition={{ delay: 0.45, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             />
             
-            <motion.p 
-              style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(0,0,0,0.7)", marginBottom: "3rem", maxWidth: "100%" }}
+            <motion.div 
+              style={{ marginBottom: "2.5rem" }}
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              {cs.description}
-            </motion.p>
+              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CONTEXT</div>
+              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
+                {cs.context}
+              </p>
+            </motion.div>
 
             <motion.div 
               style={{ marginBottom: "2.5rem" }}
@@ -204,7 +210,7 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)" }}>
+              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
                 {cs.problem}
               </p>
             </motion.div>
@@ -217,7 +223,7 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "#1a1a1a", fontWeight: 500 }}>
+              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "#1a1a1a", fontWeight: 500, whiteSpace: "pre-wrap" }}>
                 {cs.challenge}
               </p>
             </motion.div>
@@ -230,7 +236,7 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>APPROACH</div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)" }}>
+              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
                 {cs.approach}
               </p>
             </motion.div>
@@ -366,6 +372,7 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
             </motion.div>
 
             <motion.div 
+              ref={outcomeRef}
               style={{ marginBottom: "3rem" }}
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -388,30 +395,64 @@ export default function CaseStudyModal({ cs, onClose }: CaseStudyModalProps) {
               onMouseLeave={() => setCtaHov(false)}
               style={{ marginTop: "2rem" }}
             >
-              {cs.externalLink ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                {cs.externalLink && (
+                  <a
+                    href={cs.externalLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      if (!scrolledToBottom && outcomeRef.current) {
+                        e.preventDefault();
+                        outcomeRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "#f26522",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      textDecoration: "none",
+                      transition: "opacity 0.2s ease",
+                    }}
+                  >
+                    Launch Project
+                    <span style={{ transition: "transform 0.2s ease", transform: ctaHov ? "translate(2px, -2px)" : "none" }}>↗</span>
+                  </a>
+                )}
+
                 <a
-                  href={cs.externalLink}
+                  href={`#/report/${cs.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
                     fontSize: "14px",
                     fontWeight: 600,
                     color: "#f26522",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
+                    width: "fit-content",
                     textDecoration: "none",
                     transition: "opacity 0.2s ease",
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = "0.7";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = "1";
+                  }}
                 >
-                  Launch Project
-                  <span style={{ transition: "transform 0.2s ease", transform: ctaHov ? "translate(2px, -2px)" : "none" }}>↗</span>
+                  View Detailed Report
+                  <span style={{ transition: "transform 0.2s ease", transform: ctaHov ? "translate(4px, 0)" : "none" }}>→</span>
                 </a>
-              ) : (
-                <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.3)", fontWeight: 500 }}>
-                  Full report pending release
-                </div>
-              )}
+              </div>
             </motion.div>
           </div>
         </div>

@@ -10,6 +10,7 @@ export interface CaseStudy {
   role: string;
   event: string;
   description: string;
+  context: string;
   problem: string;
   challenge: string;
   approach: string;

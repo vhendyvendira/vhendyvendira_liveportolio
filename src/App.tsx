@@ -10,6 +10,7 @@ import GalaxyBackground from './components/GalaxyBackground';
 import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LoadingScreen from './components/LoadingScreen';
+import ReportView from './components/ReportView';
 
 /* ================================================
    HOOKS
@@ -18,6 +19,9 @@ function parseHash() {
   const hash = window.location.hash.replace(/^#\/?/, "") || "";
   if (hash.startsWith("work/")) {
     return { page: "work" as const, slug: hash.replace("work/", "") };
+  }
+  if (hash.startsWith("report/")) {
+    return { page: "report" as const, slug: hash.replace("report/", "") };
   }
   if (hash === "about") {
     return { page: "about" as const, slug: null };
@@ -30,7 +34,12 @@ function parseHash() {
 
 function useHashRouter() {
   const [route, setRoute] = useState(() => {
-    // Force homepage on every full page initialization/mount
+    const initialHash = window.location.hash.replace(/^#\/?/, "");
+    // If we have a report link, we allow it to load directly
+    if (initialHash.startsWith("report/")) {
+      return { page: "report" as const, slug: initialHash.replace("report/", "") };
+    }
+    // Otherwise, for home/about/presence, we force home state for the entrance experience
     if (window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
     }
@@ -126,7 +135,10 @@ export default function App() {
     return 'first_visit';
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    const hash = window.location.hash.replace(/^#\/?/, "");
+    return !hash.startsWith("report/");
+  });
 
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -134,17 +146,30 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       if (rightPanelRef.current) {
-        setShowScrollTop(rightPanelRef.current.scrollTop > 300);
+        const top = rightPanelRef.current.scrollTop;
+        setShowScrollTop(top > 300);
+        // Persist scroll position for the list view
+        if (route.page === 'home' || route.page === 'work') {
+          sessionStorage.setItem('portfolioScrollTop', String(top));
+        }
       }
     };
     const panel = rightPanelRef.current;
     if (panel) {
       panel.addEventListener('scroll', handleScroll);
+      
+      // Restore scroll position when returning to the list
+      if (!isLoading && (route.page === 'home' || route.page === 'work')) {
+        const saved = sessionStorage.getItem('portfolioScrollTop');
+        if (saved) {
+          panel.scrollTop = parseInt(saved, 10);
+        }
+      }
     }
     return () => {
       if (panel) panel.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isLoading, route.page]);
 
   const scrollToTop = () => {
     rightPanelRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -153,11 +178,14 @@ export default function App() {
   useEffect(() => {
     if (route.page === 'about') sessionStorage.setItem('navSource', 'about');
     if (route.page === 'presence') sessionStorage.setItem('navSource', 'presence');
+    if (route.page === 'report') sessionStorage.setItem('navSource', 'report');
     
     if (route.page === 'home') {
       const src = sessionStorage.getItem('navSource');
       if (src) {
-        setHlId(src === 'about' ? 'from_about' : 'from_presence');
+        if (src === 'about') setHlId('from_about');
+        else if (src === 'presence') setHlId('from_presence');
+        // If returning from report, we might want a different headline or just skip delay
         sessionStorage.removeItem('navSource');
       }
     }
@@ -165,7 +193,13 @@ export default function App() {
 
   const headlineData = HEADLINES[hlId];
 
-  const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(headlineData.headline, 35, 800, !isLoading);
+  const isReturningToHome = hlId !== 'first_visit';
+  const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(
+    headlineData.headline, 
+    isReturningToHome ? 25 : 35, 
+    isReturningToHome ? 100 : 800, 
+    !isLoading
+  );
 
   const [listVisible, setListVisible] = useState(false);
   const [subheadVisible, setSubheadVisible] = useState(false);
@@ -210,6 +244,29 @@ export default function App() {
     return () => rightPanel.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /* ── Keyboard Shortcuts ── */
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only trigger if a case study is open and we aren't in a report
+      if (!activeCS || route.page !== "work") return;
+
+      if (e.key === 'Escape') {
+        navigate("/");
+      } else if (e.key === 'ArrowRight') {
+        const currentIndex = CASE_STUDIES.findIndex(cs => cs.id === activeCS.id);
+        const nextIndex = (currentIndex + 1) % CASE_STUDIES.length;
+        navigate(`work/${CASE_STUDIES[nextIndex].slug}`);
+      } else if (e.key === 'ArrowLeft') {
+        const currentIndex = CASE_STUDIES.findIndex(cs => cs.id === activeCS.id);
+        const prevIndex = (currentIndex - 1 + CASE_STUDIES.length) % CASE_STUDIES.length;
+        navigate(`work/${CASE_STUDIES[prevIndex].slug}`);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeCS, route.page, navigate]);
+
   /* ── Home Layout State ── */
 
   return (
@@ -223,6 +280,8 @@ export default function App() {
         <AboutView navigate={navigate} />
       ) : route.page === "presence" ? (
         <PresenceView navigate={navigate} />
+      ) : route.page === "report" ? (
+        <ReportView cs={CASE_STUDIES.find(c => c.slug === route.slug) || CASE_STUDIES[0]} navigate={navigate} />
       ) : (
         <div className="portfolio-root" style={!!activeCS ? { pointerEvents: "none", userSelect: "none" } : {}}>
           {/* LEFT */}
@@ -420,7 +479,7 @@ export default function App() {
 
       <AnimatePresence>
         {activeCS && route.page !== "about" && (
-          <CaseStudyModal cs={activeCS} onClose={() => navigate("/")} />
+          <CaseStudyModal cs={activeCS} onClose={() => navigate("/")} navigate={navigate} />
         )}
       </AnimatePresence>
 
