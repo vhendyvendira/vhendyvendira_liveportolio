@@ -46,6 +46,50 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
     ? "linear-gradient(to bottom, transparent, black 150px, black 100%)"
     : "linear-gradient(to bottom, transparent, black 150px, black calc(100% - 150px), transparent)";
 
+  const renderText = (text: string) => {
+    if (!text) return null;
+    // Split by both **bold** and ==highlight==
+    const parts = text.split(/(\*\*.*?\*\*|==.*?==)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        const content = part.slice(2, -2);
+        return (
+          <span 
+            key={i} 
+            style={{ 
+              fontWeight: 600,
+              color: "#1a1a1a",
+              borderBottom: "1px solid rgba(242, 101, 34, 0.2)",
+              display: "inline",
+            }}
+          >
+            {content}
+          </span>
+        );
+      }
+      if (part.startsWith('==') && part.endsWith('==')) {
+        const content = part.slice(2, -2);
+        return (
+          <span 
+            key={i} 
+            style={{ 
+              background: "rgba(255, 235, 59, 0.25)", // Soft yellow
+              padding: "0 2px",
+              borderRadius: "2px",
+              boxDecorationBreak: "clone",
+              WebkitBoxDecorationBreak: "clone",
+              color: "#1a1a1a",
+              fontWeight: "inherit"
+            }}
+          >
+            {content}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
+
   return (
     <motion.div
       className="modal-backdrop"
@@ -198,35 +242,92 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             >
               <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CONTEXT</div>
               <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
-                {cs.context}
+                {renderText(cs.context)}
               </p>
             </motion.div>
 
-            <motion.div 
-              style={{ marginBottom: "2.5rem" }}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
-                {cs.problem}
-              </p>
-            </motion.div>
+            {/* Conditional Order for Gotham */}
+            {cs.slug === "gotham-risk-intelligence" ? (
+              <>
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
+                  <p style={{ 
+                    fontSize: "15px", 
+                    lineHeight: 1.6, 
+                    color: "rgba(0,0,0,0.6)", 
+                    fontWeight: 400,
+                    whiteSpace: "pre-wrap" 
+                  }}>
+                    {renderText(cs.challenge)}
+                  </p>
+                </motion.div>
 
-            <motion.div 
-              style={{ marginBottom: "2.5rem" }}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "#1a1a1a", fontWeight: 500, whiteSpace: "pre-wrap" }}>
-                {cs.challenge}
-              </p>
-            </motion.div>
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
+                  <p style={{ 
+                    fontSize: "18px", 
+                    lineHeight: 1.6, 
+                    color: "#1a1a1a", 
+                    fontWeight: 600,
+                    whiteSpace: "pre-wrap" 
+                  }}>
+                    {renderText(cs.problem)}
+                  </p>
+                </motion.div>
+              </>
+            ) : (
+              <>
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
+                  <p style={{ 
+                    fontSize: "16px", 
+                    lineHeight: 1.6, 
+                    color: "rgba(0,0,0,0.7)", 
+                    fontWeight: 400,
+                    whiteSpace: "pre-wrap" 
+                  }}>
+                    {renderText(cs.problem)}
+                  </p>
+                </motion.div>
+
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
+                  <p style={{ 
+                    fontSize: "16px", 
+                    lineHeight: 1.6, 
+                    color: "#1a1a1a", 
+                    fontWeight: 500,
+                    whiteSpace: "pre-wrap" 
+                  }}>
+                    {renderText(cs.challenge)}
+                  </p>
+                </motion.div>
+              </>
+            )}
 
             <motion.div 
               style={{ marginBottom: "2.5rem" }}
@@ -237,7 +338,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             >
               <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>APPROACH</div>
               <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
-                {cs.approach}
+                {renderText(cs.approach)}
               </p>
             </motion.div>
 

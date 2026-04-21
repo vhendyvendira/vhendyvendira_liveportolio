@@ -65,9 +65,9 @@ body {
   to { opacity: 1 }
 }
 
-@keyframes blink {
+@keyframes cursorPulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50% { opacity: 0.3; }
 }
 
 .type-cursor {
@@ -77,7 +77,15 @@ body {
   background-color: #f26522; /* YC Orange */
   margin-left: 2px;
   vertical-align: middle;
-  animation: blink 1s step-end infinite;
+  transition: opacity 0.5s ease;
+}
+
+.type-cursor.blinking {
+  animation: cursorPulse 1s ease-in-out infinite;
+}
+
+.type-cursor.done {
+  opacity: 0;
 }
 
 @keyframes shimmer {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface ProgressiveImageProps {
   src: string;
@@ -13,9 +14,9 @@ export default function ProgressiveImage({ src, alt, className, style, aspectRat
   const [isInView, setIsInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Derive thumbnail for Picsum images - very low res for immediate hit
+  // Derive thumbnail for Picsum images - tiny resolution for immediate loading
   const thumbSrc = src.includes("picsum.photos") 
-    ? src.replace(/\/\d+\/\d+/, "/20/20") + "?blur=10"
+    ? src.replace(/\/\d+\/\d+/, "/40/40") + "?blur=5"
     : src;
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function ProgressiveImage({ src, alt, className, style, aspectRat
           observer.disconnect();
         }
       },
-      { rootMargin: '200px' } // Load early before it hits the viewport
+      { rootMargin: '400px' } // Load even earlier for better perceived performance
     );
 
     if (containerRef.current) {
@@ -41,80 +42,59 @@ export default function ProgressiveImage({ src, alt, className, style, aspectRat
     width: "100%",
     height: "100%",
     overflow: "hidden",
-    backgroundColor: "#efedea", // Warmer neutral base
+    backgroundColor: "#F9F8F6", // Consistent with YC portfolio background
     aspectRatio: aspectRatio,
     ...style
   };
 
   return (
     <div ref={containerRef} className={className} style={containerStyle}>
-      {/* 1. Base Layer: Shimmer Effect */}
-      {!highResLoaded && (
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 1,
-          overflow: "hidden"
-        }}>
-          <div style={{
-            width: "100%",
-            height: "100%",
-            background: "linear-gradient(90deg, #efedea 0%, #f5f4f2 50%, #efedea 100%)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 2s infinite linear",
-          }} />
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {/* 1. Low-res Placeholder Layer */}
+        {isInView && !highResLoaded && (
+          <motion.img
+            key="thumb"
+            src={thumbSrc}
+            alt=""
+            aria-hidden="true"
+            referrerPolicy="no-referrer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.6 } }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "blur(40px)", // Heavier blur for the placeholder
+              transform: "scale(1.1)", // Scale up to hide blurred edges
+            }}
+          />
+        )}
 
-      {/* 2. Middle Layer: Low-res Blurred Thumbnail (Loads immediately if in view or soon) */}
-      {isInView && (
-        <img
-          src={thumbSrc}
-          alt=""
-          aria-hidden="true"
-          referrerPolicy="no-referrer"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            filter: "blur(20px)",
-            opacity: highResLoaded ? 0 : 1,
-            transition: "opacity 0.6s ease-out",
-            zIndex: 2,
-            transform: "scale(1.1)",
-          }}
-        />
-      )}
-
-      {/* 3. Top Layer: High-res Image */}
-      {isInView && (
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          referrerPolicy="no-referrer"
-          onLoad={() => setHighResLoaded(true)}
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: highResLoaded ? 1 : 0,
-            transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-            zIndex: 3
-          }}
-        />
-      )}
-
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-      `}</style>
+        {/* 2. High-res Image Layer */}
+        {isInView && (
+          <motion.img
+            key="highRes"
+            src={src}
+            alt={alt}
+            referrerPolicy="no-referrer"
+            onLoad={() => setHighResLoaded(true)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: highResLoaded ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 1
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

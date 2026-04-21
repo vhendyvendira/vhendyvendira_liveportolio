@@ -57,7 +57,7 @@ function useHashRouter() {
   return { route, navigate };
 }
 
-function useTypewriter(text: string, speed = 50, delay = 0, active = true) {
+function useTypewriter(text: string, active = true) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -74,25 +74,45 @@ function useTypewriter(text: string, speed = 50, delay = 0, active = true) {
 
     const type = () => {
       if (i < text.length) {
-        setDisplayed(text.slice(0, i + 1));
+        const char = text[i];
+        const nextPartial = text.slice(0, i + 1);
+        
+        // Base speeds (tuned to fit 1.2-1.5s total duration)
+        let delay = char === " " ? 15 : 22; 
+        
+        // Punctuation pauses
+        if ([",", "—", ".", "&"].includes(char)) {
+          delay = 120;
+        }
+
+        // Logic-based micro-pauses for specific phrases
+        if (nextPartial.endsWith("Hi,")) delay = 160;
+        if (nextPartial.endsWith("Vhendy")) delay = 220;
+        if (nextPartial.endsWith("—")) delay = 180;
+
+        // Apply a tiny bit of natural jitter to non-pauses
+        if (delay < 100) {
+          delay += (Math.random() - 0.5) * 10;
+        }
+
+        setDisplayed(nextPartial);
         i++;
         setProgress(i / text.length);
         
-        const jitter = (Math.random() - 0.5) * (speed * 0.4);
-        timeoutId = window.setTimeout(type, Math.max(10, speed + jitter));
+        timeoutId = window.setTimeout(type, delay);
       } else {
         setDone(true);
         setProgress(1);
       }
     };
 
-    const startTimeout = window.setTimeout(type, delay);
+    const startTimeout = window.setTimeout(type, 600);
 
     return () => {
       window.clearTimeout(startTimeout);
       window.clearTimeout(timeoutId);
     };
-  }, [text, speed, delay, active]);
+  }, [text, active]);
 
   return { displayed, done, progress };
 }
@@ -107,33 +127,31 @@ export default function App() {
 
   const HEADLINES = {
     first_visit: { 
-      headline: "Hello from the Flight Deck, I’m Vhendy .V", 
-      subhead: "6+ years in satellite life, helping startups find their orbit through collaborative & intentional product design." 
+      headline: "Hi, I’m Vhendy — Product Designer & Builder", 
+      subhead: "4+ years in product, with a background in marketing and education, focused on strategy and leveraging AI for growth." 
     },
     from_about: { 
-      headline: "Back on the Deck, informed by real signals.", 
-      subhead: "I translate customer insights into clear product decisions, balancing user needs, business impact, and technical constraints." 
+      headline: "About me — Design × Engineering.", 
+      subhead: "I design with intent and build to validate, grounding ideas in strategy, execution, and measurable impact." 
     },
     from_presence: { 
-      headline: "Back in Orbit, focused on outcomes.", 
-      subhead: "I drive products from ambiguous ideas to shipped solutions, aligning teams and delivering measurable impact at scale." 
+      headline: "Presence — Grounded in the Real World.", 
+      subhead: "I turn real-world observations into insights that shape thoughtful design and scalable product decisions." 
     }
   };
 
   const [hlId, setHlId] = useState<keyof typeof HEADLINES>(() => {
-    const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
-    const isReload = navEntry?.type === "reload";
-
-    if (isReload) {
-      sessionStorage.removeItem('navSource');
-      return 'first_visit';
-    }
-
     const src = sessionStorage.getItem('navSource');
     if (src === 'about') return 'from_about';
     if (src === 'presence') return 'from_presence';
     return 'first_visit';
   });
+
+  const [hasSeenIntro, setHasSeenIntro] = useState(() => {
+    return sessionStorage.getItem('hasSeenIntroAnimation') === 'true';
+  });
+
+  const [skipIntro, setSkipIntro] = useState(false);
 
   const [isLoading, setIsLoading] = useState(() => {
     const hash = window.location.hash.replace(/^#\/?/, "");
@@ -193,30 +211,53 @@ export default function App() {
 
   const headlineData = HEADLINES[hlId];
 
-  const isReturningToHome = hlId !== 'first_visit';
+  // Logic: Typewriter only for first_visit IF intro not seen yet and not skipped
+  const shouldType = hlId === 'first_visit' && !hasSeenIntro && !skipIntro;
+
   const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(
     headlineData.headline, 
-    isReturningToHome ? 25 : 35, 
-    isReturningToHome ? 100 : 800, 
-    !isLoading
+    !isLoading && shouldType
   );
 
   const [listVisible, setListVisible] = useState(false);
   const [subheadVisible, setSubheadVisible] = useState(false);
 
+  // Interaction Skip: scroll, wheel, or key to instantly finish intro
   useEffect(() => {
-    if (titleProgress >= 0.4 && !subheadVisible) {
-      setSubheadVisible(true);
-    }
-    if (titleProgress >= 0.8 && !listVisible) {
-      setListVisible(true);
-    }
-  }, [titleProgress, listVisible, subheadVisible]);
+    if (!shouldType) return;
+
+    const handleInteraction = () => setSkipIntro(true);
+
+    window.addEventListener('wheel', handleInteraction, { passive: true });
+    window.addEventListener('touchstart', handleInteraction, { passive: true });
+    window.addEventListener('keydown', handleInteraction);
+
+    return () => {
+      window.removeEventListener('wheel', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+    };
+  }, [shouldType]);
 
   useEffect(() => {
-    setListVisible(false);
-    setSubheadVisible(false);
-  }, [hlId]);
+    if (shouldType) {
+      if (titleProgress >= 0.4 && !subheadVisible) setSubheadVisible(true);
+      if (titleProgress >= 0.8 && !listVisible) setListVisible(true);
+      if (titleDone) sessionStorage.setItem('hasSeenIntroAnimation', 'true');
+    } else {
+      // Instant/Fade-up state: show everything quickly
+      setSubheadVisible(true);
+      setListVisible(true);
+    }
+  }, [titleProgress, titleDone, shouldType, subheadVisible, listVisible]);
+
+  useEffect(() => {
+    // Reset visibility states when changing headlines unless it's the returning state
+    if (!hasSeenIntro) {
+      setListVisible(false);
+      setSubheadVisible(false);
+    }
+  }, [hlId, hasSeenIntro]);
 
   /* ── Footer ── */
   const [footerVisible, setFooterVisible] = useState(false);
@@ -355,21 +396,37 @@ export default function App() {
                 </span>
               </motion.div>
               
-              <h1 style={{ 
-                fontSize: "2.5rem", 
-                fontWeight: 600, 
-                lineHeight: 1.1, 
-                letterSpacing: "-0.04em", 
-                color: "#1a1a1a", 
-                marginBottom: "1.5rem",
-                minHeight: "3.3em", // Adjust based on longest headline
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end"
-              }}>
-                <div style={{ transition: "opacity 0.4s ease" }}>
-                  {typedTitle}
-                  {!titleDone && <span className="type-cursor" />}
+              <h1 
+                onClick={() => { if (shouldType) setSkipIntro(true); }}
+                style={{ 
+                  fontSize: "2.5rem", 
+                  fontWeight: 600, 
+                  lineHeight: 1.1, 
+                  letterSpacing: "-0.04em", 
+                  color: "#1a1a1a", 
+                  marginBottom: "1.5rem",
+                  minHeight: "3.3em", 
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  cursor: shouldType ? "pointer" : "default"
+                }}
+              >
+                <div key={hlId} style={{ position: "relative" }}>
+                  {shouldType ? (
+                    <div style={{ transition: "opacity 0.4s ease" }}>
+                      {typedTitle}
+                      <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
+                    </div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      {headlineData.headline}
+                    </motion.div>
+                  )}
                 </div>
               </h1>
 
