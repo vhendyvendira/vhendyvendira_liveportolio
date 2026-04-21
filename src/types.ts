@@ -11,9 +11,11 @@ export interface CaseStudy {
   event: string;
   description: string;
   context: string;
-  problem: string;
-  challenge: string;
-  approach: string;
+  problem?: string;
+  opportunity?: string;
+  challenge?: string;
+  approach?: string;
+  strategy?: string;
   outcome: string;
   team: string;
   tools: string[];

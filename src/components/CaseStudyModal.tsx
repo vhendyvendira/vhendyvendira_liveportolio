@@ -89,6 +89,40 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
     });
   };
 
+  const renderSection = (label: string, content: string | undefined) => {
+    if (!content) return null;
+    const isSpecial = label === "OPPORTUNITY" && cs.slug === "metago-coin-film-studio-crypto";
+    return (
+      <motion.div 
+        style={{ marginBottom: "2.5rem" }}
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div style={{ 
+          fontSize: "10px", 
+          color: isSpecial ? "#f26522" : "rgba(0,0,0,0.4)", 
+          fontFamily: "var(--font-mono)", 
+          marginBottom: "0.75rem", 
+          fontWeight: isSpecial ? 700 : 600,
+          letterSpacing: isSpecial ? "0.05em" : "normal"
+        }}>
+          {label}
+        </div>
+        <p style={{ 
+          fontSize: "16px", 
+          lineHeight: 1.6, 
+          color: "rgba(0,0,0,0.7)", 
+          fontWeight: 400,
+          whiteSpace: "pre-wrap" 
+        }}>
+          {renderText(content)}
+        </p>
+      </motion.div>
+    );
+  };
+
   return (
     <motion.div
       className="modal-backdrop"
@@ -232,216 +266,103 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               transition={{ delay: 0.45, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             />
             
-            <motion.div 
-              style={{ marginBottom: "2.5rem" }}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CONTEXT</div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
-                {renderText(cs.context)}
-              </p>
+            {/* Conditional Rendering for Sections based on slug and available keys */}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {/* Context is always first */}
+              <motion.div 
+                style={{ marginBottom: "2.5rem" }}
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CONTEXT</div>
+                <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
+                  {renderText(cs.context)}
+                </p>
 
-              {/* Gotham Market Exposure Stats */}
-              {cs.slug === "gotham-risk-intelligence" && (
-                <div style={{ 
-                  display: "grid", 
-                  gridTemplateColumns: "repeat(3, 1fr)", 
-                  gap: "12px", 
-                  marginTop: "1.5rem",
-                  padding: "1.25rem",
-                  background: "rgba(0,0,0,0.02)",
-                  borderRadius: "12px",
-                  border: "1px solid rgba(0,0,0,0.05)"
-                }}>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>ANNUAL LOSS</div>
-                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–15T</div>
-                  </div>
-                  <div style={{ textAlign: "center", borderLeft: "1px solid rgba(0,0,0,0.1)", borderRight: "1px solid rgba(0,0,0,0.1)" }}>
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>NEW VICTIMS / YR</div>
-                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>0.8–1.2M</div>
-                  </div>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>AVG. INFLOW / PAX</div>
-                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–25M</div>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-
-            {/* Conditional Order for specific projects (Context is always first) */}
-            {cs.slug === "gotham-risk-intelligence" ? (
-              <>
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
-                  <p style={{ 
-                    fontSize: "16px", 
-                    lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.7)", 
-                    fontWeight: 400,
-                    whiteSpace: "pre-wrap" 
+                {/* Gotham Market Exposure Stats */}
+                {cs.slug === "gotham-risk-intelligence" && (
+                  <div style={{ 
+                    display: "grid", 
+                    gridTemplateColumns: "repeat(3, 1fr)", 
+                    gap: "12px", 
+                    marginTop: "1.5rem",
+                    padding: "1.25rem",
+                    background: "rgba(0,0,0,0.02)",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(0,0,0,0.05)"
                   }}>
-                    {renderText(cs.challenge)}
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
-                  <p style={{ 
-                    fontSize: "16px", 
-                    lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.7)", 
-                    fontWeight: 400,
-                    whiteSpace: "pre-wrap" 
-                  }}>
-                    {renderText(cs.problem)}
-                  </p>
-                </motion.div>
-              </>
-            ) : cs.slug === "metago-coin-film-studio-crypto" ? (
-              <>
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 700, letterSpacing: "0.05em" }}>OPPORTUNITY</div>
-                  <p style={{ 
-                    fontSize: "16px", 
-                    lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.7)", 
-                    fontWeight: 400,
-                    whiteSpace: "pre-wrap" 
-                  }}>
-                    {renderText(cs.problem)}
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>IMPACT LOOP</div>
-                  <div style={{ padding: "1.25rem", background: "rgba(242, 101, 34, 0.03)", borderRadius: "12px", border: "1px solid rgba(242, 101, 34, 0.1)" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", justifyContent: "center" }}>
-                      {[
-                        "Hold", "Engage", "Earn", "Reinvest", "Scale Cinemas", "Increase Utility Demand"
-                      ].map((step, idx, arr) => (
-                        <React.Fragment key={step}>
-                          <div style={{ 
-                            padding: "6px 12px", 
-                            background: "white", 
-                            borderRadius: "16px", 
-                            fontSize: "11px", 
-                            fontWeight: 600,
-                            color: "#f26522",
-                            boxShadow: "0 1px 4px rgba(242, 101, 34, 0.05)",
-                            border: "1px solid rgba(242, 101, 34, 0.1)"
-                          }}>
-                            {step}
-                          </div>
-                          {idx < arr.length - 1 && <span style={{ color: "rgba(242, 101, 34, 0.3)", fontSize: "10px" }}>→</span>}
-                        </React.Fragment>
-                      ))}
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>ANNUAL LOSS</div>
+                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–15T</div>
+                    </div>
+                    <div style={{ textAlign: "center", borderLeft: "1px solid rgba(0,0,0,0.1)", borderRight: "1px solid rgba(0,0,0,0.1)" }}>
+                      <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>NEW VICTIMS / YR</div>
+                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>0.8–1.2M</div>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>AVG. INFLOW / PAX</div>
+                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–25M</div>
                     </div>
                   </div>
-                </motion.div>
+                )}
+              </motion.div>
 
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>APPROACH</div>
-                  <p style={{ 
-                    fontSize: "16px", 
-                    lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.7)", 
-                    fontWeight: 400,
-                    whiteSpace: "pre-wrap" 
-                  }}>
-                    {renderText(cs.challenge)}
-                  </p>
-                </motion.div>
-              </>
-            ) : (
-              <>
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
-                  <p style={{ 
-                    fontSize: "16px", 
-                    lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.7)", 
-                    fontWeight: 400,
-                    whiteSpace: "pre-wrap" 
-                  }}>
-                    {renderText(cs.problem)}
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  style={{ marginBottom: "2.5rem" }}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
-                  <p style={{ 
-                    fontSize: "16px", 
-                    lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.7)", 
-                    fontWeight: 400,
-                    whiteSpace: "pre-wrap" 
-                  }}>
-                    {renderText(cs.challenge)}
-                  </p>
-                </motion.div>
-              </>
-            )}
-
-            <motion.div 
-              style={{ marginBottom: "2.5rem" }}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>
-                {cs.slug === "metago-coin-film-studio-crypto" ? "STRATEGY" : "APPROACH"}
-              </div>
-              <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
-                {renderText(cs.approach)}
-              </p>
-            </motion.div>
+              {/* Order and Labels for specific projects */}
+              {cs.slug === "gotham-risk-intelligence" ? (
+                <>
+                  {renderSection("CHALLENGE", cs.challenge)}
+                  {renderSection("PROBLEM", cs.problem)}
+                  {renderSection("APPROACH", cs.approach)}
+                </>
+              ) : cs.slug === "metago-coin-film-studio-crypto" ? (
+                <>
+                  {renderSection("OPPORTUNITY", cs.opportunity)}
+                  {/* Impact Loop Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>IMPACT LOOP</div>
+                    <div style={{ padding: "1.25rem", background: "rgba(242, 101, 34, 0.03)", borderRadius: "12px", border: "1px solid rgba(242, 101, 34, 0.1)" }}>
+                      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                        {[
+                          "Hold", "Engage", "Earn", "Reinvest", "Scale Cinemas", "Increase Utility Demand"
+                        ].map((step, idx, arr) => (
+                          <React.Fragment key={step}>
+                            <div style={{ 
+                              padding: "6px 12px", 
+                              background: "white", 
+                              borderRadius: "16px", 
+                              fontSize: "11px", 
+                              fontWeight: 600,
+                              color: "#f26522",
+                              boxShadow: "0 1px 4px rgba(242, 101, 34, 0.05)",
+                              border: "1px solid rgba(242, 101, 34, 0.1)"
+                            }}>
+                              {step}
+                            </div>
+                            {idx < arr.length - 1 && <span style={{ color: "rgba(242, 101, 34, 0.3)", fontSize: "10px" }}>→</span>}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                  {renderSection("APPROACH", cs.approach)}
+                  {renderSection("STRATEGY", cs.strategy)}
+                </>
+              ) : (
+                <>
+                  {renderSection("PROBLEM", cs.problem)}
+                  {renderSection("CHALLENGE", cs.challenge)}
+                  {renderSection("APPROACH", cs.approach)}
+                </>
+              )}
+            </div>
 
             {/* Gallery — each case study uses a different layout based on cs.id */}
             <motion.div
