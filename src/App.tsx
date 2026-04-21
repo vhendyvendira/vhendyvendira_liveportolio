@@ -11,6 +11,8 @@ import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LoadingScreen from './components/LoadingScreen';
 import ReportView from './components/ReportView';
+import CustomCursor from './components/CustomCursor';
+import Magnetic from './components/Magnetic';
 
 /* ================================================
    HOOKS
@@ -312,6 +314,7 @@ export default function App() {
 
   return (
     <>
+      <CustomCursor />
       <AnimatePresence>
         {isLoading && <LoadingScreen onFinished={() => setIsLoading(false)} />}
       </AnimatePresence>
@@ -457,20 +460,21 @@ export default function App() {
                 ].map((item, i) => {
                   const isActive = (route.page === item.path) || (route.page === "work" && item.path === "home") || (route.page === "home" && item.path === "home");
                   return (
-                    <motion.button
-                      key={item.label}
-                      className={`nav-item${isActive ? " active" : ""}`}
-                      onClick={() => navigate(item.path === "home" ? "/" : `/${item.path}`)}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={subheadVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
-                      transition={{ 
-                        duration: 0.5, 
-                        delay: subheadVisible ? 0.3 + (i * 0.1) : 0,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                    >
-                      {item.label}
-                    </motion.button>
+                    <Magnetic key={item.label} strength={0.1}>
+                      <motion.button
+                        className={`nav-item${isActive ? " active" : ""}`}
+                        onClick={() => navigate(item.path === "home" ? "/" : `/${item.path}`)}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={subheadVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
+                        transition={{ 
+                          duration: 0.5, 
+                          delay: subheadVisible ? 0.3 + (i * 0.1) : 0,
+                          ease: [0.16, 1, 0.3, 1]
+                        }}
+                      >
+                        {item.label}
+                      </motion.button>
+                    </Magnetic>
                   );
                 })}
               </nav>

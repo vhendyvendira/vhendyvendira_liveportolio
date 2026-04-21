@@ -59,7 +59,6 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             style={{ 
               fontWeight: 600,
               color: "#1a1a1a",
-              borderBottom: "1px solid rgba(242, 101, 34, 0.2)",
               display: "inline",
             }}
           >
@@ -244,9 +243,36 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
                 {renderText(cs.context)}
               </p>
+
+              {/* Gotham Market Exposure Stats */}
+              {cs.slug === "gotham-risk-intelligence" && (
+                <div style={{ 
+                  display: "grid", 
+                  gridTemplateColumns: "repeat(3, 1fr)", 
+                  gap: "12px", 
+                  marginTop: "1.5rem",
+                  padding: "1.25rem",
+                  background: "rgba(0,0,0,0.02)",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(0,0,0,0.05)"
+                }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>ANNUAL LOSS</div>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–15T</div>
+                  </div>
+                  <div style={{ textAlign: "center", borderLeft: "1px solid rgba(0,0,0,0.1)", borderRight: "1px solid rgba(0,0,0,0.1)" }}>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>NEW VICTIMS / YR</div>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>0.8–1.2M</div>
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>AVG. INFLOW / PAX</div>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–25M</div>
+                  </div>
+                </div>
+              )}
             </motion.div>
 
-            {/* Conditional Order for Gotham */}
+            {/* Conditional Order for specific projects (Context is always first) */}
             {cs.slug === "gotham-risk-intelligence" ? (
               <>
                 <motion.div 
@@ -258,9 +284,9 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 >
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CHALLENGE</div>
                   <p style={{ 
-                    fontSize: "15px", 
+                    fontSize: "16px", 
                     lineHeight: 1.6, 
-                    color: "rgba(0,0,0,0.6)", 
+                    color: "rgba(0,0,0,0.7)", 
                     fontWeight: 400,
                     whiteSpace: "pre-wrap" 
                   }}>
@@ -277,13 +303,86 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 >
                   <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROBLEM</div>
                   <p style={{ 
-                    fontSize: "18px", 
+                    fontSize: "16px", 
                     lineHeight: 1.6, 
-                    color: "#1a1a1a", 
-                    fontWeight: 600,
+                    color: "rgba(0,0,0,0.7)", 
+                    fontWeight: 400,
                     whiteSpace: "pre-wrap" 
                   }}>
                     {renderText(cs.problem)}
+                  </p>
+                </motion.div>
+              </>
+            ) : cs.slug === "metago-coin-film-studio-crypto" ? (
+              <>
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 700, letterSpacing: "0.05em" }}>OPPORTUNITY</div>
+                  <p style={{ 
+                    fontSize: "16px", 
+                    lineHeight: 1.6, 
+                    color: "rgba(0,0,0,0.7)", 
+                    fontWeight: 400,
+                    whiteSpace: "pre-wrap" 
+                  }}>
+                    {renderText(cs.problem)}
+                  </p>
+                </motion.div>
+
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>IMPACT LOOP</div>
+                  <div style={{ padding: "1.25rem", background: "rgba(242, 101, 34, 0.03)", borderRadius: "12px", border: "1px solid rgba(242, 101, 34, 0.1)" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                      {[
+                        "Hold", "Engage", "Earn", "Reinvest", "Scale Cinemas", "Increase Utility Demand"
+                      ].map((step, idx, arr) => (
+                        <React.Fragment key={step}>
+                          <div style={{ 
+                            padding: "6px 12px", 
+                            background: "white", 
+                            borderRadius: "16px", 
+                            fontSize: "11px", 
+                            fontWeight: 600,
+                            color: "#f26522",
+                            boxShadow: "0 1px 4px rgba(242, 101, 34, 0.05)",
+                            border: "1px solid rgba(242, 101, 34, 0.1)"
+                          }}>
+                            {step}
+                          </div>
+                          {idx < arr.length - 1 && <span style={{ color: "rgba(242, 101, 34, 0.3)", fontSize: "10px" }}>→</span>}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  style={{ marginBottom: "2.5rem" }}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>APPROACH</div>
+                  <p style={{ 
+                    fontSize: "16px", 
+                    lineHeight: 1.6, 
+                    color: "rgba(0,0,0,0.7)", 
+                    fontWeight: 400,
+                    whiteSpace: "pre-wrap" 
+                  }}>
+                    {renderText(cs.challenge)}
                   </p>
                 </motion.div>
               </>
@@ -319,8 +418,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   <p style={{ 
                     fontSize: "16px", 
                     lineHeight: 1.6, 
-                    color: "#1a1a1a", 
-                    fontWeight: 500,
+                    color: "rgba(0,0,0,0.7)", 
+                    fontWeight: 400,
                     whiteSpace: "pre-wrap" 
                   }}>
                     {renderText(cs.challenge)}
@@ -336,7 +435,9 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>APPROACH</div>
+              <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>
+                {cs.slug === "metago-coin-film-studio-crypto" ? "STRATEGY" : "APPROACH"}
+              </div>
               <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
                 {renderText(cs.approach)}
               </p>
