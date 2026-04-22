@@ -82,7 +82,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     title: "Privy Acceleration Program - Education",
     tags: ["Program Management", "Learning Operations", "Stakeholder Management"],
     year: "2023", duration: "5 months", role: "Project Support", event: "Privy",
-    description: "A 6-month initiative designed to accelerate growth and build core skills for 100+ junior to mid-level product & tech team members",
+    description: "A 6-month initiative designed to accelerate growth and build core skills for 250+ junior to mid-level product & tech team members",
     context: "The Acceleration Program is a national initiative designed as a structured career development and competency advancement program for employees within Privy’s Product and Technology divisions. It serves as an intensive learning journey aimed at strengthening organizational capabilities and supporting the company’s long-term growth.",
     problem: "Privy lacked a standardized competency framework across Product and Technology roles, causing inconsistent skill expectations and unclear career development paths across teams.",
     challenge: "The program was designed to deliver two key outcomes: Skill development and capability enhancement across technical and functional roles, Career growth opportunities, including promotion to higher positions with greater responsibilities, compensation, and impact",
@@ -123,7 +123,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/tv4/800/600"
     ],
     color: "#FFF0D8",
-    image: "https://picsum.photos/seed/tv/1200/800",
+    image: "/case-study-images/tv-broadcast-thumbnail.png",
     slug: "tv-ambient",
     externalLink: "https://tvbroadcast.vercel.app/"
   },

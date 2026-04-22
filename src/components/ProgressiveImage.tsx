@@ -6,10 +6,11 @@ interface ProgressiveImageProps {
   alt: string;
   className?: string;
   style?: React.CSSProperties;
+  imgStyle?: React.CSSProperties;
   aspectRatio?: string;
 }
 
-export default function ProgressiveImage({ src, alt, className, style, aspectRatio }: ProgressiveImageProps) {
+export default function ProgressiveImage({ src, alt, className, style, imgStyle, aspectRatio }: ProgressiveImageProps) {
   const [highResLoaded, setHighResLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +70,7 @@ export default function ProgressiveImage({ src, alt, className, style, aspectRat
               objectFit: "cover",
               filter: "blur(40px)", // Heavier blur for the placeholder
               transform: "scale(1.1)", // Scale up to hide blurred edges
+              ...imgStyle
             }}
           />
         )}
@@ -90,7 +92,8 @@ export default function ProgressiveImage({ src, alt, className, style, aspectRat
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              zIndex: 1
+              zIndex: 1,
+              ...imgStyle
             }}
           />
         )}

@@ -411,7 +411,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   >
                     <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM TRACKS</div>
                     <div style={{ fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                      The program engaged over 100 participants across multiple specialized technical tracks, supported by a network of 20+ mentors to ensure high-quality learning outcomes.
+                      The program engaged over 250+ participants across multiple specialized technical tracks, supported by a network of 30+ mentors to ensure high-quality learning outcomes.
                     </div>
                     <div style={{ 
                       display: "grid", 
@@ -470,6 +470,48 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         <div key={item.title} style={{ padding: "1rem", background: "rgba(0,0,0,0.02)", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.03)" }}>
                           <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{item.title}</div>
                           <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{item.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                  {/* Program Offboarding & Reporting Support */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM OFFBOARDING & REPORTING</div>
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+                      gap: "1.25rem" 
+                    }}>
+                      {[
+                        { 
+                          category: "HR & Exit Coordination", 
+                          items: ["Managed offboarding and exit clearance for non-passing participants.", "Partnered with HR to ensure sensitive restructuring processes were executed smoothly."] 
+                        },
+                        { 
+                          category: "Reporting & Analytics", 
+                          items: ["Coordinated operational reporting and systematic documentation processes.", "Automated distribution of participant report cards using mail merge for efficiency."] 
+                        },
+                        { 
+                          category: "Final Asset Management", 
+                          items: ["Consolidated final project submissions and source code repositories.", "Ensured end-to-end organization of all operational and performance materials."] 
+                        }
+                      ].map((cluster, i) => (
+                        <div key={cluster.category} style={{ padding: "1.25rem", background: "rgba(168, 85, 247, 0.03)", borderRadius: "12px", border: "1px solid rgba(168, 85, 247, 0.1)" }}>
+                          <div style={{ fontSize: "11px", fontWeight: 700, color: "#a855f7", marginBottom: "0.75rem", textTransform: "uppercase", letterSpacing: "0.025em" }}>{cluster.category}</div>
+                          <ul style={{ padding: 0, margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+                            {cluster.items.map((item, idx) => (
+                              <li key={idx} style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5, position: "relative", paddingLeft: "12px" }}>
+                                <span style={{ position: "absolute", left: 0, top: "6px", width: "4px", height: "4px", borderRadius: "50%", background: "#a855f7" }} />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       ))}
                     </div>

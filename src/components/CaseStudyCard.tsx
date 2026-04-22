@@ -13,12 +13,25 @@ interface CaseStudyCardProps {
 
 export default function CaseStudyCard({ cs, index, navigate, visible = true }: CaseStudyCardProps) {
   const [hov, setHov] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setHov(true);
+    setMousePos({ x, y });
+  };
   
   return (
     <motion.div
       className="case-study-card"
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseLeave={() => {
+        setHov(false);
+        setMousePos({ x: 0, y: 0 });
+      }}
       onClick={() => navigate(`/work/${cs.slug}`)}
       initial={{ opacity: 0, y: 20 }}
       whileInView={visible ? { opacity: 1, y: 0 } : {}}
@@ -78,10 +91,12 @@ export default function CaseStudyCard({ cs, index, navigate, visible = true }: C
           <ProgressiveImage 
             src={cs.image} 
             alt={cs.title} 
-            style={{ 
+            imgStyle={{ 
               opacity: hov ? 1 : 0.9, 
-              transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-              transform: hov ? "scale(1.05)" : "scale(1)"
+              transition: hov ? "transform 0.1s linear, opacity 0.5s ease" : "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+              transform: hov 
+                ? `scale(1.1) translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)` 
+                : "scale(1.02) translate(0, 0)"
             }} 
           />
         </div>

@@ -182,7 +182,7 @@ body {
 
 .card-image-wrap {
   width: 320px;
-  aspect-ratio: 16/10;
+  aspect-ratio: 4/3;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
@@ -415,6 +415,37 @@ body {
 .scroll-reveal.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+.img-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-reveal::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transform: translateY(0);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.2s;
+  z-index: 2;
+}
+
+.revealed.img-reveal::after {
+  transform: translateY(101%);
+}
+
+.presence-reel-img img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.presence-reel-img:hover img {
+  transform: scale(1.05);
 }
 
 .scroll-reveal.stagger-1 { transition-delay: 0.1s; }
