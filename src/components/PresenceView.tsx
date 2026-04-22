@@ -127,11 +127,11 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
             <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
               <div className="scroll-reveal stagger-1">
                 <p style={styles.commT}>Connect Group (CG) GMS</p>
-                <p style={styles.commD}>Active in a local spiritual community (Church CG – GMS), believing that every blessing and ability comes from God.</p>
+                <p style={styles.commD}>Active in a local spiritual community (Church CG – GMS), with a belief that every blessing and ability comes from God—not solely from personal strength or logic.</p>
               </div>
               <div className="scroll-reveal stagger-2">
                 <p style={styles.commT}>Interaction Design Foundation (IxDF)</p>
-                <p style={styles.commD}>Contributing to a global network of UX professionals, sharing knowledge on career development and user-centered design paradigms.</p>
+                <p style={styles.commD}>Contributing to a global UX community by sharing insights on career growth and user-centered design, while engaging in meaningful discussions and learning from diverse perspectives across the field.</p>
               </div>
               <div className="scroll-reveal stagger-3">
                 <p style={styles.commT}>Indonesia Design Research (IDDR)</p>

@@ -16,6 +16,8 @@ export interface CaseStudy {
   challenge?: string;
   approach?: string;
   strategy?: string;
+  expansion?: string;
+  system?: string;
   outcome: string;
   team: string;
   tools: string[];

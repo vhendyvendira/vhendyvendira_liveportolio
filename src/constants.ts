@@ -25,18 +25,18 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     color: "#F2F2F2",
     image: "https://picsum.photos/seed/gotham/1200/800",
-    slug: ""
+    slug: "gotham-risk-intelligence"
   },
   {
     id: 2, index: "02",
     title: "MetaGo Coin, Film Studio - Crypto",
-    tags: ["GTM", "Marketing", "Crypto"],
+    tags: ["Marketing", "Strategy", "Crypto"],
     year: "2026", duration: "2 months", role: "Product Marketing", event: "MetaGo Coin",
     description: "A crypto token powering a Web3 entertainment ecosystem where users invest in films, run virtual studios, and earn rewards through gameplay.",
     context: "MetaGo Coin (MGO) is a Web3 entertainment ecosystem building a film industry infrastructure through tokenized participation.\n\nFilm Studio serves as its core gamified production system, bridges the gap between digital assets and real entertainment utility.",
     opportunity: "High demand driven by FOMO and holding incentives creates a foundation to convert passive accumulation into **active ecosystem engagement**.\n\nThe upcoming Film Tokenization Launchpad further drives anticipation, making it critical to transition users from speculators into active participants.",
     approach: "Users acquire and operate virtual cinemas as production hubs for film templates. These templates represent different tiers of production with unique cost structures and earning potentials.\n\nTo sustain rewards, users must perform periodic 'marketing pushes'. This mechanism ensures that film assets remain operational while acting as **active engagement proof** within the ecosystem.",
-    strategy: "The GTM strategy focused on translating complex mechanics into **simple, direct value narratives**. This approach made the product easy to adopt through early community-driven channels.\n\nKey messaging focused on managing cinemas for recurring rewards and maintaining active film production, which successfully activated users within the internal WhatsApp community distribution.",
+    strategy: "The marketing communication strategy focused on translating complex mechanics into **simple, direct value narratives**. This approach made the product easy to adopt through early community-driven channels.\n\nKey messaging focused on managing cinemas for recurring rewards and maintaining active film production, which successfully activated users within the internal WhatsApp community distribution.",
     outcome: "Increased adoption rate by 60% in the first week after launch, generating nearly 500 million in total revenue.",
     team: "CEO, 2 Product Engineer, 3 Marketing Lead",
     tools: ["Communication Tools: Notion, Gamma, & WhatsApp"],
@@ -49,7 +49,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     color: "#C8D8FF",
     image: "/case-study-images/film-studio-metago-thumnail.png",
-    slug: ""
+    slug: "metago-coin"
   },
   {
     id: 3, index: "03",
@@ -57,10 +57,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     tags: ["PRD", "UI Design", "Product Policy"],
     year: "2024", duration: "2 months", role: "Project Manager & Design Lead", event: "SparcLabs",
     description: "A social fitness rewards platform that tracks habits like walking, running, eating, sleeping, and workouts, rewarding users with redeemable points.",
-    context: "Part of the SparcLabs incubation program, Glance Fit explores behavioral psychology to create a fitness app that users actually stick with.",
-    problem: "Most fitness apps fail to sustain long-term engagement because they focus on data entry rather than meaningful habit formation.",
-    challenge: "Designing a habit-tracking product that actually changes behavior — not just logs it.",
-    approach: "I drove the full product lifecycle from PRD through UI, anchoring every feature decision around one question: does this make the next healthy action easier or harder? The rewards system was designed last, not first — to avoid incentivizing the wrong behaviors.",
+    context: "Sparc Labs is a company focused on developing crypto tokens and alternative payment infrastructure in Indonesia, built on the Solana blockchain.\n\nIts core vision is to create a utility token that goes beyond speculation—one that delivers real use cases within the DeFi and DApps ecosystem.",
+    challenge: "The primary challenge was not technological—but economic: **How might we create real, sustainable demand for the token?**",
+    opportunity: "Rather than positioning the token purely as a financial asset, Sparc Labs identified an opportunity to embed it within a behavior-driven ecosystem—where token value is driven by users’ everyday activities.\n\nThis is where Glance Fit comes in: a digital fitness application that transforms health-related activities—such as walking, running, sleep, and nutrition—into a value-generating loop.",
+    approach: "My role extended beyond design management to shaping the system end-to-end—from experience to economic layers. Users access premium features via a **pay-with-crypto model**, positioning the token as both an incentive and a medium of exchange.",
+    expansion: "To drive both user acquisition and retention, I contributed to **designing a multi-layer marketing and incentive system**. These systems are reinforced by recurring commissions, upgrade incentives, and Achievement Points (AP) as a gamification layer.",
+    system: "Beneath a seemingly simple user experience lies a combination of interconnected systems, all designed with a single objective To build an ecosystem that drives user behavior while sustaining value circulation within the system.",
     outcome: "Designed an end-to-end MVP for an application with 5+ core features, including 5 product policy slides.",
     team: "Designer: Alwan, Juman, Ryra & Andisa",
     tools: ["Figma", "Whimsical", "Click Up"],
@@ -73,18 +75,18 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     color: "#D4F0E8",
     image: "/case-study-images/glance-fit-thumbanail.png",
-    slug: ""
+    slug: "glance-fit"
   },
   {
     id: 4, index: "04",
     title: "Privy Acceleration Program - Education",
     tags: ["Program Management", "Learning Operations", "Stakeholder Management"],
     year: "2023", duration: "5 months", role: "Project Support", event: "Privy",
-    description: "A 6-month initiative designed to accelerate growth and build core skills for 100+ junior to mid-level Product & Tech team members",
-    context: "An internal growth initiative at Privy aimed at standardizing product and tech competencies across a rapidly scaling organization.",
-    problem: "Organizations struggle to scale training programs while ensuring that the skills learned are actually applied to solve business problems.",
-    challenge: "Scaling a 100-person internal learning program while maintaining quality and measurable business impact.",
-    approach: "I operated at the intersection of learning design and stakeholder management — translating business goals into program structure and keeping alignment across HR, product, and senior leadership. The key decision was tracking talent outcomes (promotions, remapping) rather than completion rates alone.",
+    description: "A 6-month initiative designed to accelerate growth and build core skills for 100+ junior to mid-level product & tech team members",
+    context: "The Acceleration Program is a national initiative designed as a structured career development and competency advancement program for employees within Privy’s Product and Technology divisions. It serves as an intensive learning journey aimed at strengthening organizational capabilities and supporting the company’s long-term growth.",
+    problem: "Privy lacked a standardized competency framework across Product and Technology roles, causing inconsistent skill expectations and unclear career development paths across teams.",
+    challenge: "The program was designed to deliver two key outcomes: Skill development and capability enhancement across technical and functional roles, Career growth opportunities, including promotion to higher positions with greater responsibilities, compensation, and impact",
+    approach: "The program also carried a sensitive underlying reality—it effectively became a structured mechanism to evaluate and filter employees, determining who was ready to be retained and continue their journey at Privy.",
     outcome: "Drove ~IDR 1B/month OPEX reduction, enabled 80+ talent remappings, and achieved 80%+ success rate with promotions and salary growth",
     team: "Ardhi Kusuma (Manager), Afri Mimo, Dewa, & HR Team",
     tools: ["Ms. Excel", "Algobash", "G-Form-Survey", "Slack"],
@@ -98,7 +100,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     color: "#F0E8FF",
     image: "/case-study-images/privy-acc-thumnail.png",
     videoUrl: "https://www.youtube.com/embed/MT-0AktCUaE",
-    slug: ""
+    slug: "privy-acceleration"
   },
   {
     id: 5, index: "05",
@@ -122,7 +124,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     color: "#FFF0D8",
     image: "https://picsum.photos/seed/tv/1200/800",
-    slug: "",
+    slug: "tv-ambient",
     externalLink: "https://tvbroadcast.vercel.app/"
   },
   {
@@ -147,6 +149,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     color: "#FFE8EC",
     image: "/case-study-images/k-shop-thumbnail.png",
-    slug: ""
+    slug: "k-shop"
   }
-].map(cs => ({ ...cs, slug: slugify(cs.title) }));
+].map(cs => ({ ...cs, slug: cs.slug || slugify(cs.title) }));

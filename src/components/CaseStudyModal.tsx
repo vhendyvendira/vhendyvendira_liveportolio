@@ -91,7 +91,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
   const renderSection = (label: string, content: string | undefined) => {
     if (!content) return null;
-    const isSpecial = label === "OPPORTUNITY" && cs.slug === "metago-coin-film-studio-crypto";
+    const isSpecial = label === "OPPORTUNITY" && cs.slug === "metago-coin";
     return (
       <motion.div 
         style={{ marginBottom: "2.5rem" }}
@@ -312,11 +312,170 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               {/* Order and Labels for specific projects */}
               {cs.slug === "gotham-risk-intelligence" ? (
                 <>
-                  {renderSection("CHALLENGE", cs.challenge)}
                   {renderSection("PROBLEM", cs.problem)}
+                  {renderSection("CHALLENGE", cs.challenge)}
                   {renderSection("APPROACH", cs.approach)}
                 </>
-              ) : cs.slug === "metago-coin-film-studio-crypto" ? (
+              ) : cs.slug === "privy-acceleration" ? (
+                <>
+                  {renderSection("PROBLEM", cs.problem)}
+                  
+                  {/* BENEFITS Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>BENEFITS</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+                      {[
+                        { title: "Skill Development", desc: "Intensive capability enhancement across technical and functional roles, bridging the gap between theory and execution.", icon: "📈" },
+                        { title: "Grade Level Adjustment", desc: "Successful participants receive a formal grade level adjustment reflecting their elevated competency.", icon: "🎖️" },
+                        { title: "Career Progression", desc: "Direct pathway to higher-impact positions with expanded organizational responsibilities.", icon: "🚀" },
+                        { title: "Compensation Increase", desc: "Passing the program entitles participants to a higher base salary adjustment and optimized compensation structure.", icon: "💰" }
+                      ].map((benefit, i) => (
+                        <div key={benefit.title} style={{ padding: "1.25rem", background: "rgba(240, 232, 255, 0.3)", borderRadius: "12px", border: "1px solid rgba(168, 85, 247, 0.1)" }}>
+                          <div style={{ fontSize: "24px", marginBottom: "0.75rem" }}>{benefit.icon}</div>
+                          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{benefit.title}</div>
+                          <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>{benefit.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {renderSection("CHALLENGE", cs.approach)}
+
+                  {/* Program Phases Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM JOURNEY</div>
+                    <div style={{ marginBottom: "1.5rem", fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
+                      A structured end-to-end journey designed to evaluate, transform, and certify organizational readiness.
+                    </div>
+                    <div style={{ position: "relative", paddingLeft: "1.5rem" }}>
+                      {/* Vertical connector line */}
+                      <div style={{ position: "absolute", left: "6px", top: "10px", bottom: "10px", width: "2px", background: "linear-gradient(to bottom, #a855f7 0%, #a855f7 70%, rgba(168, 85, 247, 0.1) 100%)" }} />
+                      
+                      {[
+                        { title: "Pre-Test Enrollment & Assessment", desc: "Strategic filtering and initial skill benchmarking to identify potential.", tag: "Entry" },
+                        { title: "5-Month Intensive Acceleration Training", desc: "Hands-on technical growth supported by continuous expert mentorship.", tag: "Learning" },
+                        { title: "Capstone Project", desc: "Practical application of learned skills through high-stakes, collaborative projects.", tag: "Execution" },
+                        { title: "Post-Test Evaluation", desc: "Comprehensive assessment of newly acquired technical and functional competencies.", tag: "Evaluation" },
+                        { title: "Final Presentation", desc: "Outcome showcase to senior leadership, demonstrating business impact readiness.", tag: "Validation" },
+                        { title: "Graduation", desc: "Official certification and transition into elevated roles within the organization.", tag: "Outcome" }
+                      ].map((phase, i) => (
+                        <div key={phase.title} style={{ position: "relative", marginBottom: "1.25rem" }}>
+                          <div style={{ 
+                            position: "absolute", 
+                            left: "-1.5rem", 
+                            width: "14px", 
+                            height: "14px", 
+                            borderRadius: "50%", 
+                            background: "white", 
+                            border: "3px solid #a855f7",
+                            zIndex: 2,
+                            top: "3px"
+                          }} />
+                          <div style={{ 
+                            display: "inline-block", 
+                            fontSize: "9px", 
+                            background: "rgba(168, 85, 247, 0.1)", 
+                            color: "#a855f7", 
+                            padding: "2px 8px", 
+                            borderRadius: "10px", 
+                            fontWeight: 700,
+                            marginBottom: "4px",
+                            textTransform: "uppercase"
+                          }}>{phase.tag}</div>
+                          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a" }}>{phase.title}</div>
+                          <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", lineHeight: 1.4 }}>{phase.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Program Tracks */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM TRACKS</div>
+                    <div style={{ fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+                      The program engaged over 100 participants across multiple specialized technical tracks, supported by a network of 20+ mentors to ensure high-quality learning outcomes.
+                    </div>
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", 
+                      gap: "0.75rem" 
+                    }}>
+                      {[
+                        { name: "SQA", classes: 10 },
+                        { name: "Backend", classes: 9 },
+                        { name: "PM", classes: 5 },
+                        { name: "Frontend", classes: 4 },
+                        { name: "UI", classes: 2 },
+                        { name: "Android", classes: 1 },
+                        { name: "iOS", classes: 1 },
+                        { name: "UX Writing", classes: 1 }
+                      ].map(track => (
+                        <div key={track.name} style={{ 
+                          padding: "12px", 
+                          background: "white", 
+                          border: "1px solid rgba(168, 85, 247, 0.15)", 
+                          borderRadius: "12px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          boxShadow: "0 2px 4px rgba(168, 85, 247, 0.03)"
+                        }}>
+                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a" }}>{track.name}</span>
+                          <span style={{ fontSize: "11px", fontWeight: 600, color: "#a855f7", background: "rgba(168, 85, 247, 0.1)", padding: "2px 8px", borderRadius: "10px" }}>{track.classes} Classes</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Areas of Ownership */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>AREAS OF OWNERSHIP</div>
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", 
+                      gap: "1rem" 
+                    }}>
+                      {[
+                        { title: "Platform Management", desc: "End-to-end administration of Algobash for Pre-Test, Quiz, and Post-Test assessments." },
+                        { title: "Education Quality", desc: "Overseeing quality control for on-site classes (7–9 PM, Mon–Fri) over a 6-month period." },
+                        { title: "Operations & Logistics", desc: "Coordinating multi-location educational logistics and class scheduling." },
+                        { title: "Feedback Systems", desc: "Designing and managing program-wide feedback loops using Google Forms." },
+                        { title: "Data & Reporting", desc: "Ensuring accurate lifecycle data: cohorts, attendance, feedback tracking." },
+                        { title: "Design & Branding", desc: "Directing visual identity, program logo, landing page wireframes & learning materials." }
+                      ].map((item, i) => (
+                        <div key={item.title} style={{ padding: "1rem", background: "rgba(0,0,0,0.02)", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.03)" }}>
+                          <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{item.title}</div>
+                          <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{item.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </>
+              ) : cs.slug === "metago-coin" ? (
                 <>
                   {renderSection("OPPORTUNITY", cs.opportunity)}
                   {/* Impact Loop Visualization */}
@@ -343,7 +502,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                               color: "#f26522",
                               boxShadow: "0 1px 4px rgba(242, 101, 34, 0.05)",
                               border: "1px solid rgba(242, 101, 34, 0.1)"
-                            }}>
+                             }}>
                               {step}
                             </div>
                             {idx < arr.length - 1 && <span style={{ color: "rgba(242, 101, 34, 0.3)", fontSize: "10px" }}>→</span>}
@@ -354,6 +513,253 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   </motion.div>
                   {renderSection("APPROACH", cs.approach)}
                   {renderSection("STRATEGY", cs.strategy)}
+                </>
+              ) : cs.slug === "glance-fit" ? (
+                <>
+                  {renderSection("CHALLENGE", cs.challenge)}
+                  {renderSection("OPPORTUNITY", cs.opportunity)}
+                  
+                  {/* Core Mechanism Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "3rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.25rem", fontWeight: 600 }}>CORE MECHANISM</div>
+                    <div style={{ 
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                      gap: "0.75rem",
+                      position: "relative"
+                    }}>
+                      {[
+                        { label: "Track", desc: "Daily activities", icon: "👟", color: "#4caf50" },
+                        { label: "Reward", desc: "Earn points", icon: "💎", color: "#2196f3" },
+                        { label: "Redeem", desc: "Get deals", icon: "🎁", color: "#ff9800" },
+                        { label: "Re-engage", desc: "Personalized", icon: "♻️", color: "#f44336" }
+                      ].map((step, i) => (
+                        <motion.div 
+                          key={step.label}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1, duration: 0.5 }}
+                          whileHover={{ y: -5, boxShadow: `0 8px 24px ${step.color}15` }}
+                          style={{ 
+                            textAlign: "center", 
+                            padding: "1rem 0.5rem", 
+                            background: "white", 
+                            borderRadius: "12px", 
+                            border: `1px solid ${step.color}20`,
+                            boxShadow: `0 4px 12px ${step.color}08`,
+                            position: "relative"
+                          }}
+                        >
+                          <motion.div 
+                            animate={{ y: [0, -4, 0] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
+                            style={{ 
+                              fontSize: "20px", 
+                              marginBottom: "0.5rem",
+                              width: "40px",
+                              height: "40px",
+                              margin: "0 auto 0.75rem",
+                              background: `${step.color}10`,
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          >
+                            {step.icon}
+                          </motion.div>
+                          <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{step.label}</div>
+                          <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.5)", lineHeight: 1.2 }}>{step.desc}</div>
+                          
+                          {i < 3 && (
+                            <div style={{ 
+                              position: "absolute", 
+                              top: "50%", 
+                              right: "-8px", 
+                              transform: "translateY(-50%)", 
+                              fontSize: "12px", 
+                              color: "rgba(0,0,0,0.2)",
+                              zIndex: 1
+                            }}>→</div>
+                          )}
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {renderSection("APPROACH", cs.approach)}
+                  
+                  {/* Economic Bridge Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "3rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div style={{ 
+                      display: "flex", 
+                      alignItems: "center", 
+                      justifyContent: "space-between", 
+                      padding: "2rem", 
+                      background: "rgba(242, 101, 34, 0.03)", 
+                      borderRadius: "16px", 
+                      border: "1px solid rgba(242, 101, 34, 0.1)", 
+                      position: "relative",
+                      overflow: "hidden"
+                    }}>
+                      <div style={{ position: "absolute", inset: 0, opacity: 0.05, pointerEvents: "none" }}>
+                        <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                          <path d="M0,50 Q25,45 50,50 T100,50" fill="none" stroke="#f26522" strokeWidth="0.5" />
+                        </svg>
+                      </div>
+
+                      <div style={{ flex: 1, textAlign: "center", zIndex: 1 }}>
+                        <div style={{ fontSize: "10px", color: "#f26522", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "8px" }}>UTILITY</div>
+                        <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a" }}>Real usage</div>
+                      </div>
+                      
+                      <div style={{ width: "120px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1 }}>
+                        <div style={{ width: "100%", height: "1px", background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)" }} />
+                        <div style={{ 
+                          position: "absolute", 
+                          padding: "4px 10px", 
+                          background: "white", 
+                          border: "1px solid rgba(0,0,0,0.06)", 
+                          borderRadius: "12px", 
+                          fontSize: "9px", 
+                          fontWeight: 800, 
+                          color: "rgba(0,0,0,0.4)", 
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
+                        }}>BRIDGE</div>
+                      </div>
+
+                      <div style={{ flex: 1, textAlign: "center", zIndex: 1 }}>
+                        <div style={{ fontSize: "10px", color: "#4caf50", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "8px" }}>CIRCULATION</div>
+                        <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a" }}>Economic flow</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  {/* Expanding the Loop Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>EXPANDING THE LOOP</div>
+                    
+                    <div style={{ marginBottom: "1.5rem", fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
+                      {renderText(cs.expansion || "")}
+                    </div>
+
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", 
+                      gap: "1rem",
+                      padding: "1.5rem",
+                      background: "rgba(0,0,0,0.02)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(0,0,0,0.05)"
+                    }}>
+                      {[
+                        { title: "Affiliate", desc: "Direct Referral", icon: "👤" },
+                        { title: "Fitness Advocate", desc: "Network Layer", icon: "🤝" },
+                        { title: "Business Dev", desc: "Group-Based", icon: "🏢" }
+                      ].map((item, i) => (
+                        <motion.div 
+                          key={item.title}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          whileHover={{ x: 5, background: "rgba(0,0,0,0.01)" }}
+                          style={{ padding: "1rem", background: "white", borderRadius: "8px", border: "1px solid rgba(0,0,0,0.03)", display: "flex", alignItems: "center", gap: "12px" }}
+                        >
+                          <motion.div 
+                            whileHover={{ scale: 1.2, rotate: 10 }}
+                            style={{ fontSize: "20px" }}
+                          >
+                            {item.icon}
+                          </motion.div>
+                          <div>
+                            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{item.title}</div>
+                            <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.5)", fontFamily: "var(--font-mono)" }}>{item.desc}</div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* The System Behind It Visualization */}
+                  <motion.div 
+                    style={{ marginBottom: "2.5rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>THE SYSTEM BEHIND IT</div>
+                    
+                    <div style={{ marginBottom: "1.5rem", fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
+                      {renderText(cs.system || "")}
+                    </div>
+
+                    <div style={{ 
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                      gap: "1rem",
+                    }}>
+                      {[
+                        { title: "Subscription Economy", desc: "Recurring revenue models", icon: "💳" },
+                        { title: "Gamification Layer", desc: "Points and achievements", icon: "🎮" },
+                        { title: "Utility Layer Tokens", desc: "Payments and incentives", icon: "🪙" },
+                        { title: "Network-Driven Growth", desc: "Multi-layer referral incentives", icon: "🕸️" }
+                      ].map((sys, i) => (
+                        <motion.div 
+                          key={sys.title}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          whileHover={{ y: -4, background: "linear-gradient(135deg, rgba(255,255,255,1), rgba(212, 240, 232, 0.4))", border: "1px solid rgba(76, 175, 80, 0.3)" }}
+                          style={{ 
+                            padding: "1rem", 
+                            background: "linear-gradient(135deg, rgba(255,255,255,1), rgba(212, 240, 232, 0.2))",
+                            borderRadius: "10px",
+                            border: "1px solid rgba(76, 175, 80, 0.1)",
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "12px",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.02)"
+                          }}
+                        >
+                          <motion.div 
+                             animate={{ scale: [1, 1.1, 1] }}
+                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.7 }}
+                             style={{ fontSize: "18px", marginTop: "2px" }}
+                          >
+                            {sys.icon}
+                          </motion.div>
+                          <div>
+                            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{sys.title}</div>
+                            <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.5)", lineHeight: 1.4 }}>{sys.desc}</div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
                 </>
               ) : (
                 <>
@@ -546,35 +952,25 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   </a>
                 )}
 
-                <a
-                  href={`#/report/${cs.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <div
                   style={{
                     fontSize: "14px",
                     fontWeight: 600,
-                    color: "#f26522",
+                    color: "rgba(0,0,0,0.3)",
                     background: "none",
                     border: "none",
                     padding: 0,
-                    cursor: "pointer",
+                    cursor: "not-allowed",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
                     width: "fit-content",
                     textDecoration: "none",
-                    transition: "opacity 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = "0.7";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = "1";
                   }}
                 >
-                  View Detailed Report
-                  <span style={{ transition: "transform 0.2s ease", transform: ctaHov ? "translate(4px, 0)" : "none" }}>→</span>
-                </a>
+                  Full case study available soon
+                  <span style={{ opacity: 0.5 }}>→</span>
+                </div>
               </div>
             </motion.div>
           </div>

@@ -33,23 +33,23 @@ export default function AboutView({ navigate }: AboutViewProps) {
       label: 'Origin',
       body: (
         <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
-          I approached product development through a non-traditional path. Starting in strategic communications, I learned that a product’s success depends on its legibility: what problem it solves and why it matters. This foundational perspective drives my work today. 
+          I entered product development through a non-linear path. With a background in information systems and early experience in marketing communications, I learned that no knowledge is wasted—each piece shaping how I think about clarity: what a product solves, why it exists, and why it matters. 
         </p>
       ),
     },
     {
-      label: 'Philosophy',
+      label: 'Perspective',
       body: (
         <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
-          I prioritize questions over immediate answers. In an era of rapid automation, the most valuable skill is defining the problem with precision. I see products as intentional responses to actual friction, where clarity is the ultimate outcome.
+          I tend to start with questions rather than answers, often thinking through a first-principles lens. Even in the AI era, taking the time to define the problem well still matters. To me, products are shaped by real needs—and clarified through the act of building, testing, and refining over time.
         </p>
       ),
     },
     {
-      label: 'Current Focus',
+      label: 'Direction',
       body: (
         <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
-          Currently, I am exploring how to absorb complexity for end-users in mission-critical environments. I am drawn to solving difficult problems with deliberate, small-scale iterations that lead to resilient long-term systems.
+          I’m currently focused on products that absorb complexity so users don’t have to—especially in Web3, financial, healthcare, and enterprise contexts where clarity is critical. With AI, I take a more hands-on approach to building, turning ideas into working products through rapid iteration and continuous learning.
         </p>
       ),
     },
@@ -82,7 +82,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
 
           <div className="about-story-item" style={{ marginBottom: '4rem' }}>
             <p style={{ fontSize: '18px', lineHeight: 1.6, color: 'rgba(0,0,0,0.6)', maxWidth: '540px' }}>
-              Product designer and former mission controller. Dedicated to refining the intersection of technical systems and human experience.
+              Building products and teams people choose, trust, and grow with.
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
-            <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.4)', marginTop: '1rem', fontFamily: 'var(--font-mono)' }}>Google APAC Summit, 2022</p>
+            <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.4)', marginTop: '1rem', fontFamily: 'var(--font-mono)' }}>IASTI, 2022</p>
           </div>
 
           <hr className="about-rule" />
@@ -120,12 +120,12 @@ export default function AboutView({ navigate }: AboutViewProps) {
           {/* Principles */}
           <div style={{ marginBottom: '4rem' }}>
             <div className="about-story-item" style={{ marginBottom: '3rem' }}>
-              <span className="about-label">Operating Principles</span>
+              <span className="about-label">WHAT I CARE ABOUT</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '3rem' }}>
               {[
                 { n: '01', h: 'Clarity over cleverness', p: "Effective design is often invisible. The goal is to make outcomes feel intuitive, not ingenious." },
-                { n: '02', h: 'Constraints drive focus', p: "Intentional limitations are tools for creativity, not barriers to it." },
+                { n: '02', h: 'Constraints as material', p: "Limits aren't obstacles—they're often the source of good work. The best solutions come from constraints." },
                 { n: '03', h: 'Human-centric systems', p: 'Systems should adapt to human needs, rather than forcing people to adjust to technical rigidity.' },
                 { n: '04', h: 'Data informs intuition', p: 'I use quantitative signals to validate qualitative instincts, ensuring solutions are anchored in reality.' },
               ].map(({ n, h, p }) => (

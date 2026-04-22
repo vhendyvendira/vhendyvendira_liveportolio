@@ -130,15 +130,15 @@ export default function App() {
   const HEADLINES = {
     first_visit: { 
       headline: "Hi, I’m Vhendy — Product Designer & Builder", 
-      subhead: "4+ years in product, with a background in marketing and education, focused on strategy and leveraging AI for growth." 
+      subhead: "I don’t just think about products—I build to understand them." 
     },
     from_about: { 
-      headline: "About me — Design × Engineering.", 
-      subhead: "I design with intent and build to validate, grounding ideas in strategy, execution, and measurable impact." 
+      headline: "Designing with clarity, building with intent", 
+      subhead: "4+ years in product, with marketing and edu background, now leveraging AI." 
     },
     from_presence: { 
-      headline: "Presence — Grounded in the Real World.", 
-      subhead: "I turn real-world observations into insights that shape thoughtful design and scalable product decisions." 
+      headline: "From real-world signals, to what gets built.", 
+      subhead: "I turn real-world insights into design and scalable product decisions." 
     }
   };
 
