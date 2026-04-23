@@ -822,17 +822,18 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             {cs.gallery && cs.gallery.length === 4 && (() => {
               const imgs = cs.gallery;
               const ph: React.CSSProperties = {
-                borderRadius: "6px",
+                borderRadius: "12px",
                 overflow: "hidden",
-                background: "#f5f5f5",
+                background: "#f0f0f0",
                 position: "relative",
-                cursor: "zoom-in"
+                cursor: "zoom-in",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+                border: "1px solid rgba(0,0,0,0.03)"
               };
 
-              const GalleryItem = ({ src, height, style = {} }: { src: string, height: string, style?: any, key?: any }) => {
+              const GalleryItem = ({ src, height, style = {}, parallax = 0.15 }: { src: string, height: string, style?: any, parallax?: number }) => {
                 const [hovered, setHovered] = useState(false);
-                // Subtle parallax shift based on global modal scroll
-                const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+                const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -100 * parallax]);
 
                 return (
                   <div 
@@ -843,16 +844,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   >
                     <motion.div
                       style={{ 
-                        height: "140%", // More room for parallax
+                        height: "150%", 
                         width: "100%", 
                         position: "absolute", 
-                        top: "-20%",
+                        top: "-25%",
                         y: parallaxY
                       }}
-                      animate={{ 
-                        scale: hovered ? 1.08 : 1,
-                      }}
-                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      animate={{ scale: hovered ? 1.05 : 1 }}
+                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <ProgressiveImage src={src} alt="" />
                     </motion.div>
@@ -860,80 +859,100 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 );
               };
 
-              // Layout 1: Gotham
-              if (cs.id === 1) return (
-                <div style={{ marginBottom: "2.5rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <GalleryItem src={imgs[0]} height="220px" />
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
-                      <GalleryItem src={imgs[1]} height="120px" />
-                      <GalleryItem src={imgs[2]} height="120px" />
+              // 1. Gotham: "The Investigation"
+              if (cs.slug === "gotham-risk-intelligence") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>THE INVESTIGATION</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "12px" }}>
+                    <GalleryItem src={imgs[0]} height="380px" parallax={0.1} />
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      <GalleryItem src={imgs[1]} height="184px" parallax={0.2} />
+                      <GalleryItem src={imgs[2]} height="184px" parallax={0.05} />
                     </div>
                   </div>
                 </div>
               );
 
-              // Layout 2: MetaGo
-              if (cs.id === 2) return (
-                <div style={{ marginBottom: "2.5rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px", alignItems: "start" }}>
+              // 2. MetaGo: "Cinematic Premiere"
+              if (cs.slug === "metago-coin") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "1rem" }}>STUDIO REEL</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "16px", alignItems: "end" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <GalleryItem src={imgs[0]} height="240px" parallax={0.08} />
+                      <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "16px" }}>
+                         <GalleryItem src={imgs[1]} height="160px" parallax={0.12} />
+                         <GalleryItem src={imgs[2]} height="160px" parallax={0.05} />
+                      </div>
+                    </div>
+                    <GalleryItem src={imgs[3]} height="416px" parallax={0.2} />
+                  </div>
+                </div>
+              );
+
+              // 3. Toll Voice: "Zero-Gaze Safety"
+              if (cs.slug === "toll-voice-assistant") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "#2196f3", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>VUI INTERACTION</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+                    <GalleryItem src={imgs[0]} height="280px" style={{ borderRadius: "24px" }} />
+                    <div style={{ marginTop: "40px" }}>
+                       <GalleryItem src={imgs[1]} height="280px" style={{ borderRadius: "24px" }} />
+                    </div>
+                    <GalleryItem src={imgs[2]} height="280px" style={{ borderRadius: "24px", marginTop: "-40px" }} />
+                    <GalleryItem src={imgs[3]} height="280px" style={{ borderRadius: "24px" }} />
+                  </div>
+                </div>
+              );
+
+              // 4. Glance Fit: "Mobile Rewards Ecosystem"
+              if (cs.slug === "glance-fit") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "#4caf50", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>MOBILE ECOSYSTEM</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
+                    <GalleryItem src={imgs[0]} height="320px" style={{ borderRadius: "20px" }} parallax={0.2} />
+                    <GalleryItem src={imgs[1]} height="320px" style={{ borderRadius: "20px", marginTop: "24px" }} parallax={0.1} />
+                    <GalleryItem src={imgs[2]} height="320px" style={{ borderRadius: "20px", marginTop: "48px" }} parallax={0.15} />
+                    <GalleryItem src={imgs[3]} height="320px" style={{ borderRadius: "20px", marginTop: "72px" }} parallax={0.05} />
+                  </div>
+                </div>
+              );
+
+              // 5. Privy: "Operational Scale"
+              if (cs.slug === "privy-acceleration") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "#a855f7", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>PROCESS ARCHIVE</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                     <GalleryItem src={imgs[0]} height="200px" />
+                     <GalleryItem src={imgs[1]} height="200px" />
+                     <GalleryItem src={imgs[2]} height="200px" />
+                     <GalleryItem src={imgs[3]} height="200px" />
+                  </div>
+                </div>
+              );
+
+              // 6. TV Ambient: "The Screen Experience"
+              if (cs.slug === "tv-ambient") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>RESEARCH ARTIFACTS</div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                    <GalleryItem src={imgs[0]} height="240px" parallax={0.05} />
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "16px" }}>
+                       <GalleryItem src={imgs[1]} height="180px" parallax={0.1} />
+                       <GalleryItem src={imgs[2]} height="180px" parallax={0.15} />
+                    </div>
+                  </div>
+                </div>
+              );
+
+              // 7. K-Shop: "Social Discovery Feed"
+              if (cs.slug === "k-shop") return (
+                <div style={{ marginBottom: "4rem" }}>
+                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>APP ARCHITECTURE</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", alignItems: "center" }}>
                     <GalleryItem src={imgs[0]} height="200px" />
-                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      <GalleryItem src={imgs[1]} height="96px" />
-                      <GalleryItem src={imgs[2]} height="96px" />
-                    </div>
-                    <GalleryItem src={imgs[3]} height="160px" style={{ marginTop: "20px" }} />
-                  </div>
-                </div>
-              );
-
-              // Layout 3: Glance Fit
-              if (cs.id === 3) return (
-                <div style={{ marginBottom: "2.5rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px" }}>
-                    {imgs.map((src, i) => (
-                      <GalleryItem key={i} src={src} height="180px" />
-                    ))}
-                  </div>
-                </div>
-              );
-
-              // Layout 4: Privy
-              if (cs.id === 4) return (
-                <div style={{ marginBottom: "2.5rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "6px" }}>
-                    <GalleryItem src={imgs[0]} height="230px" />
-                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      <GalleryItem src={imgs[1]} height="112px" />
-                      <GalleryItem src={imgs[2]} height="112px" />
-                    </div>
-                  </div>
-                </div>
-              );
-
-              // Layout 5: TV Research
-              if (cs.id === 5) return (
-                <div style={{ marginBottom: "2.5rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <GalleryItem src={imgs[0]} height="130px" />
-                    <GalleryItem src={imgs[1]} height="130px" />
-                  </div>
-                </div>
-              );
-
-              // Layout 6: K-Shop
-              if (cs.id === 6) return (
-                <div style={{ marginBottom: "2.5rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", fontWeight: 400, letterSpacing: "0.1em", marginBottom: "0.75rem" }}>GALLERY</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", alignItems: "center", padding: "16px 0" }}>
-                    <GalleryItem src={imgs[0]} height="150px" />
-                    <GalleryItem src={imgs[1]} height="150px" style={{ transform: "translateY(-16px)", boxShadow: "0 12px 28px rgba(0,0,0,0.1)" }} />
-                    <GalleryItem src={imgs[2]} height="150px" style={{ transform: "translateY(8px)" }} />
+                    <GalleryItem src={imgs[1]} height="260px" style={{ transform: "rotate(-2deg)", zIndex: 2, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }} />
+                    <GalleryItem src={imgs[2]} height="220px" style={{ transform: "rotate(2deg)" }} />
                   </div>
                 </div>
               );
@@ -1010,7 +1029,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     textDecoration: "none",
                   }}
                 >
-                  Full case study available soon
+                  View My Process & Thinking (Coming Soon)
                   <span style={{ opacity: 0.5 }}>→</span>
                 </div>
               </div>

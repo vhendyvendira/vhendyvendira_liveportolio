@@ -312,6 +312,17 @@ export default function App() {
 
   /* ── Home Layout State ── */
 
+  const [showStatus, setShowStatus] = useState(false);
+
+  useEffect(() => {
+    // Show status after 20s, then return to name after another 20s, repeating.
+    const interval = setInterval(() => {
+      setShowStatus(current => !current);
+    }, 20000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <CustomCursor />
@@ -394,9 +405,31 @@ export default function App() {
                     }}
                   />
                 </div>
-                <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-                  VHENDY VENDIRA.
-                </span>
+                <div style={{ minHeight: "14px", display: "flex", alignItems: "center" }}>
+                  <AnimatePresence mode="wait">
+                    {!showStatus ? (
+                      <motion.span
+                        key="name"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}
+                      >
+                        VHENDY VENDIRA.
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="status"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        style={{ fontSize: "11px", letterSpacing: "0.05em", color: "#22c55e", fontFamily: "var(--font-mono)", fontWeight: 600 }}
+                      >
+                        AVAILABLE FOR NEXT OPPORTUNITY.
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </div>
               </motion.div>
               
               <h1 

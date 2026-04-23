@@ -53,6 +53,30 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     id: 3, index: "03",
+    title: "E-Money Top-Up Voice Assistant at Toll Gates",
+    tags: ["Voice UI", "VUI", "Accessibility", "Automotive"],
+    year: "2025", duration: "4 months", role: "Interaction Designer", event: "ITS Asia-Pacific Forum 2025",
+    description: "A hands-free, high-safety voice interface for toll road users to perform instant balance top-ups without stopping or touching their devices.",
+    context: "Drivers often find themselves at toll booths with insufficient balance, leading to congestion and safety hazards. Current apps require manual input, which is dangerous while driving at high-speed or in stop-and-go traffic before a gate.",
+    problem: "Manual top-up processes are physically demanding and cognitive heavy during high-speed transit, leading to 'toll-gate anxiety' and traffic delays.",
+    challenge: "Developing a voice system that remains accurate despite high cabin noise (wind, engine, and music) while ensuring transaction security and confirmation happen in under 10 seconds.",
+    approach: "Focused on 'Zero-Gaze' interaction. Designed a natural language command sequence—'Top up 50 for this gate'—optimized for quick intent recognition. Implemented audio feedback loops to confirm the transaction without requiring the driver to look at a secondary screen.",
+    outcome: "Reduced toll-gate wait times by 40% in simulated high-stress tests and improved driver safety ratings by eliminating handheld device usage near gates.",
+    team: "Solo Research & Design",
+    tools: ["Voiceflow", "Figma", "Python (SpeechRecognition API)", "Whimsical"],
+    projectType: "Automotive R&D",
+    gallery: [
+      "https://picsum.photos/seed/voice1/800/600",
+      "https://picsum.photos/seed/voice2/800/600",
+      "https://picsum.photos/seed/voice3/800/600",
+      "https://picsum.photos/seed/voice4/800/600"
+    ],
+    color: "#E2F2FF",
+    image: "https://picsum.photos/seed/tollvoice/1200/800",
+    slug: "toll-voice-assistant"
+  },
+  {
+    id: 4, index: "04",
     title: "Glance Fit - Digital Health & Fitness",
     tags: ["PRD", "UI Design", "Product Policy"],
     year: "2024", duration: "2 months", role: "Project Manager & Design Lead", event: "SparcLabs",
@@ -78,7 +102,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "glance-fit"
   },
   {
-    id: 4, index: "04",
+    id: 5, index: "05",
     title: "Privy Acceleration Program - Education",
     tags: ["Program Management", "Learning Operations", "Stakeholder Management"],
     year: "2023", duration: "5 months", role: "Project Support", event: "Privy",
@@ -103,10 +127,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "privy-acceleration"
   },
   {
-    id: 5, index: "05",
+    id: 6, index: "06",
     title: "Is traditional TV still relevant in the Digital Age?",
     tags: ["Qualitative Research", "Data Synthesize", "UX Research Report"],
-    year: "2023", duration: "2 months", role: "UX Researcher", event: "Mentify Online Bootcamp",
+    year: "2022", duration: "2 months", role: "UX Researcher", event: "Mentify Online Bootcamp",
     description: "A behavioral study of digital media habits, reframing TV as an ambient companion and revealing how attention, control, and context reshape its role.",
     context: "A deep-dive behavioral study conducted as a capstone project for the Mentify Online Bootcamp to challenge conventional media consumption metrics.",
     problem: "Streaming has fundamentally changed how we consume video, but the traditional metrics of 'viewership' don't capture the ambient role TV plays in modern life.",
@@ -128,7 +152,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     externalLink: "https://tvbroadcast.vercel.app/"
   },
   {
-    id: 6, index: "06",
+    id: 7, index: "07",
     title: "K-Shop - Social Commerce",
     tags: ["Product Management", "UX Design", "Mobile Apps"],
     year: "2022", duration: "7 months", role: "Lead of Product Research & Design", event: "K-Shop",
