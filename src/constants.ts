@@ -53,30 +53,6 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     id: 3, index: "03",
-    title: "E-Money Top-Up Voice Assistant at Toll Gates",
-    tags: ["Voice UI", "VUI", "Accessibility", "Automotive"],
-    year: "2025", duration: "4 months", role: "Interaction Designer", event: "ITS Asia-Pacific Forum 2025",
-    description: "A hands-free, high-safety voice interface for toll road users to perform instant balance top-ups without stopping or touching their devices.",
-    context: "Drivers often find themselves at toll booths with insufficient balance, leading to congestion and safety hazards. Current apps require manual input, which is dangerous while driving at high-speed or in stop-and-go traffic before a gate.",
-    problem: "Manual top-up processes are physically demanding and cognitive heavy during high-speed transit, leading to 'toll-gate anxiety' and traffic delays.",
-    challenge: "Developing a voice system that remains accurate despite high cabin noise (wind, engine, and music) while ensuring transaction security and confirmation happen in under 10 seconds.",
-    approach: "Focused on 'Zero-Gaze' interaction. Designed a natural language command sequence—'Top up 50 for this gate'—optimized for quick intent recognition. Implemented audio feedback loops to confirm the transaction without requiring the driver to look at a secondary screen.",
-    outcome: "Reduced toll-gate wait times by 40% in simulated high-stress tests and improved driver safety ratings by eliminating handheld device usage near gates.",
-    team: "Solo Research & Design",
-    tools: ["Voiceflow", "Figma", "Python (SpeechRecognition API)", "Whimsical"],
-    projectType: "Automotive R&D",
-    gallery: [
-      "https://picsum.photos/seed/voice1/800/600",
-      "https://picsum.photos/seed/voice2/800/600",
-      "https://picsum.photos/seed/voice3/800/600",
-      "https://picsum.photos/seed/voice4/800/600"
-    ],
-    color: "#E2F2FF",
-    image: "https://picsum.photos/seed/tollvoice/1200/800",
-    slug: "toll-voice-assistant"
-  },
-  {
-    id: 4, index: "04",
     title: "Glance Fit - Digital Health & Fitness",
     tags: ["PRD", "UI Design", "Product Policy"],
     year: "2024", duration: "2 months", role: "Project Manager & Design Lead", event: "SparcLabs",
@@ -102,7 +78,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "glance-fit"
   },
   {
-    id: 5, index: "05",
+    id: 4, index: "04",
     title: "Privy Acceleration Program - Education",
     tags: ["Program Management", "Learning Operations", "Stakeholder Management"],
     year: "2023", duration: "5 months", role: "Project Support", event: "Privy",
@@ -127,16 +103,15 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "privy-acceleration"
   },
   {
-    id: 6, index: "06",
+    id: 5, index: "05",
     title: "Is traditional TV still relevant in the Digital Age?",
-    tags: ["Qualitative Research", "Data Synthesize", "UX Research Report"],
+    tags: ["Qualitative Research", "Data Synthesis", "UX Research Report"],
     year: "2022", duration: "2 months", role: "UX Researcher", event: "Mentify Online Bootcamp",
-    description: "A behavioral study of digital media habits, reframing TV as an ambient companion and revealing how attention, control, and context reshape its role.",
-    context: "A deep-dive behavioral study conducted as a capstone project for the Mentify Online Bootcamp to challenge conventional media consumption metrics.",
-    problem: "Streaming has fundamentally changed how we consume video, but the traditional metrics of 'viewership' don't capture the ambient role TV plays in modern life.",
-    challenge: "Reframing what \"TV\" means when the question is no longer whether people watch, but how and why they choose it over alternatives.",
-    approach: "I designed the research methodology to capture context — not just preference. By studying when and where people chose TV over other screens, the insights shifted from usage patterns to emotional and situational triggers, which made the strategic implications sharper.",
-    outcome: "Delivered insights from 2 research methods and 3 participants, redefining TV as an ambient medium and informing content, timing, and cross-device strategy.",
+    description: "A qualitative behavioral study reframing broadcast TV as a contextual companion in a digital-first world.",
+    context: "Broadcast television isn’t losing relevance — it’s losing priority.\n\nTBS, a national broadcaster, has seen consistent decline in viewership among young adults (18–35). The shift isn’t driven by content quality, but by a fundamental change in how audiences relate to media: from scheduled and shared, to on-demand and personal.\n\nRather than competing head-on with digital platforms, this study aimed to understand how TV fits into the modern media ecosystem — and what role it still meaningfully owns.",
+    approach: "A qualitative approach to capture both real behavior and underlying motivation through two distinct phases:\n\n**Diary Study**: Real-time logging of media consumption to reveal natural, unfiltered habits.\n\n**In-Depth Interviews**: Explorations into emotional drivers, preferences, and decision-making patterns.",
+    outcome: "Delivered 5 product recommendations to help TBS win back the living room.",
+    opportunity: "Instead of competing with on-demand platforms, broadcasters can win by owning ritual-based moments (morning, evening, communal time) and delivering low-effort, instantly accessible content that reinforces shared viewing experiences.",
     team: "Aldo Fernando (Partner)",
     tools: ["Figma/Figjam", "Zoom Interviews", "G-Form"],
     projectType: "Bootcamp Capstone Project",
@@ -149,10 +124,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     color: "#FFF0D8",
     image: "/case-study-images/tv-broadcast-thumbnail.png",
     slug: "tv-ambient",
-    externalLink: "https://tvbroadcast.vercel.app/"
   },
   {
-    id: 7, index: "07",
+    id: 6, index: "06",
     title: "K-Shop - Social Commerce",
     tags: ["Product Management", "UX Design", "Mobile Apps"],
     year: "2022", duration: "7 months", role: "Lead of Product Research & Design", event: "K-Shop",

@@ -238,9 +238,10 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
           {/* Meta Grid - Staggered items */}
           <div style={{ display: "flex", gap: "2rem", marginBottom: "3rem", flexWrap: "wrap" }}>
             {([
+              ["YEAR", cs.year],
               ["ROLE", cs.role],
               ["DURATION", cs.duration],
-              ["LOCATION", cs.event],
+              ["EVENT", cs.event],
               ["TEAM", cs.team],
               ["TOOLS", cs.tools.join(" · ")],
               ["PROJECT TYPE", cs.projectType]
@@ -512,6 +513,149 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                               </li>
                             ))}
                           </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </>
+              ) : cs.slug === "tv-ambient" ? (
+                <>
+                  {/* WHO WE LEARNED FROM */}
+                  <motion.div 
+                    style={{ marginBottom: "3rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>PARTICIPANT PROFILE</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "2rem", padding: "1.5rem", background: "#fdf8f0", borderRadius: "16px", border: "1px solid #f9ebda" }}>
+                      <div style={{ fontSize: "32px" }}>👥</div>
+                      <div>
+                        <div style={{ fontSize: "18px", fontWeight: 600, color: "#1a1a1a", marginBottom: "4px" }}>3 Young Adults (18–35)</div>
+                        <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>
+                          Living independently with high exposure to both broadcast and digital media. Transitioning from residual TV habits to digital-primary consumption.
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {renderSection("METHODS", cs.approach)}
+
+                  {/* WHAT WE FOUND - CARDS */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>KEY FINDINGS</div>
+                    <div 
+                      style={{ 
+                        display: "flex", 
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        gap: "1rem"
+                      }}
+                    >
+                      {[
+                        { title: "Human Backsound", desc: "Company over concentration; rhythmic companion to domestic life.", icon: "🔊", bg: "#fdf8f0" },
+                        { title: "Live Anchors", desc: "Seasonal events create urgency that algorithms can't replicate.", icon: "⚽", bg: "#f0f7ff" },
+                        { title: "Daily Boundary", desc: "A tool for ritual, marking the transition from work to home.", icon: "⏳", bg: "#f5f3ff" },
+                        { title: "Shared Context", desc: "Shared environment over content; felt connection to the world.", icon: "🛋️", bg: "#f0fdf4" },
+                        { title: "Effortless Value", desc: "Zero-choice consumption that respects mental load and fatigue.", icon: "🕊️", bg: "#fff1f2" }
+                      ].map((item, i) => (
+                        <motion.div 
+                          key={item.title} 
+                          whileHover={{ y: -5, boxShadow: "0 8px 25px rgba(0,0,0,0.05)" }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          style={{ 
+                            flex: "1 1 240px",
+                            maxWidth: "calc(33.333% - 1rem)",
+                            minWidth: "240px",
+                            padding: "1.5rem", 
+                            background: item.bg, 
+                            border: "1px solid rgba(0,0,0,0.03)", 
+                            borderRadius: "16px", 
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "12px"
+                          }}
+                        >
+                          <div style={{ fontSize: "24px" }}>{item.icon}</div>
+                          <div>
+                            <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "6px", lineHeight: 1.2 }}>{item.title}</div>
+                            <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>{item.desc}</div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* CORE INSIGHT - QUOTE */}
+                  <motion.div 
+                    style={{ marginBottom: "0.5rem", textAlign: "center", padding: "4rem 2rem", background: "linear-gradient(to bottom, #fff, #fdf8f0, #fff)", borderRadius: "24px 24px 0 0" }}
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                  >
+                    <div style={{ fontSize: "11px", color: "#f26522", fontWeight: 700, marginBottom: "1.5rem", letterSpacing: "0.1em" }}>CORE INSIGHT</div>
+                    <div style={{ fontSize: "28px", fontWeight: 600, color: "#1a1a1a", lineHeight: 1.3, maxWidth: "500px", margin: "0 auto" }}>
+                      “TV isn’t being replaced — it’s being <span style={{ color: "#f26522" }}>reassigned.</span>”
+                    </div>
+                    <div style={{ marginTop: "1.5rem", fontSize: "15px", color: "rgba(0,0,0,0.5)", lineHeight: 1.6, maxWidth: "440px", margin: "1.5rem auto 0" }}>
+                      It no longer competes for attention, but thrives as a medium that fills gaps, anchors routines, and removes the burden of choice.
+                    </div>
+                  </motion.div>
+
+                  {/* THE OPPORTUNITY - EDITORIAL ORDERED LIST */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem", padding: "2rem 0" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", marginBottom: "2rem", fontWeight: 700, letterSpacing: "0.1em" }}>STRATEGIC OPPORTUNITY</div>
+                    
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                      {[
+                        { 
+                          title: "Own the rituals", 
+                          desc: "Dominating 'unattended' moments like the morning rush or evening wind-down."
+                        },
+                        { 
+                          title: "Low-effort access", 
+                          desc: "Curated, zero-click viewing paths that reduce cognitive fatigue and decision paralysis."
+                        },
+                        { 
+                          title: "Shared environment", 
+                          desc: "Communal content that anchors the household's social physical space."
+                        },
+                        { 
+                          title: "The safe harbor", 
+                          desc: "A reliable default companion in an age of overwhelming choice friction."
+                        }
+                      ].map((opp, idx) => (
+                        <div key={opp.title} style={{ display: "grid", gridTemplateColumns: "32px 1fr", gap: "1rem" }}>
+                          <div style={{ 
+                            fontSize: "12px", 
+                            fontWeight: 700, 
+                            color: "#f26522", 
+                            fontFamily: "var(--font-mono)",
+                            paddingTop: "2px"
+                          }}>
+                            0{idx + 1}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>
+                              {opp.title}
+                            </div>
+                            <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.5)", lineHeight: 1.6, maxWidth: "520px" }}>
+                              {opp.desc}
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -819,7 +963,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-            {cs.gallery && cs.gallery.length === 4 && (() => {
+            {cs.gallery && cs.gallery.length === 4 && cs.slug !== "tv-ambient" && (() => {
               const imgs = cs.gallery;
               const ph: React.CSSProperties = {
                 borderRadius: "12px",
