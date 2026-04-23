@@ -76,6 +76,7 @@ interface AboutViewProps {
 
 export default function AboutView({ navigate }: AboutViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLogicMode, setIsLogicMode] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -198,10 +199,10 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   {[
-                    { h: 'Product Design', p: 'Interface design, advanced prototyping, and UX research using Figma.' },
-                    { h: 'Technical Frameworks', p: 'Building with React, TypeScript, and modern styling architectures like Tailwind.' },
-                    { h: 'AI Implementation', p: 'Integrating LLMs, prompt engineering, and intelligent workflow automation.' },
-                    { h: 'Program Operations', p: 'Managing discovery-to-delivery cycles in complex, cross-functional teams.' },
+                    { h: 'Product Design', p: 'Shaping flows from concept to UI using Whimsical & Figma.' },
+                    { h: 'Technical Frameworks', p: 'Using JavaScript to navigate constraints and inform design decisions.' },
+                    { h: 'AI Implementation', p: 'Designing AI flows with Claude, Cursor, Lovable, Antigravity.' },
+                    { h: 'Program Operations', p: 'Structuring workflows with Jira, ClickUp, Trello from plan to delivery.' },
                   ].map((item, idx) => (
                     <div key={idx} style={{ borderLeft: '1px solid rgba(0,0,0,0.1)', paddingLeft: '1.5rem' }}>
                       <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '0.25rem' }}>{item.h}</h4>
@@ -213,26 +214,141 @@ export default function AboutView({ navigate }: AboutViewProps) {
 
               {/* THE MENTALITY */}
               <div className="about-story-item">
-                <div style={{ marginBottom: '2rem' }}>
-                  <span className="about-label" style={{ color: '#f26522' }}>02 / THE MENTALITY</span>
-                  <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Operating Principles</h3>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  {[
-                    { h: 'Systems Thinking', p: 'Treating complexity as a design material. Building structures that scale without breaking.' },
-                    { h: 'Radical Clarity', p: 'Success often comes down to making the complex legible for teams and users alike.' },
-                    { h: 'Operational Empathy', p: 'Designing for the human on the other side of the system, whether user or engineer.' },
-                    { h: 'Building as Thinking', p: 'The fastest way to truth is through a prototype. Iterate to find the right questions.' },
-                  ].map((item, idx) => (
-                    <div key={idx} style={{ background: idx === 0 ? '#fafafa' : 'transparent', padding: idx === 0 ? '1.25rem' : '0 0 0 1.5rem', borderRadius: '8px', borderLeft: idx === 0 ? 'none' : '1px solid rgba(0,0,0,0.1)' }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '0.25rem' }}>{item.h}</h4>
-                      <p style={{ fontSize: '14px', lineHeight: 1.5, color: 'rgba(0,0,0,0.5)' }}>{item.p}</p>
+                <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                  <div>
+                    <span className="about-label" style={{ color: '#f26522' }}>02 / THE MENTALITY</span>
+                    <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Operating Principles</h3>
+                  </div>
+                  
+                  {/* Surprising Moment: The Switch */}
+                  <div 
+                    onClick={() => setIsLogicMode(!isLogicMode)}
+                    style={{ 
+                      cursor: 'pointer', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '8px', 
+                      padding: '4px 8px', 
+                      background: isLogicMode ? 'rgba(242, 101, 34, 0.1)' : 'rgba(0,0,0,0.03)',
+                      borderRadius: '40px',
+                      transition: 'all 0.3s ease',
+                      border: isLogicMode ? '1px solid rgba(242, 101, 34, 0.2)' : '1px solid transparent'
+                    }}
+                  >
+                    <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', fontWeight: 700, color: isLogicMode ? '#f26522' : 'rgba(0,0,0,0.3)' }}>
+                      {isLogicMode ? 'FIRST PRINCIPLES ON' : 'POLISH MODE'}
+                    </span>
+                    <div style={{ 
+                      width: '24px', 
+                      height: '12px', 
+                      background: isLogicMode ? '#f26522' : 'rgba(0,0,0,0.1)', 
+                      borderRadius: '10px', 
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '2px'
+                    }}>
+                      <motion.div 
+                        animate={{ x: isLogicMode ? 12 : 0 }}
+                        style={{ width: '8px', height: '8px', background: '#fff', borderRadius: '50%' }} 
+                      />
                     </div>
-                  ))}
+                  </div>
+                </div>
+
+                <div style={{ position: 'relative' }}>
+                  {/* Logic mode grid background reveal */}
+                  <AnimatePresence>
+                    {isLogicMode && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ 
+                          position: 'absolute', 
+                          inset: '-20px', 
+                          zIndex: -1, 
+                          backgroundImage: 'radial-gradient(rgba(242, 101, 34, 0.15) 1px, transparent 1px)', 
+                          backgroundSize: '20px 20px',
+                          pointerEvents: 'none'
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {[
+                      { 
+                        h: isLogicMode ? 'Root-Cause Analysis' : 'Understand the Real Problem', 
+                        p: isLogicMode ? 'Bypass surface symptoms; identify the first-principles logic before architecting a solution.' : 'Start by identifying the root cause and current state before deciding.' 
+                      },
+                      { 
+                        h: isLogicMode ? 'Contextual Mapping' : 'Context-Driven Decisions', 
+                        p: isLogicMode ? 'Initiative is variable, calibrated to system maturity and organizational velocity.' : 'Knowing when to take initiative and when to align with direction.' 
+                      },
+                      { 
+                        h: isLogicMode ? 'Constraint Reframing' : 'Think Beyond Constraints', 
+                        p: isLogicMode ? 'Treating friction as a boundary marker rather than a terminal point. Re-routing as a default loop.' : 'When blocked, explore alternative paths instead of forcing solutions.' 
+                      },
+                      { 
+                        h: isLogicMode ? 'Systemic Harmony' : 'Calm, Collaborative Thinking', 
+                        p: isLogicMode ? 'Aligning human variables to reduce friction in the final delivery output.' : 'Staying composed, understanding how others think, and aligning decisions.' 
+                      },
+                    ].map((item, idx) => (
+                      <motion.div 
+                        key={idx + (isLogicMode ? 'logic' : 'polish')}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        style={{ 
+                          position: 'relative',
+                          background: (isLogicMode || idx === 0) ? (isLogicMode ? '#fff' : '#fafafa') : 'transparent', 
+                          padding: (isLogicMode || idx === 0) ? '1.25rem' : '0 0 0 1.5rem', 
+                          borderRadius: '8px', 
+                          borderLeft: (isLogicMode || idx === 0) ? 'none' : '1px solid rgba(0,0,0,0.1)',
+                          border: isLogicMode ? '1px solid rgba(242, 101, 34, 0.1)' : 'none',
+                          boxShadow: isLogicMode ? '0 10px 30px rgba(242, 101, 34, 0.05)' : 'none'
+                        }}
+                      >
+                        {/* Logic mode "measurement" marks */}
+                        {isLogicMode && (
+                          <div style={{ position: 'absolute', top: '-5px', left: '-5px', fontSize: '8px', color: '#f26522', fontFamily: 'var(--font-mono)' }}>+</div>
+                        )}
+                        {isLogicMode && (
+                          <div style={{ position: 'absolute', bottom: '-5px', right: '-5px', fontSize: '8px', color: '#f26522', fontFamily: 'var(--font-mono)' }}>+</div>
+                        )}
+
+                        <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '0.25rem', color: isLogicMode ? '#f26522' : '#1a1a1a' }}>{item.h}</h4>
+                        <p style={{ fontSize: '14px', lineHeight: 1.5, color: isLogicMode ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)' }}>{item.p}</p>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
+            </div> {/* End Grid */}
+          </div> {/* End Arsenal/Mentality Wrapper */}
+
+          <hr className="about-rule" />
+
+          {/* Beyond What I Know Section */}
+          <div className="about-story-item" style={{ marginTop: '6rem', marginBottom: '6rem' }}>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>03 / GROWTH</span>
+              <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Beyond What I Know</h3>
             </div>
+            <p style={{ fontSize: '18px', lineHeight: 1.6, color: 'rgba(0,0,0,0.7)', maxWidth: '600px' }}>
+              I grew by taking on problems I wasn’t fully ready for —{' '}
+              <motion.span
+                initial={{ opacity: 0.2, filter: 'blur(4px)' }}
+                whileHover={{ opacity: 1, filter: 'blur(0px)' }}
+                whileTap={{ opacity: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
+                style={{ cursor: 'default', display: 'inline-block' }}
+              >
+                and learning through them.
+              </motion.span>
+            </p>
           </div>
 
           <hr className="about-rule" />
