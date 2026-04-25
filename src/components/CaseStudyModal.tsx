@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
+import { Activity, Award, ShoppingBag, RefreshCw, Zap, Users, Target, CheckCircle2, TrendingUp, Cpu, Layout, BarChart3, Coins } from 'lucide-react';
 import { CaseStudy } from '../types';
 import ProgressiveImage from './ProgressiveImage';
 
@@ -13,6 +14,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
   const [ctaHov, setCtaHov] = useState(false);
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [activeLoopStep, setActiveLoopStep] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const outcomeRef = useRef<HTMLDivElement>(null);
 
@@ -311,7 +313,180 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               </motion.div>
 
               {/* Order and Labels for specific projects */}
-              {cs.slug === "gotham-risk-intelligence" ? (
+              {cs.slug === "k-shop" ? (
+                <div style={{ maxWidth: "100%", padding: 0 }}>
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: "3rem" }}
+                  >
+                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>The problems we wanted to solve</h2>
+                    <div style={{ display: "grid", gap: "16px" }}>
+                      {[
+                        { title: "The lonely shopper", color: "#378ADD", desc: "E-commerce had stripped shopping of its social context. Discovery happened on Instagram, but transactions happened in isolated marketplace experiences." },
+                        { title: "Conversion friction", color: "#1D9E75", desc: "The \"link in bio\" flow killed impulse purchases. Every click between inspiration and checkout meant losing 60%+ of potential buyers." },
+                        { title: "Trust gap", color: "#D85A30", desc: "Anonymous marketplace reviews felt sketchy. Users trusted recommendations from friends and creators they followed—not 5-star ratings from strangers." }
+                      ].map(p => (
+                        <div key={p.title} style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem", borderLeft: `3px solid ${p.color}` }}>
+                          <div style={{ fontWeight: 500, fontSize: "15px", marginBottom: "8px", color: "#1a1a1a" }}>{p.title}</div>
+                          <div style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.5)" }}>{p.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: "3rem" }}
+                  >
+                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1rem", color: "#1a1a1a" }}>The real challenge wasn't design</h2>
+                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: "0 0 1.5rem" }}>It was defining the right boundaries between ambition and execution capacity.</p>
+                    <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", marginBottom: "1.5rem" }}>
+                      <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#1a1a1a", margin: 0, fontStyle: "italic" }}>
+                        "I led product definition with a big vision: social feeds, creator tools, educational content, community features, and full e-commerce—all at once. On paper, it made sense. In reality, I had junior engineers, limited runway, and no startup experience. The trade-off I kept facing: how big is enough to convince users, but small enough to actually ship?"
+                      </p>
+                    </div>
+                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: 0 }}>Honestly—I failed to answer that question well in the first iteration.</p>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: "3rem" }}
+                  >
+                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>The journey through three pivots</h2>
+                    <div style={{ position: "relative", paddingLeft: "24px" }}>
+                      <div style={{ position: "absolute", left: "8px", top: "8px", bottom: "8px", width: "2px", background: "rgba(0,0,0,0.1)" }} />
+                      {[
+                        { 
+                          title: "Iteration 1 — Too broad, too slow", 
+                          color: "#ef4444", 
+                          status: "Failed: Performance & scope",
+                          desc: "Built with WebView for cross-platform speed. Result: janky performance, slow scrolling, frustrated users. Classic mistake: designed a visually lovable product that wasn't technically viable." 
+                        },
+                        { 
+                          title: "Iteration 2 — Niche focus, wrong tech", 
+                          color: "#f59e0b", 
+                          status: "Failed: Tech decision & timeline",
+                          desc: "Pivoted to beauty & skincare (strong market fit). Chose Flutter for modern tech. Problem: team didn't know Flutter. 5-8 months wasted on learning curve. Mistake: chose tech stack based on aspiration, not team capability." 
+                        },
+                        { 
+                          title: "Iteration 3 — Compress, ship, prove", 
+                          color: "#10b981", 
+                          status: "Shipped successfully",
+                          desc: "Cut all social features. Switched to React Native (team knew it). Added 1 senior engineer as architect. Shipped in 3 months. Launched with 2.5k signups, 4.2% conversion in 2 weeks. But runway ended—stakeholders decided not to continue." 
+                        }
+                      ].map((p, i) => (
+                        <div key={i} style={{ position: "relative", marginBottom: i === 2 ? "0" : "2rem" }}>
+                          <div style={{ position: "absolute", left: "-20px", top: "4px", width: "12px", height: "12px", borderRadius: "50%", background: "white", border: `2px solid ${p.color}` }} />
+                          <div style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem" }}>
+                            <div style={{ fontWeight: 500, fontSize: "15px", marginBottom: "8px", color: "#1a1a1a" }}>{p.title}</div>
+                            <div style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.5)", marginBottom: "12px" }}>{p.desc}</div>
+                            <div style={{ display: "inline-block", background: `${p.color}15`, color: p.color, padding: "3px 8px", borderRadius: "8px", fontSize: "12px" }}>{p.status}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "3rem" }}>
+                    <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", textAlign: "center" }}>
+                      <div style={{ color: "rgba(0,0,0,0.5)", fontSize: "14px", marginBottom: "8px" }}>❌ V1 Scope</div>
+                      <div style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px", lineHeight: 1.6 }}>[Diagram showing bloated feature set: social feed, creator tools, educational content, commerce, community]</div>
+                    </div>
+                    <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", textAlign: "center" }}>
+                      <div style={{ color: "rgba(0,0,0,0.5)", fontSize: "14px", marginBottom: "8px" }}>✓ V3 Scope</div>
+                      <div style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px", lineHeight: 1.6 }}>[Diagram showing compressed MVP: product discovery, creator profiles, checkout, basic reviews]</div>
+                    </div>
+                  </div>
+
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: "3rem" }}
+                  >
+                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>Research insights that shaped the pivot</h2>
+                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: "0 0 1rem" }}>After 20 in-depth interviews with beauty enthusiasts (ages 19-35, tier 1-2 cities), clear patterns emerged:</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
+                      <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "8px", padding: "1rem" }}>
+                        <div style={{ fontSize: "24px", fontWeight: 500, color: "#2196f3", marginBottom: "4px" }}>90%</div>
+                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>trusted creator reviews over anonymous marketplace ratings</div>
+                      </div>
+                      <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "8px", padding: "1rem" }}>
+                        <div style={{ fontSize: "24px", fontWeight: 500, color: "#2196f3", marginBottom: "4px" }}>70%</div>
+                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>discovered new products through Instagram beauty creators</div>
+                      </div>
+                      <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "8px", padding: "1rem" }}>
+                        <div style={{ fontSize: "24px", fontWeight: 500, color: "#2196f3", marginBottom: "4px" }}>60%</div>
+                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>abandoned "link in bio" purchases due to friction</div>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "2rem", marginBottom: "3rem", textAlign: "center" }}>
+                    <div style={{ color: "rgba(0,0,0,0.5)", fontSize: "14px", marginBottom: "8px" }}>👥 Target Users</div>
+                    <div style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>[Two persona cards: Risa (beauty enthusiast, 22-28) and Maya (aspiring creator, 24-32)]</div>
+                  </div>
+
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    style={{ marginBottom: "3rem" }}
+                  >
+                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>What I took away</h2>
+                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: "0 0 1.5rem" }}>K-Shop didn't fail because of the idea—it failed because of execution and priorities. Here's what I won't repeat:</p>
+                    <div style={{ display: "grid", gap: "16px" }}>
+                      {[
+                        { title: "MVP means proving viability, not showcasing vision", desc: "Every feature should answer: \"Is this needed to prove the product is worth building?\" Not: \"Will this make the product look impressive?\" I designed for ego, not validation." },
+                        { title: "Choose tech based on team capacity, not industry trends", desc: "Pragmatic ≠ boring. It means being honest about what your team can deliver. 8 months wasted on Flutter taught me that aspiration without capability is just hubris." },
+                        { title: "GTM is as important as product quality", desc: "Building a great product without a distribution strategy is an expensive hobby, not a business. I spent 100% on product, 0% on go-to-market. That was fatal." },
+                        { title: "Research should drive ruthless prioritization", desc: "I created personas from research but didn't use them to make hard trade-offs. Personas are decision tools, not decoration. They should help you say \"no\" consistently." }
+                      ].map(l => (
+                        <div key={l.title} style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem" }}>
+                          <div style={{ fontWeight: 500, fontSize: "15px", marginBottom: "8px", color: "#1a1a1a" }}>{l.title}</div>
+                          <div style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.5)" }}>{l.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <div style={{ background: "linear-gradient(135deg, #E6F1FB 0%, #EAF3DE 100%)", borderRadius: "16px", padding: "2rem", textAlign: "center", marginBottom: "3rem" }}>
+                    <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.5)", marginBottom: "1rem" }}>Final Launch Performance (2 weeks)</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "16px", maxWidth: "500px", margin: "0 auto" }}>
+                      <div>
+                        <div style={{ fontSize: "28px", fontWeight: 500, color: "#1a1a1a" }}>2,500</div>
+                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>signups</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "28px", fontWeight: 500, color: "#1a1a1a" }}>4.2%</div>
+                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>conversion rate</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "28px", fontWeight: 500, color: "#1a1a1a" }}>120</div>
+                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>creator partners</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ background: "#ffffff", borderLeft: "3px solid #2196f3", padding: "1.5rem", marginBottom: "2rem" }}>
+                    <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#1a1a1a", margin: 0, fontStyle: "italic" }}>
+                      "At the time, I was a designer who fell too in love with solutions before fully understanding the problem. K-Shop taught me to ask more questions, validate faster, and cut more ruthlessly—even when what I'm cutting is the idea I liked most."
+                    </p>
+                  </div>
+
+                  </div>
+              ) : cs.slug === "gotham-risk-intelligence" ? (
                 <>
                   {renderSection("PROBLEM", cs.problem)}
                   {renderSection("CHALLENGE", cs.challenge)}
@@ -319,200 +494,207 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 </>
               ) : cs.slug === "privy-acceleration" ? (
                 <>
-                  {renderSection("PROBLEM", cs.problem)}
-                  
-                  {/* BENEFITS Visualization */}
+                  {/* PROBLEM */}
                   <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
+                    style={{ marginBottom: "4rem" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>BENEFITS</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
-                      {[
-                        { title: "Skill Development", desc: "Intensive capability enhancement across technical and functional roles, bridging the gap between theory and execution.", icon: "📈" },
-                        { title: "Grade Level Adjustment", desc: "Successful participants receive a formal grade level adjustment reflecting their elevated competency.", icon: "🎖️" },
-                        { title: "Career Progression", desc: "Direct pathway to higher-impact positions with expanded organizational responsibilities.", icon: "🚀" },
-                        { title: "Compensation Increase", desc: "Passing the program entitles participants to a higher base salary adjustment and optimized compensation structure.", icon: "💰" }
-                      ].map((benefit, i) => (
-                        <div key={benefit.title} style={{ padding: "1.25rem", background: "rgba(240, 232, 255, 0.3)", borderRadius: "12px", border: "1px solid rgba(168, 85, 247, 0.1)" }}>
-                          <div style={{ fontSize: "24px", marginBottom: "0.75rem" }}>{benefit.icon}</div>
-                          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{benefit.title}</div>
-                          <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>{benefit.desc}</div>
-                        </div>
-                      ))}
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>PROBLEM</div>
+                    <div style={{ fontSize: "16px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6, marginBottom: "1.5rem", fontWeight: 500 }}>
+                      The organization lacked a unified competency framework, resulting in:
                     </div>
-                  </motion.div>
-
-                  {renderSection("CHALLENGE", cs.approach)}
-
-                  {/* Program Phases Visualization */}
-                  <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM JOURNEY</div>
-                    <div style={{ marginBottom: "1.5rem", fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
-                      A structured end-to-end journey designed to evaluate, transform, and certify organizational readiness.
-                    </div>
-                    <div style={{ position: "relative", paddingLeft: "1.5rem" }}>
-                      {/* Vertical connector line */}
-                      <div style={{ position: "absolute", left: "6px", top: "10px", bottom: "10px", width: "2px", background: "linear-gradient(to bottom, #a855f7 0%, #a855f7 70%, rgba(168, 85, 247, 0.1) 100%)" }} />
-                      
-                      {[
-                        { title: "Pre-Test Enrollment & Assessment", desc: "Strategic filtering and initial skill benchmarking to identify potential.", tag: "Entry" },
-                        { title: "5-Month Intensive Acceleration Training", desc: "Hands-on technical growth supported by continuous expert mentorship.", tag: "Learning" },
-                        { title: "Capstone Project", desc: "Practical application of learned skills through high-stakes, collaborative projects.", tag: "Execution" },
-                        { title: "Post-Test Evaluation", desc: "Comprehensive assessment of newly acquired technical and functional competencies.", tag: "Evaluation" },
-                        { title: "Final Presentation", desc: "Outcome showcase to senior leadership, demonstrating business impact readiness.", tag: "Validation" },
-                        { title: "Graduation", desc: "Official certification and transition into elevated roles within the organization.", tag: "Outcome" }
-                      ].map((phase, i) => (
-                        <div key={phase.title} style={{ position: "relative", marginBottom: "1.25rem" }}>
-                          <div style={{ 
-                            position: "absolute", 
-                            left: "-1.5rem", 
-                            width: "14px", 
-                            height: "14px", 
-                            borderRadius: "50%", 
-                            background: "white", 
-                            border: "3px solid #a855f7",
-                            zIndex: 2,
-                            top: "3px"
-                          }} />
-                          <div style={{ 
-                            display: "inline-block", 
-                            fontSize: "9px", 
-                            background: "rgba(168, 85, 247, 0.1)", 
-                            color: "#a855f7", 
-                            padding: "2px 8px", 
-                            borderRadius: "10px", 
-                            fontWeight: 700,
-                            marginBottom: "4px",
-                            textTransform: "uppercase"
-                          }}>{phase.tag}</div>
-                          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a" }}>{phase.title}</div>
-                          <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", lineHeight: 1.4 }}>{phase.desc}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  {/* Program Tracks */}
-                  <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM TRACKS</div>
-                    <div style={{ fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                      The program engaged over 250+ participants across multiple specialized technical tracks, supported by a network of 30+ mentors to ensure high-quality learning outcomes.
-                    </div>
-                    <div style={{ 
-                      display: "grid", 
-                      gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", 
-                      gap: "0.75rem" 
+                    <ul style={{ 
+                      padding: 0, 
+                      margin: "0 0 1.5rem 0", 
+                      listStyle: "none", 
+                      display: "flex", 
+                      flexDirection: "column", 
+                      gap: "12px" 
                     }}>
                       {[
-                        { name: "SQA", classes: 10 },
-                        { name: "Backend", classes: 9 },
-                        { name: "PM", classes: 5 },
-                        { name: "Frontend", classes: 4 },
-                        { name: "UI", classes: 2 },
-                        { name: "Android", classes: 1 },
-                        { name: "iOS", classes: 1 },
-                        { name: "UX Writing", classes: 1 }
-                      ].map(track => (
-                        <div key={track.name} style={{ 
-                          padding: "12px", 
-                          background: "white", 
-                          border: "1px solid rgba(168, 85, 247, 0.15)", 
-                          borderRadius: "12px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          boxShadow: "0 2px 4px rgba(168, 85, 247, 0.03)"
-                        }}>
-                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a" }}>{track.name}</span>
-                          <span style={{ fontSize: "11px", fontWeight: 600, color: "#a855f7", background: "rgba(168, 85, 247, 0.1)", padding: "2px 8px", borderRadius: "10px" }}>{track.classes} Classes</span>
-                        </div>
+                        "Misaligned skill expectations across teams",
+                        "Unclear career progression paths",
+                        "Inconsistent evaluation and promotion decisions"
+                      ].map((item, idx) => (
+                        <li key={idx} style={{ display: "flex", gap: "12px", alignItems: "flex-start", fontSize: "14px", color: "rgba(0,0,0,0.6)" }}>
+                          <span style={{ color: "#a855f7", fontWeight: 700 }}>—</span>
+                          {item}
+                        </li>
                       ))}
-                    </div>
+                    </ul>
+                    <p style={{ fontSize: "15px", color: "rgba(0,0,0,0.5)", lineHeight: 1.6, fontStyle: "italic" }}>
+                      This created a gap between perceived capability and organizational assessment standards.
+                    </p>
                   </motion.div>
 
-                  {/* Areas of Ownership */}
+                  {/* PROGRAM INTENT */}
                   <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
+                    style={{ marginBottom: "4rem" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>AREAS OF OWNERSHIP</div>
-                    <div style={{ 
-                      display: "grid", 
-                      gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", 
-                      gap: "1rem" 
-                    }}>
-                      {[
-                        { title: "Platform Management", desc: "End-to-end administration of Algobash for Pre-Test, Quiz, and Post-Test assessments." },
-                        { title: "Education Quality", desc: "Overseeing quality control for on-site classes (7–9 PM, Mon–Fri) over a 6-month period." },
-                        { title: "Operations & Logistics", desc: "Coordinating multi-location educational logistics and class scheduling." },
-                        { title: "Feedback Systems", desc: "Designing and managing program-wide feedback loops using Google Forms." },
-                        { title: "Data & Reporting", desc: "Ensuring accurate lifecycle data: cohorts, attendance, feedback tracking." },
-                        { title: "Design & Branding", desc: "Directing visual identity, program logo, landing page wireframes & learning materials." }
-                      ].map((item, i) => (
-                        <div key={item.title} style={{ padding: "1rem", background: "rgba(0,0,0,0.02)", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.03)" }}>
-                          <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{item.title}</div>
-                          <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{item.desc}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                  {/* Program Offboarding & Reporting Support */}
-                  <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>PROGRAM OFFBOARDING & REPORTING</div>
-                    <div style={{ 
-                      display: "grid", 
-                      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
-                      gap: "1.25rem" 
-                    }}>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>PROGRAM INTENT</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
                       {[
                         { 
-                          category: "HR & Exit Coordination", 
-                          items: ["Managed offboarding and exit clearance for non-passing participants.", "Partnered with HR to ensure sensitive restructuring processes were executed smoothly."] 
+                          title: "Capability Development", 
+                          desc: "Accelerate technical and functional growth through structured learning, mentorship, and execution." 
                         },
                         { 
-                          category: "Reporting & Analytics", 
-                          items: ["Coordinated operational reporting and systematic documentation processes.", "Automated distribution of participant report cards using mail merge for efficiency."] 
-                        },
-                        { 
-                          category: "Final Asset Management", 
-                          items: ["Consolidated final project submissions and source code repositories.", "Ensured end-to-end organization of all operational and performance materials."] 
+                          title: "Organizational Calibration", 
+                          desc: "Standardize competency signals and evaluate readiness for higher responsibility." 
                         }
-                      ].map((cluster, i) => (
-                        <div key={cluster.category} style={{ padding: "1.25rem", background: "rgba(168, 85, 247, 0.03)", borderRadius: "12px", border: "1px solid rgba(168, 85, 247, 0.1)" }}>
-                          <div style={{ fontSize: "11px", fontWeight: 700, color: "#a855f7", marginBottom: "0.75rem", textTransform: "uppercase", letterSpacing: "0.025em" }}>{cluster.category}</div>
-                          <ul style={{ padding: 0, margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
-                            {cluster.items.map((item, idx) => (
-                              <li key={idx} style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5, position: "relative", paddingLeft: "12px" }}>
-                                <span style={{ position: "absolute", left: 0, top: "6px", width: "4px", height: "4px", borderRadius: "50%", background: "#a855f7" }} />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
+                      ].map((intent, i) => (
+                        <div key={intent.title} style={{ maxWidth: "500px" }}>
+                          <div style={{ fontSize: "12px", fontWeight: 700, color: "#a855f7", marginBottom: "4px", textTransform: "uppercase" }}>0{i+1}. {intent.title}</div>
+                          <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6 }}>{intent.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* PROGRAM JOURNEY */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>PROGRAM JOURNEY</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                      {[
+                        { tag: "Entry", title: "Assessment", desc: "Baseline competency evaluation and cohort selection." },
+                        { tag: "Learning", title: "5-Month Acceleration", desc: "Hands-on training supported by mentorship and structured skill development." },
+                        { tag: "Execution", title: "Capstone Project", desc: "Real-world application through high-stakes collaborative projects." },
+                        { tag: "Evaluation", title: "Post-Test", desc: "Standardized measurement of competency growth." },
+                        { tag: "Validation", title: "Final Presentation", desc: "Outcome presentation to leadership to assess readiness." },
+                        { tag: "Outcome", title: "Graduation", desc: "Certification into elevated organizational roles." }
+                      ].map((phase, i) => (
+                        <div key={phase.title} style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: "2rem" }}>
+                          <div style={{ 
+                            fontSize: "10px", 
+                            color: "rgba(0,0,0,0.3)", 
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em",
+                            paddingTop: "4px"
+                          }}>{phase.tag}</div>
+                          <div>
+                            <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{phase.title}</div>
+                            <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{phase.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* SCALE */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>SCALE</div>
+                    <div style={{ display: "flex", gap: "3rem", marginBottom: "2.5rem", flexWrap: "wrap" }}>
+                      <div>
+                        <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Participants</div>
+                        <div style={{ fontSize: "32px", fontWeight: 800, color: "#a855f7" }}>250+</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Mentors</div>
+                        <div style={{ fontSize: "32px", fontWeight: 800, color: "#a855f7" }}>30+</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Locations</div>
+                        <div style={{ fontSize: "32px", fontWeight: 800, color: "#a855f7" }}>4 <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(0,0,0,0.3)" }}>in Jogjakarta</span></div>
+                      </div>
+                    </div>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>CLASS PER TRACK</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "1.5rem" }}>
+                      {cs.tracks?.map(track => (
+                        <div key={track.name} style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+                          <span style={{ fontSize: "14px", fontWeight: 700, color: "#f26522" }}>{track.classes}</span>
+                          <span style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", fontWeight: 500 }}>{track.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* KEY OWNERSHIP */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>KEY OWNERSHIP</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                      {[
+                        { title: "Assessment Platform", desc: "Algobash for testing workflows and competency evaluation." },
+                        { title: "Learning Operations", desc: "6-month hybrid delivery across multiple tracks and cohorts." },
+                        { title: "Program Coordination", desc: "Syncing execution between mentors, HR, and divisional stakeholders." },
+                        { title: "Feedback & Data Systems", desc: "Tracking engagement, post-test growth, and graduation outcomes." },
+                        { title: "Design System", desc: "End-to-end branding, materials, and digital landing pages." }
+                      ].map((item, i) => (
+                        <div key={item.title}>
+                          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{item.title}</div>
+                          <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{item.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* OFFBOARDING & OPS */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>OFFBOARDING & OPS</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                      {[
+                        { title: "HR Coordination", desc: "Managed sensitive participant exit and clearance processes." },
+                        { title: "Automated Reporting", desc: "Report card distribution via mail merge for efficiency." },
+                        { title: "Asset Management", desc: "Consolidation of final project submissions and code repositories." }
+                      ].map((op, i) => (
+                        <div key={op.title}>
+                          <div style={{ fontSize: "14px", fontWeight: 700, color: "rgba(0,0,0,0.7)", marginBottom: "2px" }}>{op.title}</div>
+                          <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{op.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* IMPACT */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "#a855f7", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 700, letterSpacing: "0.1em" }}>IMPACT</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                      {[
+                        "Unify competency expectations across roles",
+                        "Improve consistency in career progression decisions",
+                        "Create transparency in evaluation standards",
+                        "Align development outcomes with organizational needs"
+                      ].map((impact, i) => (
+                        <div key={i} style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                          <div style={{ fontSize: "12px", color: "#a855f7", fontWeight: 800 }}>✓</div>
+                          <div style={{ fontSize: "15px", color: "#1a1a1a", fontWeight: 500 }}>{impact}</div>
                         </div>
                       ))}
                     </div>
@@ -520,6 +702,47 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 </>
               ) : cs.slug === "tv-ambient" ? (
                 <>
+                  {/* RESEARCH OBJECTIVE */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>RESEARCH OBJECTIVE</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                      {[
+                        "Understand the habits, behaviors, and challenges in consuming media among audiences aged 18–35 as a foundation for product and UX development.",
+                        "Identify the needs and expectations of users aged 18–35 regarding content and MVP features for TBS.",
+                        "Map existing solutions currently offered in the market to understand the competitive landscape and user alternatives."
+                      ].map((obj, i) => (
+                        <div key={i} style={{ display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
+                          <div style={{ 
+                            fontSize: "10px", 
+                            fontWeight: 700, 
+                            color: "#f26522", 
+                            fontFamily: "var(--font-mono)",
+                            width: "18px",
+                            height: "18px",
+                            borderRadius: "4px",
+                            background: "rgba(242, 101, 34, 0.08)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                            marginTop: "3px"
+                          }}>
+                            {i + 1}
+                          </div>
+                          <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.65)", lineHeight: 1.6 }}>
+                            {obj}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
                   {/* WHO WE LEARNED FROM */}
                   <motion.div 
                     style={{ marginBottom: "3rem" }}
@@ -528,7 +751,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>PARTICIPANT PROFILE</div>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>WHO WE LEARNED FROM</div>
                     <div style={{ display: "flex", alignItems: "center", gap: "2rem", padding: "1.5rem", background: "#fdf8f0", borderRadius: "16px", border: "1px solid #f9ebda" }}>
                       <div style={{ fontSize: "32px" }}>👥</div>
                       <div>
@@ -540,9 +763,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
 
-                  {renderSection("METHODS", cs.approach)}
-
-                  {/* WHAT WE FOUND - CARDS */}
+                  {/* HOW WE LEARNED */}
                   <motion.div 
                     style={{ marginBottom: "4rem" }}
                     initial={{ y: 20, opacity: 0 }}
@@ -550,45 +771,76 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>KEY FINDINGS</div>
-                    <div 
-                      style={{ 
-                        display: "flex", 
-                        flexWrap: "wrap",
-                        justifyContent: "center",
-                        gap: "1rem"
-                      }}
-                    >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>HOW WE LEARNED</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
                       {[
-                        { title: "Human Backsound", desc: "Company over concentration; rhythmic companion to domestic life.", icon: "🔊", bg: "#fdf8f0" },
-                        { title: "Live Anchors", desc: "Seasonal events create urgency that algorithms can't replicate.", icon: "⚽", bg: "#f0f7ff" },
-                        { title: "Daily Boundary", desc: "A tool for ritual, marking the transition from work to home.", icon: "⏳", bg: "#f5f3ff" },
-                        { title: "Shared Context", desc: "Shared environment over content; felt connection to the world.", icon: "🛋️", bg: "#f0fdf4" },
-                        { title: "Effortless Value", desc: "Zero-choice consumption that respects mental load and fatigue.", icon: "🕊️", bg: "#fff1f2" }
-                      ].map((item, i) => (
-                        <motion.div 
-                          key={item.title} 
-                          whileHover={{ y: -5, boxShadow: "0 8px 25px rgba(0,0,0,0.05)" }}
-                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                          style={{ 
-                            flex: "1 1 240px",
-                            maxWidth: "calc(33.333% - 1rem)",
-                            minWidth: "240px",
-                            padding: "1.5rem", 
-                            background: item.bg, 
-                            border: "1px solid rgba(0,0,0,0.03)", 
-                            borderRadius: "16px", 
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "12px"
-                          }}
-                        >
-                          <div style={{ fontSize: "24px" }}>{item.icon}</div>
+                        { title: "Diary Study", desc: "Capturing real-time, unfiltered media habits as they happen", icon: "📓" },
+                        { title: "In-Depth Interviews", desc: "Uncovering the emotional and cognitive drivers behind those behaviors", icon: "🎙️" }
+                      ].map((method) => (
+                        <div key={method.title} style={{ padding: "1.5rem", background: "white", border: "1px solid rgba(0,0,0,0.06)", borderRadius: "16px", display: "flex", gap: "16px" }}>
+                          <div style={{ fontSize: "24px" }}>{method.icon}</div>
                           <div>
-                            <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "6px", lineHeight: 1.2 }}>{item.title}</div>
-                            <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>{item.desc}</div>
+                            <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{method.title}</div>
+                            <div style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>{method.desc}</div>
                           </div>
-                        </motion.div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* WHAT WE FOUND */}
+                  <motion.div 
+                    style={{ marginBottom: "4rem" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>WHAT WE FOUND</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                      {[
+                        { title: "Human Backsound", desc: "TV is less about watching, more about presence — a rhythmic companion to everyday routines.", icon: "🔊" },
+                        { title: "Live Anchors", desc: "Certain moments (sports, shows, events) still create urgency that on-demand platforms can’t replicate.", icon: "⚽" },
+                        { title: "Daily Boundary", desc: "TV marks transitions — from waking up to starting the day, and from work to rest.", icon: "⏳" },
+                        { title: "Shared Context", desc: "The value lies in shared space, not just shared content — TV creates a sense of togetherness.", icon: "🛋️" },
+                        { title: "Effortless Value", desc: "In a world of infinite choice, TV wins by asking nothing — no scrolling, no deciding, just playing.", icon: "🕊️" }
+                      ].map((item, i) => (
+                        <div key={item.title} style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
+                          <motion.div 
+                            whileHover={{ 
+                              scale: 1.15,
+                              backgroundColor: "rgba(242, 101, 34, 0.08)",
+                              transition: { type: "spring", stiffness: 400, damping: 10 }
+                            }}
+                            style={{ 
+                              width: "48px", 
+                              height: "48px", 
+                              borderRadius: "12px", 
+                              background: "rgba(0,0,0,0.03)", 
+                              display: "flex", 
+                              alignItems: "center", 
+                              justifyContent: "center",
+                              fontSize: "20px",
+                              flexShrink: 0,
+                              cursor: "default"
+                            }}
+                          >
+                            <motion.span
+                              initial={{ display: "inline-block" }}
+                              whileHover={{ 
+                                rotate: [0, -15, 15, -15, 0],
+                                scale: 1.2
+                              }}
+                              transition={{ duration: 0.4 }}
+                            >
+                              {item.icon}
+                            </motion.span>
+                          </motion.div>
+                          <div style={{ maxWidth: "540px" }}>
+                            <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>{item.title}</div>
+                            <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6 }}>{item.desc}</div>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </motion.div>
@@ -609,7 +861,21 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
 
-                  {/* THE OPPORTUNITY - EDITORIAL ORDERED LIST */}
+                  {/* WHAT THIS MEANS */}
+                  <motion.div 
+                    style={{ marginBottom: "3rem", padding: "2rem", background: "#fdf8f0", borderRadius: "0 0 24px 24px", textAlign: "center" }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>WHAT THIS MEANS</div>
+                    <div style={{ fontSize: "18px", fontWeight: 600, color: "#1a1a1a", maxWidth: "500px", margin: "0 auto" }}>
+                      The opportunity isn’t to outperform digital platforms — but to <span style={{ color: "#f26522" }}>own what they can’t.</span>
+                    </div>
+                  </motion.div>
+
+                  {/* STRATEGIC OPPORTUNITY - EDITORIAL ORDERED LIST */}
                   <motion.div 
                     style={{ marginBottom: "4rem", padding: "2rem 0" }}
                     initial={{ y: 20, opacity: 0 }}
@@ -619,23 +885,27 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   >
                     <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", marginBottom: "2rem", fontWeight: 700, letterSpacing: "0.1em" }}>STRATEGIC OPPORTUNITY</div>
                     
-                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+                      gap: "2.5rem" 
+                    }}>
                       {[
                         { 
                           title: "Own the rituals", 
-                          desc: "Dominating 'unattended' moments like the morning rush or evening wind-down."
+                          desc: "Win the morning rush and evening wind-down — moments where attention is low, but presence matters."
                         },
                         { 
-                          title: "Low-effort access", 
-                          desc: "Curated, zero-click viewing paths that reduce cognitive fatigue and decision paralysis."
+                          title: "Reduce decision friction", 
+                          desc: "Create zero-effort viewing experiences that eliminate the need to choose."
                         },
                         { 
-                          title: "Shared environment", 
-                          desc: "Communal content that anchors the household's social physical space."
+                          title: "Reinforce shared spaces", 
+                          desc: "Design for communal environments, not just individual screens."
                         },
                         { 
-                          title: "The safe harbor", 
-                          desc: "A reliable default companion in an age of overwhelming choice friction."
+                          title: "Become the safe default", 
+                          desc: "Position TV as the reliable fallback in moments of content fatigue."
                         }
                       ].map((opp, idx) => (
                         <div key={opp.title} style={{ display: "grid", gridTemplateColumns: "32px 1fr", gap: "1rem" }}>
@@ -649,10 +919,10 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                             0{idx + 1}
                           </div>
                           <div>
-                            <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px" }}>
+                            <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", marginBottom: "8px" }}>
                               {opp.title}
                             </div>
-                            <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.5)", lineHeight: 1.6, maxWidth: "520px" }}>
+                            <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
                               {opp.desc}
                             </div>
                           </div>
@@ -698,251 +968,228 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
                   {renderSection("APPROACH", cs.approach)}
-                  {renderSection("STRATEGY", cs.strategy)}
                 </>
               ) : cs.slug === "glance-fit" ? (
                 <>
                   {renderSection("CHALLENGE", cs.challenge)}
                   {renderSection("OPPORTUNITY", cs.opportunity)}
                   
-                  {/* Core Mechanism Visualization */}
+                  {/* SYSTEMS DESIGN APPROACH */}
                   <motion.div 
-                    style={{ marginBottom: "3rem" }}
+                    style={{ marginBottom: "2.5rem" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.25rem", fontWeight: 600 }}>CORE MECHANISM</div>
-                    <div style={{ 
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-                      gap: "0.75rem",
-                      position: "relative"
-                    }}>
-                      {[
-                        { label: "Track", desc: "Daily activities", icon: "👟", color: "#4caf50" },
-                        { label: "Reward", desc: "Earn points", icon: "💎", color: "#2196f3" },
-                        { label: "Redeem", desc: "Get deals", icon: "🎁", color: "#ff9800" },
-                        { label: "Re-engage", desc: "Personalized", icon: "♻️", color: "#f44336" }
-                      ].map((step, i) => (
-                        <motion.div 
-                          key={step.label}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1, duration: 0.5 }}
-                          whileHover={{ y: -5, boxShadow: `0 8px 24px ${step.color}15` }}
-                          style={{ 
-                            textAlign: "center", 
-                            padding: "1rem 0.5rem", 
-                            background: "white", 
-                            borderRadius: "12px", 
-                            border: `1px solid ${step.color}20`,
-                            boxShadow: `0 4px 12px ${step.color}08`,
-                            position: "relative"
-                          }}
-                        >
-                          <motion.div 
-                            animate={{ y: [0, -4, 0] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-                            style={{ 
-                              fontSize: "20px", 
-                              marginBottom: "0.5rem",
-                              width: "40px",
-                              height: "40px",
-                              margin: "0 auto 0.75rem",
-                              background: `${step.color}10`,
-                              borderRadius: "50%",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          >
-                            {step.icon}
-                          </motion.div>
-                          <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{step.label}</div>
-                          <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.5)", lineHeight: 1.2 }}>{step.desc}</div>
-                          
-                          {i < 3 && (
-                            <div style={{ 
-                              position: "absolute", 
-                              top: "50%", 
-                              right: "-8px", 
-                              transform: "translateY(-50%)", 
-                              fontSize: "12px", 
-                              color: "rgba(0,0,0,0.2)",
-                              zIndex: 1
-                            }}>→</div>
-                          )}
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  {renderSection("APPROACH", cs.approach)}
-                  
-                  {/* Economic Bridge Visualization */}
-                  <motion.div 
-                    style={{ marginBottom: "3rem" }}
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <div style={{ 
-                      display: "flex", 
-                      alignItems: "center", 
-                      justifyContent: "space-between", 
-                      padding: "2rem", 
-                      background: "rgba(242, 101, 34, 0.03)", 
-                      borderRadius: "16px", 
-                      border: "1px solid rgba(242, 101, 34, 0.1)", 
-                      position: "relative",
-                      overflow: "hidden"
-                    }}>
-                      <div style={{ position: "absolute", inset: 0, opacity: 0.05, pointerEvents: "none" }}>
-                        <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-                          <path d="M0,50 Q25,45 50,50 T100,50" fill="none" stroke="#f26522" strokeWidth="0.5" />
-                        </svg>
-                      </div>
-
-                      <div style={{ flex: 1, textAlign: "center", zIndex: 1 }}>
-                        <div style={{ fontSize: "10px", color: "#f26522", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "8px" }}>UTILITY</div>
-                        <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a" }}>Real usage</div>
-                      </div>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>SYSTEMS DESIGN APPROACH</div>
+                    
+                    <p style={{ fontSize: "16px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6, marginBottom: "2rem", fontWeight: 400 }}>
+                      My role extended beyond design management to designing the system end-to-end—from user experience flows to the underlying economic model.
+                    </p>
+                      <div style={{ fontSize: "10px", color: "#14b8a6", fontWeight: 700, marginBottom: "2rem", letterSpacing: "0.1em" }}>CORE BEHAVIORAL LOOP</div>
                       
-                      <div style={{ width: "120px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1 }}>
-                        <div style={{ width: "100%", height: "1px", background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)" }} />
-                        <div style={{ 
-                          position: "absolute", 
-                          padding: "4px 10px", 
-                          background: "white", 
-                          border: "1px solid rgba(0,0,0,0.06)", 
-                          borderRadius: "12px", 
-                          fontSize: "9px", 
-                          fontWeight: 800, 
-                          color: "rgba(0,0,0,0.4)", 
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em",
-                          boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
-                        }}>BRIDGE</div>
+                      <div style={{ 
+                        display: "flex", 
+                        flexDirection: "column", 
+                        gap: "3rem",
+                        background: "rgba(0,0,0,0.01)",
+                        padding: "3rem 2rem",
+                        borderRadius: "32px",
+                        border: "1px solid rgba(0,0,0,0.02)",
+                        position: "relative",
+                        alignItems: "center"
+                      }}>
+                         {/* Wheel Visualization */}
+                         <div style={{ 
+                           position: "relative",
+                           width: "280px",
+                           height: "280px",
+                           display: "flex",
+                           alignItems: "center",
+                           justifyContent: "center"
+                         }}>
+                            <motion.div 
+                              animate={{ rotate: activeLoopStep * 90 }}
+                              transition={{ type: "spring", damping: 20, stiffness: 60 }}
+                              style={{ 
+                                position: "absolute",
+                                inset: "0",
+                                background: "conic-gradient(from 0deg, rgba(20, 184, 166, 0.1), transparent 90deg, transparent)",
+                                borderRadius: "50%",
+                                pointerEvents: "none"
+                              }}
+                            />
+                            {[
+                              { label: 'Track', icon: Activity, angle: 0 },
+                              { label: 'Points', icon: Coins, angle: 90 },
+                              { label: 'Reward', icon: Award, angle: 180 },
+                              { label: 'Re-engage', icon: RefreshCw, angle: 270 }
+                            ].map((step, i) => {
+                              const isActive = activeLoopStep === i;
+                              const x = Math.cos((step.angle - 90) * (Math.PI / 180)) * 105;
+                              const y = Math.sin((step.angle - 90) * (Math.PI / 180)) * 105;
+                              return (
+                                <motion.div 
+                                  key={step.label}
+                                  onClick={() => setActiveLoopStep(i)}
+                                  style={{ 
+                                    position: "absolute",
+                                    left: `calc(50% + ${x}px - 26px)`,
+                                    top: `calc(50% + ${y}px - 26px)`,
+                                    cursor: "pointer",
+                                    zIndex: 20
+                                  }}
+                                >
+                                  <motion.div
+                                    animate={{ 
+                                      backgroundColor: isActive ? "#14b8a6" : "white",
+                                      color: isActive ? "white" : "rgba(0,0,0,0.3)",
+                                      scale: isActive ? 1.15 : 1
+                                    }}
+                                    style={{
+                                      width: "52px",
+                                      height: "52px",
+                                      borderRadius: "50%",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+                                      border: "1px solid rgba(0,0,0,0.05)"
+                                    }}
+                                  >
+                                    <step.icon size={22} />
+                                  </motion.div>
+                                  <div style={{ 
+                                    position: "absolute", top: "58px", width: "100px", left: "-24px", textAlign: "center",
+                                    fontSize: "9px", fontWeight: 700, color: isActive ? "#14b8a6" : "rgba(0,0,0,0.4)",
+                                    letterSpacing: "0.1em", textTransform: "uppercase"
+                                  }}>
+                                    {step.label}
+                                  </div>
+                                </motion.div>
+                              );
+                            })}
+                            <div style={{ width: "70px", height: "70px", borderRadius: "50%", background: "white", boxShadow: "inset 0 0 10px rgba(0,0,0,0.02)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                               <Zap size={24} style={{ color: "#14b8a6", opacity: 0.2 }} />
+                            </div>
+                         </div>
+                         {/* Description */}
+                         <div style={{ textAlign: "center", maxWidth: "420px", minHeight: "80px" }}>
+                            <AnimatePresence mode="wait">
+                              <motion.div
+                                key={activeLoopStep}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.05 }}
+                                style={{ fontSize: "16px", color: "#444", lineHeight: 1.6, fontWeight: 500 }}
+                              >
+                                {[
+                                  "Users track daily activities and fitness metrics seamlessly via interconnected devices.",
+                                  "Earn points as behavioral incentives for reaching health milestones and daily goals.",
+                                  "Redeem your points for exclusive rewards, partner deals, and ecosystem perks.",
+                                  "Stay motivated with personalized health insights and gamified growth programs."
+                                ][activeLoopStep]}
+                              </motion.div>
+                            </AnimatePresence>
+                         </div>
                       </div>
 
-                      <div style={{ flex: 1, textAlign: "center", zIndex: 1 }}>
-                        <div style={{ fontSize: "10px", color: "#4caf50", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "8px" }}>CIRCULATION</div>
-                        <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a" }}>Economic flow</div>
+                      <div style={{ 
+                        borderLeft: "2px solid #2196f3",
+                        paddingLeft: "1.25rem",
+                        marginTop: "2.5rem",
+                        background: "rgba(33, 150, 243, 0.02)",
+                        padding: "1.25rem 1.5rem",
+                        borderRadius: "0 12px 12px 0"
+                      }}>
+                         <div style={{ fontSize: "10px", color: "#2196f3", fontWeight: 700, marginBottom: "0.5rem", letterSpacing: "0.1em" }}>PAYMENT LAYER</div>
+                         <p style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: 1.7, margin: 0 }}>
+                           To extend utility, I designed a crypto-based payment layer, enabling users to access premium features via a pay-with-crypto model. This positioned the token as both an incentive mechanism and a medium of exchange within the ecosystem.
+                         </p>
                       </div>
-                    </div>
-                  </motion.div>
-                  
-                  {/* Expanding the Loop Visualization */}
+                    </motion.div>
+
+                  {/* GROWTH & INCENTIVE SYSTEM */}
                   <motion.div 
                     style={{ marginBottom: "2.5rem" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>EXPANDING THE LOOP</div>
-                    
-                    <div style={{ marginBottom: "1.5rem", fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
-                      {renderText(cs.expansion || "")}
-                    </div>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>GROWTH & INCENTIVE SYSTEM</div>
+                    <p style={{ fontSize: "16px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+                      To support acquisition and retention, I designed a multi-layer incentive architecture that combines referral mechanics with behavioral gamification.
+                    </p>
 
-                    <div style={{ 
-                      display: "grid", 
-                      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", 
-                      gap: "1rem",
-                      padding: "1.5rem",
-                      background: "rgba(0,0,0,0.02)",
-                      borderRadius: "12px",
-                      border: "1px solid rgba(0,0,0,0.05)"
-                    }}>
-                      {[
-                        { title: "Affiliate", desc: "Direct Referral", icon: "👤" },
-                        { title: "Fitness Advocate", desc: "Network Layer", icon: "🤝" },
-                        { title: "Business Dev", desc: "Group-Based", icon: "🏢" }
-                      ].map((item, i) => (
-                        <motion.div 
-                          key={item.title}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                          whileHover={{ x: 5, background: "rgba(0,0,0,0.01)" }}
-                          style={{ padding: "1rem", background: "white", borderRadius: "8px", border: "1px solid rgba(0,0,0,0.03)", display: "flex", alignItems: "center", gap: "12px" }}
-                        >
-                          <motion.div 
-                            whileHover={{ scale: 1.2, rotate: 10 }}
-                            style={{ fontSize: "20px" }}
-                          >
-                            {item.icon}
-                          </motion.div>
-                          <div>
-                            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{item.title}</div>
-                            <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.5)", fontFamily: "var(--font-mono)" }}>{item.desc}</div>
-                          </div>
-                        </motion.div>
-                      ))}
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2.5rem" }}>
+                      <div>
+                        <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.3)", fontWeight: 700, marginBottom: "1rem", letterSpacing: "0.1em" }}>SYSTEM INCLUDES</div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                          {[
+                            "**Affiliate marketing** (direct referral incentives)",
+                            "**Fitness advocate leader** (team-based incentives)",
+                            "**Business development** (group-based incentives)"
+                          ].map((item, i) => {
+                            const parts = item.split('**');
+                            return (
+                              <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                                 <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#14b8a6", marginTop: "7px", flexShrink: 0 }} />
+                                 <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.7)", lineHeight: 1.5 }}>
+                                   <span style={{ fontWeight: 700, color: "#1a1a1a" }}>{parts[1]}</span>
+                                   {parts[2]}
+                                 </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.3)", fontWeight: 700, marginBottom: "1rem", letterSpacing: "0.1em" }}>REINFORCED THROUGH</div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                          {[
+                            "**Recurring commissions** from subscriptions",
+                            "**Package upgrade commission** from subscriptions",
+                            "**AP Points** as a marketing gamification mechanism"
+                          ].map((item, i) => {
+                            const parts = item.split('**');
+                            return (
+                              <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                                 <CheckCircle2 size={14} style={{ color: "#14b8a6", marginTop: "2px", flexShrink: 0, opacity: 0.8 }} />
+                                 <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.7)", lineHeight: 1.5 }}>
+                                   <span style={{ fontWeight: 700, color: "#1a1a1a" }}>{parts[1]}</span>
+                                   {parts[2]}
+                                 </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
 
-                  {/* The System Behind It Visualization */}
+                  {/* SYSTEM ARCHITECTURE */}
                   <motion.div 
                     style={{ marginBottom: "2.5rem" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>THE SYSTEM BEHIND IT</div>
-                    
-                    <div style={{ marginBottom: "1.5rem", fontSize: "16px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
-                      {renderText(cs.system || "")}
-                    </div>
-
-                    <div style={{ 
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                      gap: "1rem",
-                    }}>
+                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>SYSTEM ARCHITECTURE</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                       {[
-                        { title: "Subscription Economy", desc: "Recurring revenue models", icon: "💳" },
-                        { title: "Gamification Layer", desc: "Points and achievements", icon: "🎮" },
-                        { title: "Utility Layer Tokens", desc: "Payments and incentives", icon: "🪙" },
-                        { title: "Network-Driven Growth", desc: "Multi-layer referral incentives", icon: "🕸️" }
+                        { title: "Subscription Economy", desc: "recurring revenue model" },
+                        { title: "Gamification Layer", desc: "points, achievements, and engagement loops" },
+                        { title: "Token Utility Layer", desc: "payments, rewards, and incentives" },
+                        { title: "Network Growth Layer", desc: "multi-level referral structure" }
                       ].map((sys, i) => (
-                        <motion.div 
-                          key={sys.title}
-                          initial={{ opacity: 0, y: 10 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                          whileHover={{ y: -4, background: "linear-gradient(135deg, rgba(255,255,255,1), rgba(212, 240, 232, 0.4))", border: "1px solid rgba(76, 175, 80, 0.3)" }}
-                          style={{ 
-                            padding: "1rem", 
-                            background: "linear-gradient(135deg, rgba(255,255,255,1), rgba(212, 240, 232, 0.2))",
-                            borderRadius: "10px",
-                            border: "1px solid rgba(76, 175, 80, 0.1)",
-                            display: "flex",
-                            alignItems: "flex-start",
-                            gap: "12px",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.02)"
-                          }}
-                        >
-                          <motion.div 
-                             animate={{ scale: [1, 1.1, 1] }}
-                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.7 }}
-                             style={{ fontSize: "18px", marginTop: "2px" }}
-                          >
-                            {sys.icon}
-                          </motion.div>
-                          <div>
-                            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{sys.title}</div>
-                            <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.5)", lineHeight: 1.4 }}>{sys.desc}</div>
-                          </div>
-                        </motion.div>
+                        <div key={sys.title} style={{ display: "flex", gap: "1.5rem", borderBottom: "1px solid rgba(0,0,0,0.03)", paddingBottom: "0.5rem" }}>
+                          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", minWidth: "160px" }}>{sys.title}</div>
+                          <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.5)" }}>{sys.desc}</div>
+                        </div>
                       ))}
                     </div>
                   </motion.div>
@@ -1130,7 +1377,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               style={{ marginTop: "2rem" }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                {cs.externalLink && (
+                {cs.externalLink && cs.slug !== "tv-ambient" && (
                   <a
                     href={cs.externalLink}
                     target="_blank"

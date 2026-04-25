@@ -9,6 +9,8 @@ import PresenceView from './components/PresenceView';
 import GalaxyBackground from './components/GalaxyBackground';
 import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
+import LearningSection from './components/LearningSection';
+import IntroIdentity from './components/IntroIdentity';
 import LoadingScreen from './components/LoadingScreen';
 import ReportView from './components/ReportView';
 import CustomCursor from './components/CustomCursor';
@@ -517,6 +519,8 @@ export default function App() {
           {/* RIGHT */}
           <div className="right-panel" ref={rightPanelRef}>
             <div style={{ width: "100%" }}>
+              <IntroIdentity visible={listVisible} />
+              
               {/* Header Animates separately */}
               <motion.div 
                 style={{ 
@@ -536,6 +540,8 @@ export default function App() {
               {CASE_STUDIES.map((cs, i) => (
                 <CaseStudyCard key={cs.id} cs={cs} index={i} navigate={navigate} visible={listVisible} />
               ))}
+
+              <LearningSection visible={listVisible} />
             </div>
 
             {/* Scroll to Top Button */}

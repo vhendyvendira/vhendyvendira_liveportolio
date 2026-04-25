@@ -28,6 +28,7 @@ export interface CaseStudy {
   slug: string;
   videoUrl?: string;
   externalLink?: string;
+  tracks?: { name: string; classes: number }[];
 }
 
 export interface Social {
