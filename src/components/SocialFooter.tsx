@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Social } from '../types';
 
 const SOCIALS: Social[] = [
@@ -20,19 +22,6 @@ const SOCIALS: Social[] = [
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
         <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-      </svg>
-    )
-  },
-  {
-    label: "Bluesky",
-    href: "https://bsky.app/profile/vhendyvendira.bsky.social",
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 12c.311.146.68.257 1 .3 1.291.173 2.5 0 2.5 0s1.209.173 2.5 0c.32-.043.689-.154 1-.3.308-.145.5-.3.5-.5 0-.2-.192-.355-.5-.5-.311-.146-.68-.257-1-.3-1.291-.173-2.5 0-2.5 0s1.209.173-2.5 0c-.32.043-.689.154-1 .3-.308.145-.5.3-.5.5 0 .2.192.355.5.5z" />
-        <path d="M12 12c-.311.146-.68.257-1 .3-1.291.173-2.5 0-2.5 0s-1.209.173-2.5 0c-.32-.043-.689-.154-1-.3-.308-.145-.5-.3-.5-.5 0-.2.192-.355.5-.5.311-.146.68-.257 1-.3 1.291-.173 2.5 0 2.5 0s1.209.173 2.5 0c.32.043.689.154 1 .3.308.145.5.3.5.5 0 .2-.192.355-.5.5z" />
-        <path d="M12 12v6" />
-        <path d="M12 18s-1.5 2-3 2-3-2-3-2" />
-        <path d="M12 18s1.5 2 3 2 3-2 3-2" />
       </svg>
     )
   },
@@ -60,26 +49,66 @@ const SOCIALS: Social[] = [
   },
 ];
 
-export default function SocialFooter({ visible }: { visible: boolean }) {
+export default function SocialFooter({ visible, fullWidth, isMobile }: { visible: boolean, fullWidth?: boolean, isMobile?: boolean }) {
+  const [copied, setCopied] = useState(false);
+  const email = "vhendypersonal@gmail.com";
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
   return (
-    <div className={`social-footer ${visible ? 'visible' : ''}`} aria-label="Social links">
-      {SOCIALS.map((s, i) => (
-        <a
-          key={s.label}
-          href={s.href}
-          className="social-link"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={s.label}
-          title={s.label}
-          style={{
-            opacity: 0,
-            animation: visible ? `popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.05 + 0.2}s forwards` : 'none'
-          }}
-        >
-          {s.icon}
-        </a>
-      ))}
+    <div className={`social-footer ${visible ? 'visible' : ''} ${fullWidth ? 'full-width' : ''} ${isMobile ? 'is-mobile' : ''}`} aria-label="Footer contacts">
+      <div className="footer-content">
+        <div className="email-contact">
+          <span className="email-label text-[10px] md:text-[12px] font-mono opacity-40">Get in touch —</span>
+          <button
+            onClick={handleCopy}
+            className="email-button group relative ml-2 cursor-pointer font-mono text-[10px] md:text-[12px] text-black/40 transition-colors hover:text-black"
+          >
+            <span className="underline underline-offset-4 decoration-black/10 group-hover:decoration-black/20">{email}</span>
+            <AnimatePresence>
+              {copied && (
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: -20 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  className="absolute left-0 top-0 whitespace-nowrap font-medium text-[#f26522]"
+                >
+                  Copied to clipboard
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </div>
+
+        <div className="social-links-wrap flex items-center gap-3 md:gap-5">
+          {SOCIALS.map((s, i) => (
+            <a
+              key={s.label}
+              href={s.href}
+              className="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              title={s.label}
+              style={{
+                opacity: 0,
+                padding: isMobile ? '8px 0' : '0',
+                animation: visible ? `popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.05 + 0.2}s forwards` : 'none'
+              }}
+            >
+              {s.icon}
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

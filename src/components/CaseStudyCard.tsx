@@ -48,32 +48,29 @@ export default function CaseStudyCard({ cs, index, navigate, visible = true }: C
     >
       <div className="card-container">
         {/* Text */}
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-            <span style={{ fontSize: "11px", color: "#f26522", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{cs.index}</span>
-            <div style={{ width: "1px", height: "10px", background: "rgba(0,0,0,0.1)" }} />
-            <span style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{cs.year}</span>
+        <div className="card-text">
+          <div className="card-meta">
+            <span className="card-index">{cs.index}</span>
+            <div className="card-meta-divider" />
+            <span className="card-year">{cs.year}</span>
           </div>
           
-          <h3 style={{ 
-            fontSize: "24px", fontWeight: 600, letterSpacing: "-0.025em", color: hov ? "#f26522" : "#1a1a1a", 
-            marginBottom: "0.75rem", transition: "color 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+          <h3 className="card-title" style={{ 
+            color: hov ? "#f26522" : "#1a1a1a"
           }}>{cs.title}</h3>
           
-          <p style={{ fontSize: "15px", lineHeight: 1.6, color: "rgba(0,0,0,0.6)", marginBottom: "1.5rem", maxWidth: "480px" }}>
+          <p className="card-description">
             {cs.description.split("—")[0].trim().replace(/\.$/, "")}
           </p>
           
-          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+          <div className="card-tags">
             {cs.tags.map(t => (
-              <span key={t} style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "4px", background: "white", border: "1px solid rgba(0,0,0,0.06)", color: "rgba(0,0,0,0.5)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{t}</span>
+              <span key={t} className="card-tag">{t}</span>
             ))}
           </div>
           
-          <div style={{ 
-            fontSize: "12px", color: "#f26522", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px", 
-            opacity: hov ? 1 : 0, transform: hov ? "translateX(0)" : "translateX(-8px)", 
-            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)" 
+          <div className="card-cta" style={{ 
+            opacity: hov ? 1 : 0, transform: hov ? "translateX(0)" : "translateX(-8px)"
           }}>
             <span>View case study</span><span style={{ fontSize: "14px" }}>→</span>
           </div>

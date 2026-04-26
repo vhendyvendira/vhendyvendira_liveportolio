@@ -24,7 +24,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/gotham4/800/600"
     ],
     color: "#F2F2F2",
-    image: "https://picsum.photos/seed/gotham/1200/800",
+    image: "/case-study-images/gotham-preview.png",
     slug: "gotham-risk-intelligence"
   },
   {
@@ -48,7 +48,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/meta4/800/600"
     ],
     color: "#C8D8FF",
-    image: "/case-study-images/film-studio-metago-thumnail.png",
+    image: "/case-study-images/film-studio-metago-thumbnail.png",
     slug: "metago-coin"
   },
   {
@@ -74,7 +74,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/glance4/800/600"
     ],
     color: "#D4F0E8",
-    image: "/case-study-images/glance-fit-thumbanail.png",
+    image: "/case-study-images/glance-fit-thumbnail.png",
     slug: "glance-fit"
   },
   {
@@ -98,7 +98,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "https://picsum.photos/seed/privy4/800/600"
     ],
     color: "#F0E8FF",
-    image: "/case-study-images/privy-acc-thumnail.png",
+    image: "/case-study-images/privy-acc-thumbnail.png",
     videoUrl: "https://www.youtube.com/embed/MT-0AktCUaE",
     slug: "privy-acceleration",
     tracks: [
@@ -145,7 +145,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     problem: "Social commerce requires a delicate balance of community trust and high-velocity transactions, which is difficult for early-stage startups to get right.",
     challenge: "Building social commerce trust in a market where users don't buy from strangers — and early-stage startups can't afford to get retention wrong.",
     approach: "I led research and design across 3 MVP cycles, using each deployment to stress-test one hypothesis about discovery and trust. The biggest decision was deprioritizing the transaction flow in favor of the social layer — betting that purchase would follow community.",
-    outcome: "2.5k users, 4.2% conversion",
+    outcome: "Launched an early MVP with limited resources, turning early challenges into insights for continuous improvement.",
     team: "3 engineers, 1 designer",
     tools: ["Figma", "Whimsical", "Trello", "React Native", "Flutter", "Wordpress"],
     projectType: "Startup Project",

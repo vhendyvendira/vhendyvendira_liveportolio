@@ -96,29 +96,23 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
     const isSpecial = label === "OPPORTUNITY" && cs.slug === "metago-coin";
     return (
       <motion.div 
-        style={{ marginBottom: "2.5rem" }}
+        className="modal-section"
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div style={{ 
-          fontSize: "10px", 
-          color: isSpecial ? "#f26522" : "rgba(0,0,0,0.4)", 
-          fontFamily: "var(--font-mono)", 
-          marginBottom: "0.75rem", 
-          fontWeight: isSpecial ? 700 : 600,
-          letterSpacing: isSpecial ? "0.05em" : "normal"
-        }}>
+        <div 
+          className={`modal-section-label ${isSpecial ? 'is-special' : ''}`}
+          style={{ 
+            color: isSpecial ? "#f26522" : "rgba(0,0,0,0.4)", 
+            fontWeight: isSpecial ? 700 : 600,
+            letterSpacing: isSpecial ? "0.05em" : "normal"
+          }}
+        >
           {label}
         </div>
-        <p style={{ 
-          fontSize: "16px", 
-          lineHeight: 1.6, 
-          color: "rgba(0,0,0,0.7)", 
-          fontWeight: 400,
-          whiteSpace: "pre-wrap" 
-        }}>
+        <p className="modal-body-text">
           {renderText(content)}
         </p>
       </motion.div>
@@ -173,7 +167,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
         <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">✕</button>
 
         {/* Hero image or Video with inner zoom effect */}
-        <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", background: "#f5f5f5", position: "relative" }}>
+        <div className="modal-hero-wrap">
           {cs.videoUrl ? (
             <iframe
               width="100%"
@@ -203,21 +197,20 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
           )}
         </div>
 
-        {/* Body content */}
-        <div style={{ padding: "3rem 4rem 4rem" }}>
+        <div className="modal-body">
           <motion.div 
-            style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}
+            className="modal-intro-meta"
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span style={{ fontSize: "11px", color: "#f26522", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{cs.index}</span>
-            <div style={{ width: "1px", height: "10px", background: "rgba(0,0,0,0.1)" }} />
-            <span style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{cs.year}</span>
+            <span className="modal-index">{cs.index}</span>
+            <div className="modal-meta-divider" />
+            <span className="modal-year-small">{cs.year}</span>
           </motion.div>
 
           <motion.h2 
-            style={{ fontSize: "2.5rem", fontWeight: 600, letterSpacing: "-0.03em", color: "#1a1a1a", lineHeight: 1.1, marginBottom: "1.5rem" }}
+            className="modal-title"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -227,18 +220,18 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
           {/* Tags */}
           <motion.div 
-            style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "2.5rem" }}
+            className="modal-tags"
             initial={{ y: 15, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             {cs.tags.map(t => (
-              <span key={t} style={{ fontSize: "10px", padding: "4px 12px", borderRadius: "4px", background: "#f5f5f5", color: "rgba(0,0,0,0.5)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{t}</span>
+              <span key={t} className="modal-tag">{t}</span>
             ))}
           </motion.div>
 
           {/* Meta Grid - Staggered items */}
-          <div style={{ display: "flex", gap: "2rem", marginBottom: "3rem", flexWrap: "wrap" }}>
+          <div className="modal-meta-grid">
             {([
               ["YEAR", cs.year],
               ["ROLE", cs.role],
@@ -250,63 +243,64 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             ] as [string, string][]).map(([k, v], idx) => (
               <motion.div 
                 key={k}
+                className="modal-meta-item"
                 initial={{ y: 15, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 + (idx * 0.05), duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)", marginBottom: "4px", fontWeight: 400, letterSpacing: "0.08em" }}>{k}</div>
-                <div style={{ fontSize: "13.5px", color: "#1a1a1a", fontWeight: 500, lineHeight: 1.4 }}>{v}</div>
+                <div className="modal-meta-label">{k}</div>
+                <div className="modal-meta-value">{v}</div>
               </motion.div>
             ))}
           </div>
 
           {/* Body Text with Drawing Divider */}
-          <div style={{ position: "relative", paddingTop: "2.5rem" }}>
+          <div className="modal-content-wrap">
             <motion.div 
-              style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "rgba(0,0,0,0.05)" }}
+              className="modal-content-divider"
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
               transition={{ delay: 0.45, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             />
             
             {/* Conditional Rendering for Sections based on slug and available keys */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="modal-sections-container">
               {/* Context is always first */}
               <motion.div 
-                style={{ marginBottom: "2.5rem" }}
+                className="modal-section"
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>CONTEXT</div>
-                <p style={{ fontSize: "16px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)", whiteSpace: "pre-wrap" }}>
+                <div className="modal-section-label">CONTEXT</div>
+                <p className="modal-body-text">
                   {renderText(cs.context)}
                 </p>
 
                 {/* Gotham Market Exposure Stats */}
                 {cs.slug === "gotham-risk-intelligence" && (
-                  <div style={{ 
-                    display: "grid", 
-                    gridTemplateColumns: "repeat(3, 1fr)", 
-                    gap: "12px", 
-                    marginTop: "1.5rem",
-                    padding: "1.25rem",
-                    background: "rgba(0,0,0,0.02)",
-                    borderRadius: "12px",
-                    border: "1px solid rgba(0,0,0,0.05)"
-                  }}>
+                  <div 
+                    className="modal-grid-3"
+                    style={{ 
+                      marginTop: "1.5rem",
+                      padding: "clamp(1rem, 3vw, 1.5rem)",
+                      background: "rgba(0,0,0,0.02)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(0,0,0,0.05)"
+                    }}
+                  >
                     <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>ANNUAL LOSS</div>
-                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–15T</div>
+                      <div className="modal-stat-label">ANNUAL LOSS</div>
+                      <div className="modal-stat-value" style={{ color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–15T</div>
                     </div>
                     <div style={{ textAlign: "center", borderLeft: "1px solid rgba(0,0,0,0.1)", borderRight: "1px solid rgba(0,0,0,0.1)" }}>
-                      <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>NEW VICTIMS / YR</div>
-                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>0.8–1.2M</div>
+                      <div className="modal-stat-label">NEW VICTIMS / YR</div>
+                      <div className="modal-stat-value" style={{ color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>0.8–1.2M</div>
                     </div>
                     <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 600, marginBottom: "4px" }}>AVG. INFLOW / PAX</div>
-                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–25M</div>
+                      <div className="modal-stat-label">AVG. INFLOW / PAX</div>
+                      <div className="modal-stat-value" style={{ color: "#1a1a1a", fontFamily: "var(--font-mono)" }}>RP10–25M</div>
                     </div>
                   </div>
                 )}
@@ -320,9 +314,9 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    style={{ marginBottom: "3rem" }}
+                    className="modal-section"
                   >
-                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>The problems we wanted to solve</h2>
+                    <h2 className="modal-section-title">The problems we wanted to solve</h2>
                     <div style={{ display: "grid", gap: "16px" }}>
                       {[
                         { title: "The lonely shopper", color: "#378ADD", desc: "E-commerce had stripped shopping of its social context. Discovery happened on Instagram, but transactions happened in isolated marketplace experiences." },
@@ -330,8 +324,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         { title: "Trust gap", color: "#D85A30", desc: "Anonymous marketplace reviews felt sketchy. Users trusted recommendations from friends and creators they followed—not 5-star ratings from strangers." }
                       ].map(p => (
                         <div key={p.title} style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem", borderLeft: `3px solid ${p.color}` }}>
-                          <div style={{ fontWeight: 500, fontSize: "15px", marginBottom: "8px", color: "#1a1a1a" }}>{p.title}</div>
-                          <div style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.5)" }}>{p.desc}</div>
+                          <div className="modal-h3">{p.title}</div>
+                          <div className="modal-body-small">{p.desc}</div>
                         </div>
                       ))}
                     </div>
@@ -342,13 +336,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    style={{ marginBottom: "3rem" }}
+                    className="modal-section"
                   >
-                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1rem", color: "#1a1a1a" }}>The real challenge wasn't design</h2>
-                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: "0 0 1.5rem" }}>It was defining the right boundaries between ambition and execution capacity.</p>
+                    <h2 className="modal-section-title">The real challenge wasn't design</h2>
+                    <p className="modal-body-text" style={{ color: "#1a1a1a", margin: "0 0 1.5rem" }}>It was defining the right boundaries between ambition and execution capacity.</p>
                     <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", marginBottom: "1.5rem" }}>
                       <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#1a1a1a", margin: 0, fontStyle: "italic" }}>
-                        "I led product definition with a big vision: social feeds, creator tools, educational content, community features, and full e-commerce—all at once. On paper, it made sense. In reality, I had junior engineers, limited runway, and no startup experience. The trade-off I kept facing: how big is enough to convince users, but small enough to actually ship?"
+                        "I led product definition with a big vision: social feeds, creator profile, community features, and full e-commerce—all at once. On paper, it made sense. In reality, I had junior engineers, limited runway, and lack-of experience. The trade-off I kept facing: how big is enough to convince users, but small enough to actually ship?"
                       </p>
                     </div>
                     <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: 0 }}>Honestly—I failed to answer that question well in the first iteration.</p>
@@ -359,11 +353,11 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    style={{ marginBottom: "3rem" }}
+                    className="modal-section"
                   >
-                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>The journey through three pivots</h2>
-                    <div style={{ position: "relative", paddingLeft: "24px" }}>
-                      <div style={{ position: "absolute", left: "8px", top: "8px", bottom: "8px", width: "2px", background: "rgba(0,0,0,0.1)" }} />
+                    <h2 className="modal-section-title">The journey through three pivots</h2>
+                    <div className="modal-timeline-container">
+                      <div className="modal-timeline-line" />
                       {[
                         { 
                           title: "Iteration 1 — Too broad, too slow", 
@@ -381,14 +375,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                           title: "Iteration 3 — Compress, ship, prove", 
                           color: "#10b981", 
                           status: "Shipped successfully",
-                          desc: "Cut all social features. Switched to React Native (team knew it). Added 1 senior engineer as architect. Shipped in 3 months. Launched with 2.5k signups, 4.2% conversion in 2 weeks. But runway ended—stakeholders decided not to continue." 
+                          desc: "Cut all social features pure ecommerce. Switched to React Native (team knew it). Added 1 senior engineer as architect. Shipped in 3 months. But the runway ended—stakeholders decided not to continue because there was no traction." 
                         }
                       ].map((p, i) => (
-                        <div key={i} style={{ position: "relative", marginBottom: i === 2 ? "0" : "2rem" }}>
-                          <div style={{ position: "absolute", left: "-20px", top: "4px", width: "12px", height: "12px", borderRadius: "50%", background: "white", border: `2px solid ${p.color}` }} />
+                        <div key={i} className="modal-timeline-item" style={{ marginBottom: i === 2 ? "0" : "2rem" }}>
+                          <div className="modal-timeline-dot" style={{ color: p.color }} />
                           <div style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem" }}>
-                            <div style={{ fontWeight: 500, fontSize: "15px", marginBottom: "8px", color: "#1a1a1a" }}>{p.title}</div>
-                            <div style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.5)", marginBottom: "12px" }}>{p.desc}</div>
+                            <div className="modal-h3">{p.title}</div>
+                            <div className="modal-body-small" style={{ marginBottom: "12px" }}>{p.desc}</div>
                             <div style={{ display: "inline-block", background: `${p.color}15`, color: p.color, padding: "3px 8px", borderRadius: "8px", fontSize: "12px" }}>{p.status}</div>
                           </div>
                         </div>
@@ -396,56 +390,20 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "3rem" }}>
-                    <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", textAlign: "center" }}>
-                      <div style={{ color: "rgba(0,0,0,0.5)", fontSize: "14px", marginBottom: "8px" }}>❌ V1 Scope</div>
-                      <div style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px", lineHeight: 1.6 }}>[Diagram showing bloated feature set: social feed, creator tools, educational content, commerce, community]</div>
-                    </div>
-                    <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", textAlign: "center" }}>
-                      <div style={{ color: "rgba(0,0,0,0.5)", fontSize: "14px", marginBottom: "8px" }}>✓ V3 Scope</div>
-                      <div style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px", lineHeight: 1.6 }}>[Diagram showing compressed MVP: product discovery, creator profiles, checkout, basic reviews]</div>
-                    </div>
-                  </div>
+
+
+
+
 
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    style={{ marginBottom: "3rem" }}
+                    className="modal-section"
                   >
-                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>Research insights that shaped the pivot</h2>
-                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: "0 0 1rem" }}>After 20 in-depth interviews with beauty enthusiasts (ages 19-35, tier 1-2 cities), clear patterns emerged:</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
-                      <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "8px", padding: "1rem" }}>
-                        <div style={{ fontSize: "24px", fontWeight: 500, color: "#2196f3", marginBottom: "4px" }}>90%</div>
-                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>trusted creator reviews over anonymous marketplace ratings</div>
-                      </div>
-                      <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "8px", padding: "1rem" }}>
-                        <div style={{ fontSize: "24px", fontWeight: 500, color: "#2196f3", marginBottom: "4px" }}>70%</div>
-                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>discovered new products through Instagram beauty creators</div>
-                      </div>
-                      <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "8px", padding: "1rem" }}>
-                        <div style={{ fontSize: "24px", fontWeight: 500, color: "#2196f3", marginBottom: "4px" }}>60%</div>
-                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>abandoned "link in bio" purchases due to friction</div>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "2rem", marginBottom: "3rem", textAlign: "center" }}>
-                    <div style={{ color: "rgba(0,0,0,0.5)", fontSize: "14px", marginBottom: "8px" }}>👥 Target Users</div>
-                    <div style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>[Two persona cards: Risa (beauty enthusiast, 22-28) and Maya (aspiring creator, 24-32)]</div>
-                  </div>
-
-                  <motion.div 
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    style={{ marginBottom: "3rem" }}
-                  >
-                    <h2 style={{ fontSize: "22px", fontWeight: 500, margin: "0 0 1.5rem", color: "#1a1a1a" }}>What I took away</h2>
-                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: "0 0 1.5rem" }}>K-Shop didn't fail because of the idea—it failed because of execution and priorities. Here's what I won't repeat:</p>
+                    <h2 className="modal-section-title">What I took away</h2>
+                    <p className="modal-body-text" style={{ color: "#1a1a1a", margin: "0 0 1.5rem" }}>K-Shop didn't fail because of the idea—it failed because of execution and priorities. Here's what I won't repeat:</p>
                     <div style={{ display: "grid", gap: "16px" }}>
                       {[
                         { title: "MVP means proving viability, not showcasing vision", desc: "Every feature should answer: \"Is this needed to prove the product is worth building?\" Not: \"Will this make the product look impressive?\" I designed for ego, not validation." },
@@ -461,23 +419,6 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
 
-                  <div style={{ background: "linear-gradient(135deg, #E6F1FB 0%, #EAF3DE 100%)", borderRadius: "16px", padding: "2rem", textAlign: "center", marginBottom: "3rem" }}>
-                    <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.5)", marginBottom: "1rem" }}>Final Launch Performance (2 weeks)</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "16px", maxWidth: "500px", margin: "0 auto" }}>
-                      <div>
-                        <div style={{ fontSize: "28px", fontWeight: 500, color: "#1a1a1a" }}>2,500</div>
-                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>signups</div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: "28px", fontWeight: 500, color: "#1a1a1a" }}>4.2%</div>
-                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>conversion rate</div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: "28px", fontWeight: 500, color: "#1a1a1a" }}>120</div>
-                        <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)" }}>creator partners</div>
-                      </div>
-                    </div>
-                  </div>
 
                   <div style={{ background: "#ffffff", borderLeft: "3px solid #2196f3", padding: "1.5rem", marginBottom: "2rem" }}>
                     <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#1a1a1a", margin: 0, fontStyle: "italic" }}>
@@ -496,19 +437,19 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 <>
                   {/* PROBLEM */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>PROBLEM</div>
-                    <div style={{ fontSize: "16px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6, marginBottom: "1.5rem", fontWeight: 500 }}>
+                    <div className="modal-section-label">PROBLEM</div>
+                    <div className="modal-body-text" style={{ fontWeight: 500 }}>
                       The organization lacked a unified competency framework, resulting in:
                     </div>
                     <ul style={{ 
                       padding: 0, 
-                      margin: "0 0 1.5rem 0", 
+                      margin: 0, 
                       listStyle: "none", 
                       display: "flex", 
                       flexDirection: "column", 
@@ -519,26 +460,26 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         "Unclear career progression paths",
                         "Inconsistent evaluation and promotion decisions"
                       ].map((item, idx) => (
-                        <li key={idx} style={{ display: "flex", gap: "12px", alignItems: "flex-start", fontSize: "14px", color: "rgba(0,0,0,0.6)" }}>
+                        <li key={idx} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }} className="modal-body-small">
                           <span style={{ color: "#a855f7", fontWeight: 700 }}>—</span>
                           {item}
                         </li>
                       ))}
                     </ul>
-                    <p style={{ fontSize: "15px", color: "rgba(0,0,0,0.5)", lineHeight: 1.6, fontStyle: "italic" }}>
+                    <p className="modal-body-small" style={{ fontStyle: "italic" }}>
                       This created a gap between perceived capability and organizational assessment standards.
                     </p>
                   </motion.div>
 
                   {/* PROGRAM INTENT */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>PROGRAM INTENT</div>
+                    <div className="modal-section-label">PROGRAM INTENT</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
                       {[
                         { 
@@ -551,8 +492,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         }
                       ].map((intent, i) => (
                         <div key={intent.title} style={{ maxWidth: "500px" }}>
-                          <div style={{ fontSize: "12px", fontWeight: 700, color: "#a855f7", marginBottom: "4px", textTransform: "uppercase" }}>0{i+1}. {intent.title}</div>
-                          <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6 }}>{intent.desc}</div>
+                          <div className="modal-section-label" style={{ color: "#a855f7", marginBottom: "4px" }}>0{i+1}. {intent.title}</div>
+                          <div className="modal-body-small">{intent.desc}</div>
                         </div>
                       ))}
                     </div>
@@ -560,13 +501,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* PROGRAM JOURNEY */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>PROGRAM JOURNEY</div>
+                    <div className="modal-section-label">PROGRAM JOURNEY</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                       {[
                         { tag: "Entry", title: "Assessment", desc: "Baseline competency evaluation and cohort selection." },
@@ -576,7 +517,15 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         { tag: "Validation", title: "Final Presentation", desc: "Outcome presentation to leadership to assess readiness." },
                         { tag: "Outcome", title: "Graduation", desc: "Certification into elevated organizational roles." }
                       ].map((phase, i) => (
-                        <div key={phase.title} style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: "2rem" }}>
+                      <div 
+                        key={phase.title} 
+                        style={{ 
+                          display: "grid", 
+                          gridTemplateColumns: "clamp(80px, 15vw, 100px) 1fr", 
+                          gap: "clamp(1rem, 3vw, 2rem)",
+                          alignItems: "start" 
+                        }}
+                      >
                           <div style={{ 
                             fontSize: "10px", 
                             color: "rgba(0,0,0,0.3)", 
@@ -586,8 +535,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                             paddingTop: "4px"
                           }}>{phase.tag}</div>
                           <div>
-                            <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "2px" }}>{phase.title}</div>
-                            <div style={{ fontSize: "13px", color: "rgba(0,0,0,0.5)", lineHeight: 1.5 }}>{phase.desc}</div>
+                            <div className="modal-h3" style={{ marginBottom: "2px" }}>{phase.title}</div>
+                            <div className="modal-body-small">{phase.desc}</div>
                           </div>
                         </div>
                       ))}
@@ -596,33 +545,33 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* SCALE */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>SCALE</div>
-                    <div style={{ display: "flex", gap: "3rem", marginBottom: "2.5rem", flexWrap: "wrap" }}>
+                    <div className="modal-section-label">SCALE</div>
+                    <div style={{ display: "flex", gap: "clamp(1.5rem, 4vw, 3rem)", flexWrap: "wrap" }}>
                       <div>
-                        <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Participants</div>
-                        <div style={{ fontSize: "32px", fontWeight: 800, color: "#a855f7" }}>250+</div>
+                        <div className="modal-stat-label">Participants</div>
+                        <div className="modal-stat-value" style={{ color: "#a855f7" }}>250+</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Mentors</div>
-                        <div style={{ fontSize: "32px", fontWeight: 800, color: "#a855f7" }}>30+</div>
+                        <div className="modal-stat-label">Mentors</div>
+                        <div className="modal-stat-value" style={{ color: "#a855f7" }}>30+</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textTransform: "uppercase" }}>Locations</div>
-                        <div style={{ fontSize: "32px", fontWeight: 800, color: "#a855f7" }}>4 <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(0,0,0,0.3)" }}>in Jogjakarta</span></div>
+                        <div className="modal-stat-label">Locations</div>
+                        <div className="modal-stat-value" style={{ color: "#a855f7" }}>4 <span className="modal-body-small" style={{ fontWeight: 600, color: "rgba(0,0,0,0.3)" }}>in Jogjakarta</span></div>
                       </div>
                     </div>
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>CLASS PER TRACK</div>
+                    <div className="modal-section-label" style={{ marginBottom: "1rem" }}>CLASS PER TRACK</div>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "1.5rem" }}>
                       {cs.tracks?.map(track => (
                         <div key={track.name} style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
-                          <span style={{ fontSize: "14px", fontWeight: 700, color: "#f26522" }}>{track.classes}</span>
-                          <span style={{ fontSize: "12px", color: "rgba(0,0,0,0.5)", fontWeight: 500 }}>{track.name}</span>
+                          <span className="modal-stat-label" style={{ color: "#f26522" }}>{track.classes}</span>
+                          <span className="modal-body-small" style={{ fontWeight: 500 }}>{track.name}</span>
                         </div>
                       ))}
                     </div>
@@ -630,13 +579,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* KEY OWNERSHIP */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>KEY OWNERSHIP</div>
+                    <div className="modal-section-label">KEY OWNERSHIP</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                       {[
                         { title: "Assessment Platform", desc: "Algobash for testing workflows and competency evaluation." },
@@ -655,13 +604,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* OFFBOARDING & OPS */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>OFFBOARDING & OPS</div>
+                    <div className="modal-section-label">OFFBOARDING & OPS</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                       {[
                         { title: "HR Coordination", desc: "Managed sensitive participant exit and clearance processes." },
@@ -676,15 +625,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
 
-                  {/* IMPACT */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "#a855f7", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 700, letterSpacing: "0.1em" }}>IMPACT</div>
+                    <div className="modal-section-label">IMPACT</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                       {[
                         "Unify competency expectations across roles",
@@ -694,7 +642,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                       ].map((impact, i) => (
                         <div key={i} style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                           <div style={{ fontSize: "12px", color: "#a855f7", fontWeight: 800 }}>✓</div>
-                          <div style={{ fontSize: "15px", color: "#1a1a1a", fontWeight: 500 }}>{impact}</div>
+                          <div className="modal-h3" style={{ margin: 0 }}>{impact}</div>
                         </div>
                       ))}
                     </div>
@@ -704,13 +652,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 <>
                   {/* RESEARCH OBJECTIVE */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>RESEARCH OBJECTIVE</div>
+                    <div className="modal-section-label">RESEARCH OBJECTIVE</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                       {[
                         "Understand the habits, behaviors, and challenges in consuming media among audiences aged 18–35 as a foundation for product and UX development.",
@@ -745,13 +693,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* WHO WE LEARNED FROM */}
                   <motion.div 
-                    style={{ marginBottom: "3rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>WHO WE LEARNED FROM</div>
+                    <div className="modal-section-label">WHO WE LEARNED FROM</div>
                     <div style={{ display: "flex", alignItems: "center", gap: "2rem", padding: "1.5rem", background: "#fdf8f0", borderRadius: "16px", border: "1px solid #f9ebda" }}>
                       <div style={{ fontSize: "32px" }}>👥</div>
                       <div>
@@ -765,13 +713,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* HOW WE LEARNED */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>HOW WE LEARNED</div>
+                    <div className="modal-section-label">HOW WE LEARNED</div>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
                       {[
                         { title: "Diary Study", desc: "Capturing real-time, unfiltered media habits as they happen", icon: "📓" },
@@ -790,13 +738,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* WHAT WE FOUND */}
                   <motion.div 
-                    style={{ marginBottom: "4rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1.5rem", fontWeight: 600 }}>WHAT WE FOUND</div>
+                    <div className="modal-section-label">WHAT WE FOUND</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
                       {[
                         { title: "Human Backsound", desc: "TV is less about watching, more about presence — a rhythmic companion to everyday routines.", icon: "🔊" },
@@ -847,47 +795,50 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* CORE INSIGHT - QUOTE */}
                   <motion.div 
-                    style={{ marginBottom: "0.5rem", textAlign: "center", padding: "4rem 2rem", background: "linear-gradient(to bottom, #fff, #fdf8f0, #fff)", borderRadius: "24px 24px 0 0" }}
+                    className="modal-section"
+                    style={{ textAlign: "center", padding: "clamp(2rem, 8vw, 4rem) clamp(1rem, 4vw, 2rem)", background: "linear-gradient(to bottom, #fff, #fdf8f0, #fff)", borderRadius: "24px 24px 0 0" }}
                     initial={{ scale: 0.95, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
                   >
-                    <div style={{ fontSize: "11px", color: "#f26522", fontWeight: 700, marginBottom: "1.5rem", letterSpacing: "0.1em" }}>CORE INSIGHT</div>
-                    <div style={{ fontSize: "28px", fontWeight: 600, color: "#1a1a1a", lineHeight: 1.3, maxWidth: "500px", margin: "0 auto" }}>
+                    <div className="modal-section-label is-special" style={{ marginBottom: "1.5rem" }}>CORE INSIGHT</div>
+                    <div className="modal-quote">
                       “TV isn’t being replaced — it’s being <span style={{ color: "#f26522" }}>reassigned.</span>”
                     </div>
-                    <div style={{ marginTop: "1.5rem", fontSize: "15px", color: "rgba(0,0,0,0.5)", lineHeight: 1.6, maxWidth: "440px", margin: "1.5rem auto 0" }}>
+                    <div className="modal-body-small" style={{ marginTop: "1.5rem", maxWidth: "440px", margin: "1.5rem auto 0" }}>
                       It no longer competes for attention, but thrives as a medium that fills gaps, anchors routines, and removes the burden of choice.
                     </div>
                   </motion.div>
 
                   {/* WHAT THIS MEANS */}
                   <motion.div 
-                    style={{ marginBottom: "3rem", padding: "2rem", background: "#fdf8f0", borderRadius: "0 0 24px 24px", textAlign: "center" }}
+                    className="modal-section"
+                    style={{ padding: "clamp(1.5rem, 4vw, 2rem)", background: "#fdf8f0", borderRadius: "0 0 24px 24px", textAlign: "center" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>WHAT THIS MEANS</div>
-                    <div style={{ fontSize: "18px", fontWeight: 600, color: "#1a1a1a", maxWidth: "500px", margin: "0 auto" }}>
+                    <div className="modal-section-label">WHAT THIS MEANS</div>
+                    <div className="modal-section-title" style={{ maxWidth: "500px", margin: "0 auto" }}>
                       The opportunity isn’t to outperform digital platforms — but to <span style={{ color: "#f26522" }}>own what they can’t.</span>
                     </div>
                   </motion.div>
 
                   {/* STRATEGIC OPPORTUNITY - EDITORIAL ORDERED LIST */}
                   <motion.div 
-                    style={{ marginBottom: "4rem", padding: "2rem 0" }}
+                    className="modal-section"
+                    style={{ padding: "2rem 0" }}
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", marginBottom: "2rem", fontWeight: 700, letterSpacing: "0.1em" }}>STRATEGIC OPPORTUNITY</div>
+                    <div className="modal-section-label is-special" style={{ marginBottom: "2rem" }}>STRATEGIC OPPORTUNITY</div>
                     
                     <div style={{ 
                       display: "grid", 
-                      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", 
                       gap: "2.5rem" 
                     }}>
                       {[
@@ -909,20 +860,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         }
                       ].map((opp, idx) => (
                         <div key={opp.title} style={{ display: "grid", gridTemplateColumns: "32px 1fr", gap: "1rem" }}>
-                          <div style={{ 
-                            fontSize: "12px", 
-                            fontWeight: 700, 
-                            color: "#f26522", 
-                            fontFamily: "var(--font-mono)",
-                            paddingTop: "2px"
-                          }}>
+                          <div className="modal-section-label is-special" style={{ paddingTop: "2px" }}>
                             0{idx + 1}
                           </div>
                           <div>
-                            <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a1a1a", marginBottom: "8px" }}>
+                            <div className="modal-h3">
                               {opp.title}
                             </div>
-                            <div style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
+                            <div className="modal-body-small">
                               {opp.desc}
                             </div>
                           </div>
@@ -936,13 +881,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   {renderSection("OPPORTUNITY", cs.opportunity)}
                   {/* Impact Loop Visualization */}
                   <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "0.75rem", fontWeight: 600 }}>IMPACT LOOP</div>
+                    <div className="modal-section-label">IMPACT LOOP</div>
                     <div style={{ padding: "1.25rem", background: "rgba(242, 101, 34, 0.03)", borderRadius: "12px", border: "1px solid rgba(242, 101, 34, 0.1)" }}>
                       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", justifyContent: "center" }}>
                         {[
@@ -976,30 +921,20 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   
                   {/* SYSTEMS DESIGN APPROACH */}
                   <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>SYSTEMS DESIGN APPROACH</div>
+                    <div className="modal-section-label">SYSTEMS DESIGN APPROACH</div>
                     
                     <p style={{ fontSize: "16px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6, marginBottom: "2rem", fontWeight: 400 }}>
                       My role extended beyond design management to designing the system end-to-end—from user experience flows to the underlying economic model.
                     </p>
                       <div style={{ fontSize: "10px", color: "#14b8a6", fontWeight: 700, marginBottom: "2rem", letterSpacing: "0.1em" }}>CORE BEHAVIORAL LOOP</div>
                       
-                      <div style={{ 
-                        display: "flex", 
-                        flexDirection: "column", 
-                        gap: "3rem",
-                        background: "rgba(0,0,0,0.01)",
-                        padding: "3rem 2rem",
-                        borderRadius: "32px",
-                        border: "1px solid rgba(0,0,0,0.02)",
-                        position: "relative",
-                        alignItems: "center"
-                      }}>
+                      <div className="modal-visualization-container">
                          {/* Wheel Visualization */}
                          <div style={{ 
                            position: "relative",
@@ -1112,13 +1047,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* GROWTH & INCENTIVE SYSTEM */}
                   <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>GROWTH & INCENTIVE SYSTEM</div>
+                    <div className="modal-section-label">GROWTH & INCENTIVE SYSTEM</div>
                     <p style={{ fontSize: "16px", color: "rgba(0,0,0,0.7)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
                       To support acquisition and retention, I designed a multi-layer incentive architecture that combines referral mechanics with behavioral gamification.
                     </p>
@@ -1172,13 +1107,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   {/* SYSTEM ARCHITECTURE */}
                   <motion.div 
-                    style={{ marginBottom: "2.5rem" }}
+                    className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8 }}
                   >
-                    <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>SYSTEM ARCHITECTURE</div>
+                    <div className="modal-section-label">SYSTEM ARCHITECTURE</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                       {[
                         { title: "Subscription Economy", desc: "recurring revenue model" },
@@ -1228,7 +1163,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                 return (
                   <div 
-                    style={{ ...ph, height, ...style }} 
+                    className="modal-gallery-item"
+                    style={{ ...style, height: hovered ? height : `calc(${height} * 0.98)` }} 
                     onMouseEnter={() => setHovered(true)} 
                     onMouseLeave={() => setHovered(false)}
                     onClick={() => setLightboxImg(src)}
@@ -1252,13 +1188,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
               // 1. Gotham: "The Investigation"
               if (cs.slug === "gotham-risk-intelligence") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>THE INVESTIGATION</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "12px" }}>
-                    <GalleryItem src={imgs[0]} height="380px" parallax={0.1} />
+                <div className="modal-section">
+                  <div className="modal-section-label">THE INVESTIGATION</div>
+                  <div className="modal-grid-1-2">
+                    <GalleryItem src={imgs[0]} height="clamp(300px, 40vh, 480px)" parallax={0.1} />
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      <GalleryItem src={imgs[1]} height="184px" parallax={0.2} />
-                      <GalleryItem src={imgs[2]} height="184px" parallax={0.05} />
+                      <GalleryItem src={imgs[1]} height="clamp(144px, 18vh, 184px)" parallax={0.2} />
+                      <GalleryItem src={imgs[2]} height="clamp(144px, 18vh, 184px)" parallax={0.05} />
                     </div>
                   </div>
                 </div>
@@ -1266,71 +1202,77 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
               // 2. MetaGo: "Cinematic Premiere"
               if (cs.slug === "metago-coin") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "1rem" }}>STUDIO REEL</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "16px", alignItems: "end" }}>
+                <div className="modal-section">
+                  <div className="modal-section-label" style={{ color: "#f26522" }}>STUDIO REEL</div>
+                  <div className="modal-grid-2-1">
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      <GalleryItem src={imgs[0]} height="240px" parallax={0.08} />
-                      <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "16px" }}>
-                         <GalleryItem src={imgs[1]} height="160px" parallax={0.12} />
-                         <GalleryItem src={imgs[2]} height="160px" parallax={0.05} />
+                      <GalleryItem src={imgs[0]} height="clamp(180px, 20vh, 240px)" parallax={0.08} />
+                      <div className="modal-grid-2x2" style={{ gap: "16px" }}>
+                         <GalleryItem src={imgs[1]} height="clamp(120px, 15vh, 160px)" parallax={0.12} />
+                         <GalleryItem src={imgs[2]} height="clamp(120px, 15vh, 160px)" parallax={0.05} />
                       </div>
                     </div>
-                    <GalleryItem src={imgs[3]} height="416px" parallax={0.2} />
+                    <GalleryItem src={imgs[3]} height="clamp(300px, 40vh, 416px)" parallax={0.2} />
                   </div>
                 </div>
               );
 
               // 3. Toll Voice: "Zero-Gaze Safety"
               if (cs.slug === "toll-voice-assistant") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "#2196f3", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>VUI INTERACTION</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
-                    <GalleryItem src={imgs[0]} height="280px" style={{ borderRadius: "24px" }} />
-                    <div style={{ marginTop: "40px" }}>
-                       <GalleryItem src={imgs[1]} height="280px" style={{ borderRadius: "24px" }} />
+                <div className="modal-section">
+                  <div className="modal-section-label" style={{ color: "#2196f3" }}>VUI INTERACTION</div>
+                  <div className="modal-grid-2x2">
+                    <GalleryItem src={imgs[0]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px" }} />
+                    <div className="modal-offset-item" style={{ marginTop: "clamp(20px, 4vw, 40px)" }}>
+                       <GalleryItem src={imgs[1]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px" }} />
                     </div>
-                    <GalleryItem src={imgs[2]} height="280px" style={{ borderRadius: "24px", marginTop: "-40px" }} />
-                    <GalleryItem src={imgs[3]} height="280px" style={{ borderRadius: "24px" }} />
+                    <GalleryItem src={imgs[2]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px", marginTop: "clamp(-40px, -4vw, -20px)" }} />
+                    <GalleryItem src={imgs[3]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px" }} />
                   </div>
                 </div>
               );
 
               // 4. Glance Fit: "Mobile Rewards Ecosystem"
               if (cs.slug === "glance-fit") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "#4caf50", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>MOBILE ECOSYSTEM</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
-                    <GalleryItem src={imgs[0]} height="320px" style={{ borderRadius: "20px" }} parallax={0.2} />
-                    <GalleryItem src={imgs[1]} height="320px" style={{ borderRadius: "20px", marginTop: "24px" }} parallax={0.1} />
-                    <GalleryItem src={imgs[2]} height="320px" style={{ borderRadius: "20px", marginTop: "48px" }} parallax={0.15} />
-                    <GalleryItem src={imgs[3]} height="320px" style={{ borderRadius: "20px", marginTop: "72px" }} parallax={0.05} />
+                <div className="modal-section">
+                  <div className="modal-section-label" style={{ color: "#4caf50" }}>MOBILE ECOSYSTEM</div>
+                  <div className="modal-grid-4">
+                    <GalleryItem src={imgs[0]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.2} />
+                    <div className="modal-offset-item" style={{ marginTop: "clamp(12px, 2vw, 24px)" }}>
+                      <GalleryItem src={imgs[1]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.1} />
+                    </div>
+                    <div className="modal-offset-item" style={{ marginTop: "clamp(24px, 4vw, 48px)" }}>
+                      <GalleryItem src={imgs[2]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.15} />
+                    </div>
+                    <div className="modal-offset-item" style={{ marginTop: "clamp(36px, 6vw, 72px)" }}>
+                      <GalleryItem src={imgs[3]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.05} />
+                    </div>
                   </div>
                 </div>
               );
 
               // 5. Privy: "Operational Scale"
               if (cs.slug === "privy-acceleration") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "#a855f7", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>PROCESS ARCHIVE</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                     <GalleryItem src={imgs[0]} height="200px" />
-                     <GalleryItem src={imgs[1]} height="200px" />
-                     <GalleryItem src={imgs[2]} height="200px" />
-                     <GalleryItem src={imgs[3]} height="200px" />
+                <div className="modal-section">
+                  <div className="modal-section-label" style={{ color: "#a855f7" }}>PROCESS ARCHIVE</div>
+                  <div className="modal-grid-2x2" style={{ gap: "12px" }}>
+                     <GalleryItem src={imgs[0]} height="clamp(160px, 20vh, 200px)" />
+                     <GalleryItem src={imgs[1]} height="clamp(160px, 20vh, 200px)" />
+                     <GalleryItem src={imgs[2]} height="clamp(160px, 20vh, 200px)" />
+                     <GalleryItem src={imgs[3]} height="clamp(160px, 20vh, 200px)" />
                   </div>
                 </div>
               );
 
               // 6. TV Ambient: "The Screen Experience"
               if (cs.slug === "tv-ambient") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>RESEARCH ARTIFACTS</div>
+                <div className="modal-section">
+                  <div className="modal-section-label">RESEARCH ARTIFACTS</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                    <GalleryItem src={imgs[0]} height="240px" parallax={0.05} />
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "16px" }}>
-                       <GalleryItem src={imgs[1]} height="180px" parallax={0.1} />
-                       <GalleryItem src={imgs[2]} height="180px" parallax={0.15} />
+                    <GalleryItem src={imgs[0]} height="clamp(180px, 25vh, 240px)" parallax={0.05} />
+                    <div className="modal-grid-1-2" style={{ gridTemplateColumns: "1.2fr 1fr" }}>
+                       <GalleryItem src={imgs[1]} height="clamp(140px, 20vh, 180px)" parallax={0.1} />
+                       <GalleryItem src={imgs[2]} height="clamp(140px, 20vh, 180px)" parallax={0.15} />
                     </div>
                   </div>
                 </div>
@@ -1338,12 +1280,12 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
               // 7. K-Shop: "Social Discovery Feed"
               if (cs.slug === "k-shop") return (
-                <div style={{ marginBottom: "4rem" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: "1rem" }}>APP ARCHITECTURE</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", alignItems: "center" }}>
-                    <GalleryItem src={imgs[0]} height="200px" />
-                    <GalleryItem src={imgs[1]} height="260px" style={{ transform: "rotate(-2deg)", zIndex: 2, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }} />
-                    <GalleryItem src={imgs[2]} height="220px" style={{ transform: "rotate(2deg)" }} />
+                <div className="modal-section">
+                  <div className="modal-section-label">APP ARCHITECTURE</div>
+                  <div className="modal-grid-3">
+                    <GalleryItem src={imgs[0]} height="clamp(160px, 20vh, 200px)" />
+                    <GalleryItem src={imgs[1]} height="clamp(220px, 30vh, 260px)" style={{ transform: "rotate(-2deg)", zIndex: 2, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }} />
+                    <GalleryItem src={imgs[2]} height="clamp(180px, 25vh, 220px)" style={{ transform: "rotate(2deg)" }} />
                   </div>
                 </div>
               );
@@ -1354,14 +1296,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
             <motion.div 
               ref={outcomeRef}
-              style={{ marginBottom: "3rem" }}
+              className="modal-section"
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div style={{ fontSize: "10px", color: "#f26522", fontFamily: "var(--font-mono)", marginBottom: "1rem", fontWeight: 600 }}>OUTCOME</div>
-              <p style={{ fontSize: "18px", lineHeight: 1.6, color: "#1a1a1a", fontWeight: 500 }}>
+              <div className="modal-section-label is-outcome">OUTCOME</div>
+              <p className="modal-outcome-text">
                 {cs.outcome}
               </p>
             </motion.div>
@@ -1374,7 +1316,6 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               onMouseEnter={() => setCtaHov(true)}
               onMouseLeave={() => setCtaHov(false)}
-              style={{ marginTop: "2rem" }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 {cs.externalLink && cs.slug !== "tv-ambient" && (
@@ -1420,7 +1361,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     textDecoration: "none",
                   }}
                 >
-                  View My Process & Thinking (Coming Soon)
+                  See the full story (Coming Soon)
                   <span style={{ opacity: 0.5 }}>→</span>
                 </div>
               </div>
@@ -1435,7 +1376,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[1000] flex items-center justify-center p-8 bg-black/90 cursor-zoom-out"
+              className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-8 bg-black/90 cursor-zoom-out"
               onClick={() => setLightboxImg(null)}
             >
               <motion.img

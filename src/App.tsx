@@ -10,7 +10,6 @@ import GalaxyBackground from './components/GalaxyBackground';
 import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LearningSection from './components/LearningSection';
-import IntroIdentity from './components/IntroIdentity';
 import LoadingScreen from './components/LoadingScreen';
 import ReportView from './components/ReportView';
 import CustomCursor from './components/CustomCursor';
@@ -132,14 +131,14 @@ export default function App() {
   const HEADLINES = {
     first_visit: { 
       headline: "Hi, I’m Vhendy — Product Designer & Builder", 
-      subhead: "I don’t just think about products—I build to understand them." 
+      subhead: "I don’t just think about products, I build to understand them." 
     },
     from_about: { 
       headline: "Designing with clarity, building with intent", 
       subhead: "4+ years in product, with marketing and edu background, now leveraging AI." 
     },
     from_presence: { 
-      headline: "From real-world signals, to what gets built.", 
+      headline: "From real-world signals, to what gets built", 
       subhead: "I turn real-world insights into design and scalable product decisions." 
     }
   };
@@ -156,6 +155,15 @@ export default function App() {
   });
 
   const [skipIntro, setSkipIntro] = useState(false);
+
+  const [isFirstVisit] = useState(() => {
+    const visited = sessionStorage.getItem('vhendy_visited');
+    if (!visited) {
+      sessionStorage.setItem('vhendy_visited', 'true');
+      return true;
+    }
+    return false;
+  });
 
   const [isLoading, setIsLoading] = useState(() => {
     const hash = window.location.hash.replace(/^#\/?/, "");
@@ -263,31 +271,95 @@ export default function App() {
     }
   }, [hlId, hasSeenIntro]);
 
-  /* ── Footer ── */
-  const [footerVisible, setFooterVisible] = useState(false);
-  const lastScrollY = useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const rightPanel = document.querySelector('.right-panel');
-    if (!rightPanel) return;
+    const checkMobile = () => setIsMobile(window.innerWidth <= 850);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-    const handleScroll = (e: Event) => {
-      const target = e.target as HTMLElement;
-      const { scrollTop, scrollHeight, clientHeight } = target;
-      const isNearBottom = (scrollTop + clientHeight) >= (scrollHeight * 0.9);
-      const isScrollingDown = scrollTop > lastScrollY.current;
+  /* ── Footer ── */
+  const [footerVisible, setFooterVisible] = useState(false);
 
-      if (isScrollingDown && isNearBottom) {
-        setFooterVisible(true);
-      } else if (scrollTop < lastScrollY.current) {
-        setFooterVisible(false);
+  useEffect(() => {
+    let showTimeout: ReturnType<typeof setTimeout> | null = null;
+    let rafId: number;
+
+    const handleScrollUpdate = () => {
+      // Find the active scroll container
+      // On mobile home, the window itself is the scroll container because portfolio-root height is auto
+      // But on About/Presence/Report, they have their own scroll containers even on mobile
+      const isFixedPage = route.page === 'about' || route.page === 'presence' || route.page === 'report';
+      
+      const container = (isMobile && !isFixedPage) ? document.documentElement : (
+        rightPanelRef.current || 
+        document.querySelector('.page-scroll-container') || 
+        document.querySelector('.report-view')
+      );
+      
+      if (!container) return;
+
+      let scrollTop, scrollHeight, clientHeight;
+      if (isMobile && !isFixedPage) {
+        scrollTop = window.scrollY || document.documentElement.scrollTop;
+        scrollHeight = document.documentElement.scrollHeight;
+        clientHeight = window.innerHeight;
+      } else {
+        ({ scrollTop, scrollHeight, clientHeight } = container as HTMLElement);
       }
-      lastScrollY.current = scrollTop;
+
+      if (scrollHeight === 0) return;
+
+      // Check if we are at the bottom (with buffer for accuracy) or if content is short
+      const isShort = scrollHeight <= clientHeight + 50; // Increased buffer for mobile
+      const distanceToBottom = scrollHeight - clientHeight - scrollTop;
+      const isAtBottom = distanceToBottom <= 100 || isShort; // More generous buffer for mobile
+
+      if (isAtBottom) {
+        if (footerVisible) return;
+        
+        if (!showTimeout) {
+          showTimeout = setTimeout(() => {
+            setFooterVisible(true);
+            showTimeout = null;
+          }, isMobile ? 100 : 1000); // Faster appearance on mobile
+        }
+      } else {
+        if (showTimeout) {
+          clearTimeout(showTimeout);
+          showTimeout = null;
+        }
+        if (footerVisible) {
+          setFooterVisible(false);
+        }
+      }
     };
 
-    rightPanel.addEventListener("scroll", handleScroll, { passive: true });
-    return () => rightPanel.removeEventListener("scroll", handleScroll);
-  }, []);
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(handleScrollUpdate);
+    };
+
+    /**
+     * REQUIREMENT: Consistency across ALL pages
+     * Capture phase allows detecting scroll on internal containers.
+     */
+    window.addEventListener("scroll", handleScroll, true);
+    window.addEventListener("resize", handleScroll);
+
+    // Initial check after layout settles
+    const initTimeout = setTimeout(handleScrollUpdate, 300);
+
+    return () => {
+      if (showTimeout) clearTimeout(showTimeout);
+      clearTimeout(initTimeout);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll, true);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [footerVisible, route.page, activeCS, listVisible]);
 
   /* ── Keyboard Shortcuts ── */
   useEffect(() => {
@@ -326,17 +398,56 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <div className="relative min-h-full">
       <CustomCursor />
+      
+      {(route.page === "about" || route.page === "presence" || route.page === "report") && (
+        <button 
+          className="about-back-btn" 
+          onClick={() => navigate("/")}
+          style={{ 
+            opacity: 1, 
+            transform: "none",
+            /* Overriding any potential inherited animations if we were using framer motion previously */
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Back</span>
+        </button>
+      )}
+
       <AnimatePresence>
-        {isLoading && <LoadingScreen onFinished={() => setIsLoading(false)} />}
+        {isLoading && <LoadingScreen isReload={!isFirstVisit} onFinished={() => setIsLoading(false)} />}
       </AnimatePresence>
 
       <GalaxyBackground />
-      {route.page === "about" ? (
-        <AboutView navigate={navigate} />
+          {route.page === "about" ? (
+        <motion.div
+          key="about"
+          className="page-scroll-container"
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: "fixed", inset: 0, zIndex: 50, overflowY: "auto" }}
+        >
+          <AboutView navigate={navigate} />
+        </motion.div>
       ) : route.page === "presence" ? (
-        <PresenceView navigate={navigate} />
+        <motion.div
+          key="presence"
+          className="page-scroll-container"
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: "fixed", inset: 0, zIndex: 50, overflowY: "auto" }}
+        >
+          <PresenceView navigate={navigate} />
+        </motion.div>
       ) : route.page === "report" ? (
         <ReportView cs={CASE_STUDIES.find(c => c.slug === route.slug) || CASE_STUDIES[0]} navigate={navigate} />
       ) : (
@@ -347,7 +458,7 @@ export default function App() {
               <OrbitalCanvas />
             </div>
             <motion.div 
-              className="left-panel-intro" 
+              className="intro-section" 
               style={{ position: "relative", zIndex: 2 }}
               initial="hidden"
               animate="visible"
@@ -360,24 +471,16 @@ export default function App() {
               }}
             >
               <motion.div 
-                style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "4rem" }}
+                className="status-indicator-wrap"
                 variants={{
                   hidden: { opacity: 0, x: -10 },
                   visible: { opacity: 1, x: 0 }
                 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div style={{ position: "relative", width: "8px", height: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div className="status-dot-container">
                   <motion.div 
-                    style={{ 
-                      position: "absolute",
-                      width: "100%", 
-                      height: "100%", 
-                      borderRadius: "50%", 
-                      background: "#22c55e",
-                      zIndex: 2,
-                      boxShadow: "0 0 8px rgba(34, 197, 94, 0.4)"
-                    }} 
+                    className="status-dot-main" 
                     animate={{
                       opacity: [0.7, 1, 0.7],
                     }}
@@ -388,14 +491,7 @@ export default function App() {
                     }}
                   />
                   <motion.div 
-                    style={{ 
-                      position: "absolute",
-                      width: "100%", 
-                      height: "100%", 
-                      borderRadius: "50%", 
-                      background: "#22c55e",
-                      zIndex: 1
-                    }} 
+                    className="status-dot-pulse" 
                     animate={{ 
                       scale: [1, 2.8],
                       opacity: [0.5, 0]
@@ -407,7 +503,7 @@ export default function App() {
                     }}
                   />
                 </div>
-                <div style={{ minHeight: "14px", display: "flex", alignItems: "center" }}>
+                <div className="status-text-container">
                   <AnimatePresence mode="wait">
                     {!showStatus ? (
                       <motion.span
@@ -415,7 +511,7 @@ export default function App() {
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
-                        style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}
+                        className="status-text status-name"
                       >
                         VHENDY VENDIRA.
                       </motion.span>
@@ -425,7 +521,7 @@ export default function App() {
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
-                        style={{ fontSize: "11px", letterSpacing: "0.05em", color: "#22c55e", fontFamily: "var(--font-mono)", fontWeight: 600 }}
+                        className="status-text status-available"
                       >
                         AVAILABLE FOR NEXT OPPORTUNITY.
                       </motion.span>
@@ -435,20 +531,8 @@ export default function App() {
               </motion.div>
               
               <h1 
+                className="main-headline"
                 onClick={() => { if (shouldType) setSkipIntro(true); }}
-                style={{ 
-                  fontSize: "2.5rem", 
-                  fontWeight: 600, 
-                  lineHeight: 1.1, 
-                  letterSpacing: "-0.04em", 
-                  color: "#1a1a1a", 
-                  marginBottom: "1.5rem",
-                  minHeight: "3.3em", 
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  cursor: shouldType ? "pointer" : "default"
-                }}
               >
                 <div key={hlId} style={{ position: "relative" }}>
                   {shouldType ? (
@@ -471,14 +555,10 @@ export default function App() {
               <AnimatePresence>
                 {subheadVisible && (
                   <motion.p 
+                    className="main-subheadline"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ 
-                      fontSize: "16px", 
-                      lineHeight: 1.6, 
-                      color: "rgba(0,0,0,0.6)", 
-                    }}
                   >
                     {headlineData.subhead}
                   </motion.p>
@@ -486,8 +566,8 @@ export default function App() {
               </AnimatePresence>
             </motion.div>
 
-            <div style={{ position: "relative", zIndex: 2 }}>
-              <nav style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <div className="navigation-section">
+              <nav className="nav-container">
                 {[
                   { label: "Selected Work", path: "home" },
                   { label: "About Story", path: "about" },
@@ -519,7 +599,6 @@ export default function App() {
           {/* RIGHT */}
           <div className="right-panel" ref={rightPanelRef}>
             <div style={{ width: "100%" }}>
-              <IntroIdentity visible={listVisible} />
               
               {/* Header Animates separately */}
               <motion.div 
@@ -590,8 +669,12 @@ export default function App() {
         </div>
       )}
 
-      <div className="year-footer">© 2026</div>
-      <SocialFooter visible={footerVisible} />
-    </>
+      <div className={`year-footer ${route.page !== '/' && route.page !== 'home' && route.page !== 'work' ? 'full-width' : ''} ${isMobile ? 'is-mobile' : ''}`}>© 2026</div>
+      <SocialFooter 
+        visible={footerVisible} 
+        fullWidth={route.page !== '/' && route.page !== 'home' && route.page !== 'work'} 
+        isMobile={isMobile}
+      />
+    </div>
   );
 }

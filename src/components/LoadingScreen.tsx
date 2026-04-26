@@ -7,33 +7,69 @@ const LOG_LINES = [
   "Let’s begin."
 ];
 
-export default function LoadingScreen({ onFinished }: { onFinished: () => void }) {
+export default function LoadingScreen({ onFinished, isReload = false }: { onFinished: () => void, isReload?: boolean }) {
   const [progress, setProgress] = useState(0);
   const [currentLine, setCurrentLine] = useState(0);
 
   useEffect(() => {
+    const speed = isReload ? 40 : 150; // Faster progress for reloads
     const timer = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onFinished, 1200); // Slightly longer pause at the end for "warmth"
+          setTimeout(onFinished, isReload ? 100 : 1200); 
           return 100;
         }
-        // Organic progress steps
-        const step = prev < 30 ? Math.random() * 8 : prev < 70 ? Math.random() * 5 : Math.random() * 15;
+        
+        let step;
+        if (isReload) {
+          step = 10 + Math.random() * 15; // Fast chunky steps
+        } else {
+          step = prev < 30 ? Math.random() * 8 : prev < 70 ? Math.random() * 5 : Math.random() * 15;
+        }
         return prev + step;
       });
-    }, 150); // Slightly slower progress to match slower logs
+    }, speed);
 
     return () => clearInterval(timer);
-  }, [onFinished]);
+  }, [onFinished, isReload]);
 
   useEffect(() => {
+    if (isReload) return;
     const lineTimer = setInterval(() => {
       setCurrentLine(prev => (prev < LOG_LINES.length - 1 ? prev + 1 : prev));
-    }, 1800); // Much slower log transitions
+    }, 1800);
     return () => clearInterval(lineTimer);
-  }, []);
+  }, [isReload]);
+
+  if (isReload) {
+    return (
+      <motion.div
+        initial={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '2px', // Thin top sync bar
+          background: 'rgba(249, 248, 246, 0.9)', 
+          zIndex: 5000,
+          pointerEvents: 'none'
+        }}
+      >
+        <motion.div
+          style={{
+            height: '100%',
+            background: '#f26522',
+            width: `${progress}%`,
+            boxShadow: '0 0 10px rgba(242, 101, 34, 0.3)'
+          }}
+        />
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
