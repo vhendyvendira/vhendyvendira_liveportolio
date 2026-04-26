@@ -4,26 +4,13 @@ import { ArrowLeft } from 'lucide-react';
 import { CaseStudy } from '../types';
 
 // Import specific report contents
-import GothamReport from '../reports/GothamReport';
-import MetaGoReport from '../reports/MetaGoReport';
-import GlanceFitReport from '../reports/GlanceFitReport';
-import PrivyReport from '../reports/PrivyReport';
-import TVResearchReport from '../reports/TVResearchReport';
-import KShopReport from '../reports/KShopReport';
 
 interface ReportViewProps {
   cs: CaseStudy;
   navigate: (path: string) => void;
 }
 
-const REPORT_COMPONENTS: Record<string, React.ComponentType> = {
-  'gotham-risk-intelligence': GothamReport,
-  'metago-coin-film-studio-crypto': MetaGoReport,
-  'glance-fit-digital-health-fitness': GlanceFitReport,
-  'privy-acceleration-program-education': PrivyReport,
-  'is-traditional-tv-still-relevant-in-the-digital-age': TVResearchReport,
-  'k-shop-social-commerce': KShopReport,
-};
+const REPORT_COMPONENTS: Record<string, React.ComponentType> = {};
 
 export default function ReportView({ cs, navigate }: ReportViewProps) {
   const ContentComponent = REPORT_COMPONENTS[cs.slug];

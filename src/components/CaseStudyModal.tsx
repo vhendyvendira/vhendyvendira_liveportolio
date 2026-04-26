@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'mot
 import { Activity, Award, ShoppingBag, RefreshCw, Zap, Users, Target, CheckCircle2, TrendingUp, Cpu, Layout, BarChart3, Coins } from 'lucide-react';
 import { CaseStudy } from '../types';
 import ProgressiveImage from './ProgressiveImage';
+import GothamChallengeMotion from './GothamChallengeMotion';
 
 interface CaseStudyModalProps {
   cs: CaseStudy;
@@ -430,6 +431,10 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               ) : cs.slug === "gotham-risk-intelligence" ? (
                 <>
                   {renderSection("PROBLEM", cs.problem)}
+                  <div className="modal-section" style={{ marginTop: "2rem", marginBottom: "4rem" }}>
+                    <div className="modal-section-label" style={{ marginBottom: "1.5rem" }}>BINARY TO SPECTRUM</div>
+                    <GothamChallengeMotion />
+                  </div>
                   {renderSection("CHALLENGE", cs.challenge)}
                   {renderSection("APPROACH", cs.approach)}
                 </>

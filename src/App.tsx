@@ -535,20 +535,75 @@ export default function App() {
                 onClick={() => { if (shouldType) setSkipIntro(true); }}
               >
                 <div key={hlId} style={{ position: "relative" }}>
-                  {shouldType ? (
-                    <div style={{ transition: "opacity 0.4s ease" }}>
-                      {typedTitle}
-                      <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
-                    </div>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    >
-                      {headlineData.headline}
-                    </motion.div>
-                  )}
+                  {(() => {
+                    const text = headlineData.headline;
+                    const vIndex = text.indexOf("Vhendy");
+                    const vEnd = vIndex + 6; // "Vhendy".length
+
+                    if (shouldType) {
+                      if (vIndex === -1) {
+                        return (
+                          <div style={{ transition: "opacity 0.4s ease" }}>
+                            {typedTitle}
+                            <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div style={{ transition: "opacity 0.4s ease" }}>
+                          {typedTitle.length <= vIndex ? (
+                            typedTitle
+                          ) : (
+                            <>
+                              {text.slice(0, vIndex)}
+                              <motion.span
+                                className="vhendy-span"
+                                animate={titleDone ? {
+                                  filter: ["blur(2px)", "blur(0px)"],
+                                  y: [2, 0],
+                                  opacity: [0.85, 1],
+                                } : {}}
+                                transition={{
+                                  delay: 0.25,
+                                  duration: 0.6,
+                                  ease: [0.16, 1, 0.3, 1]
+                                }}
+                              >
+                                {typedTitle.slice(vIndex, Math.min(typedTitle.length, vEnd))}
+                              </motion.span>
+                              {typedTitle.length > vEnd && typedTitle.slice(vEnd)}
+                            </>
+                          )}
+                          <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
+                        </div>
+                      );
+                    } else {
+                      if (vIndex === -1) {
+                        return (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                          >
+                            {text}
+                          </motion.div>
+                        );
+                      }
+
+                      return (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, ease: "easeOut" }}
+                        >
+                          {text.slice(0, vIndex)}
+                          <span className="vhendy-span">Vhendy</span>
+                          {text.slice(vEnd)}
+                        </motion.div>
+                      );
+                    }
+                  })()}
                 </div>
               </h1>
 

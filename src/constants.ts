@@ -5,7 +5,7 @@ const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").repla
 export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 1, index: "01",
-    title: "Gotham - Risk Intelligence",
+    title: "Gotham - Risk Decipher Intelligence",
     tags: ["Business Model Canvas", "PRD", "MVP"],
     year: "2026", duration: "3 Months", role: "Product Owner", event: "BI-OJK Hackaton x Digdaya 2026",
     description: "A risk intelligence platform that deciphers unsustainable schemes in fintech and investments including suspected Ponzi models and financial fraud risks.",

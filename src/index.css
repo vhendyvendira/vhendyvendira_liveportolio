@@ -70,6 +70,18 @@ body {
   50% { opacity: 0.3; }
 }
 
+.vhendy-span {
+  display: inline-block;
+  cursor: default;
+  transition: letter-spacing 0.4s ease, opacity 0.4s ease;
+  color: #1a1a1a;
+}
+
+.vhendy-span:hover {
+  opacity: 0.8;
+  letter-spacing: 0.01em;
+}
+
 .type-cursor {
   display: inline-block;
   width: 2px;
