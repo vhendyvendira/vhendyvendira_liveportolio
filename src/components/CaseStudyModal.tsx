@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
-import { Activity, Award, ShoppingBag, RefreshCw, Zap, Users, Target, CheckCircle2, TrendingUp, Cpu, Layout, BarChart3, Coins } from 'lucide-react';
+import { Activity, Award, ShoppingBag, RefreshCw, Zap, Users, Target, CheckCircle2, TrendingUp, Cpu, Layout, BarChart3, Coins, Store, Clapperboard, Megaphone } from 'lucide-react';
 import { CaseStudy } from '../types';
 import ProgressiveImage from './ProgressiveImage';
 import GothamChallengeMotion from './GothamChallengeMotion';
@@ -103,6 +103,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
   const renderSection = (label: string, content: string | undefined) => {
     if (!content) return null;
     const isSpecial = label === "OPPORTUNITY" && cs.slug === "metago-coin";
+    const isMetaGo = cs.slug === "metago-coin";
+    
     return (
       <motion.div 
         className="modal-section"
@@ -114,9 +116,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
         <div 
           className={`modal-section-label ${isSpecial ? 'is-special' : ''}`}
           style={{ 
-            color: isSpecial ? "#f26522" : "rgba(0,0,0,0.4)", 
-            fontWeight: isSpecial ? 700 : 600,
-            letterSpacing: isSpecial ? "0.05em" : "normal"
+            color: isMetaGo ? "#8b5cf6" : (isSpecial ? "#f26522" : "rgba(0,0,0,0.4)"), 
+            fontWeight: (isMetaGo || isSpecial) ? 700 : 600
           }}
         >
           {label}
@@ -213,7 +214,12 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="modal-index">{cs.index}</span>
+            <span 
+              className="modal-index"
+              style={cs.slug === "metago-coin" ? { color: "#8b5cf6" } : {}}
+            >
+              {cs.index}
+            </span>
             <div className="modal-meta-divider" />
             <span className="modal-year-small">{cs.year}</span>
           </motion.div>
@@ -282,7 +288,15 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="modal-section-label">CONTEXT</div>
+                <div 
+                  className="modal-section-label"
+                  style={{ 
+                    color: "rgba(0,0,0,0.4)", 
+                    fontWeight: 600
+                  }}
+                >
+                  {cs.slug === "metago-coin" ? "THE PROBLEM WE'RE SOLVING" : "CONTEXT"}
+                </div>
                 <p className="modal-body-text">
                   {renderText(cs.context)}
                 </p>
@@ -949,8 +963,121 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 </>
               ) : cs.slug === "metago-coin" ? (
                 <>
-                  {renderSection("OPPORTUNITY", cs.opportunity)}
-                  {/* Impact Loop Visualization */}
+                  {/* 2. WHAT WE BUILT */}
+                  {renderSection("WHAT WE BUILT", cs.approach)}
+
+                  {/* Cinema Operator Flow Visualization */}
+                  <motion.div 
+                    className="modal-section"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ marginTop: "-2rem" }}
+                  >
+                    <div style={{ fontSize: "14px", fontWeight: 600, color: "rgba(0,0,0,0.4)", marginBottom: "1.5rem" }}>
+                      Think of it like this:
+                    </div>
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", 
+                      gap: "1.25rem" 
+                    }}>
+                      {[
+                        { 
+                          icon: <Store size={20} />, 
+                          label: "01. ACQUIRE", 
+                          title: "Virtual Cinema", 
+                          desc: "Secure a digital cinema asset that serves as your primary production hub." 
+                        },
+                        { 
+                          icon: <Clapperboard size={20} />, 
+                          label: "02. SELECT", 
+                          title: "Film Marketplace", 
+                          desc: "Choose from various production tiers, each with unique earning potentials." 
+                        },
+                        { 
+                          icon: <Megaphone size={20} />, 
+                          label: "03. OPERATE", 
+                          title: "Marketing Push", 
+                          desc: "Execute regular campaigns to maintain visibility and sustain rewards." 
+                        },
+                        { 
+                          icon: <TrendingUp size={20} />, 
+                          label: "04. SCALE", 
+                          title: "MGO Rewards", 
+                          desc: "Generate utility rewards and reinvest them to expand your cinema empire." 
+                        }
+                      ].map((step, idx) => (
+                        <motion.div 
+                          key={idx}
+                          initial="initial"
+                          whileHover="hover"
+                          style={{ 
+                            padding: "1.5rem", 
+                            background: "#fff", 
+                            border: "1px solid rgba(0,0,0,0.06)", 
+                            borderRadius: "20px",
+                            textAlign: "left",
+                            cursor: "pointer",
+                            transition: "border-color 0.2s ease"
+                          }}
+                        >
+                          <div style={{ 
+                            width: "40px", 
+                            height: "40px", 
+                            borderRadius: "12px", 
+                            background: "rgba(139, 92, 246, 0.05)", 
+                            color: "#8b5cf6",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginBottom: "1.5rem"
+                          }}>
+                            {step.icon}
+                          </div>
+                          <div style={{ 
+                            fontSize: "10px", 
+                            fontWeight: 700, 
+                            color: "#8b5cf6", 
+                            marginBottom: "8px",
+                            fontFamily: "var(--font-mono)",
+                            letterSpacing: "0.05em"
+                          }}>
+                            {step.label}
+                          </div>
+                          <div style={{ 
+                            fontSize: "15px", 
+                            fontWeight: 600, 
+                            color: "#1a1a1a", 
+                            marginBottom: "4px"
+                          }}>
+                            {step.title}
+                          </div>
+                          <motion.div 
+                            variants={{
+                              initial: { opacity: 0, height: 0, marginTop: 0 },
+                              hover: { opacity: 1, height: "auto", marginTop: 8 }
+                            }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            style={{ 
+                              fontSize: "13px", 
+                              color: "rgba(0,0,0,0.5)",
+                              lineHeight: 1.5,
+                              overflow: "hidden"
+                            }}
+                          >
+                            {step.desc}
+                          </motion.div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* 3. WHY THIS MATTERS */}
+                  {renderSection("WHY THIS MATTERS", cs.strategy)}
+                  
+                  {/* 4. IMPACT LOOP */}
                   <motion.div 
                     className="modal-section"
                     initial={{ y: 20, opacity: 0 }}
@@ -958,32 +1085,291 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div className="modal-section-label">IMPACT LOOP</div>
-                    <div style={{ padding: "1.25rem", background: "rgba(242, 101, 34, 0.03)", borderRadius: "12px", border: "1px solid rgba(242, 101, 34, 0.1)" }}>
-                      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                    <div 
+                      className="modal-section-label"
+                      style={{ 
+                        color: "#8b5cf6", 
+                        fontWeight: 700
+                      }}
+                    >
+                      IMPACT LOOP
+                    </div>
+                    <div style={{ 
+                      padding: "2rem", 
+                      background: "rgba(139, 92, 246, 0.02)", 
+                      borderRadius: "24px", 
+                      border: "1px solid rgba(139, 92, 246, 0.08)",
+                      position: "relative",
+                      overflow: "hidden"
+                    }}>
+                      <div style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", 
+                        gap: "1.5rem",
+                        position: "relative"
+                      }}>
                         {[
-                          "Hold", "Engage", "Earn", "Reinvest", "Scale Cinemas", "Increase Utility Demand"
-                        ].map((step, idx, arr) => (
-                          <React.Fragment key={step}>
+                          { label: "HOLD", text: "HOLD MGO", detail: "Fuel the ecosystem" },
+                          { label: "ENGAGE", text: "OPERATE + CAMPAIGN", detail: "Active participation" },
+                          { label: "EARN", text: "REAL YIELD", detail: "Ticket & ads revenue" },
+                          { label: "REINVEST", text: "SCALE EMPIRE", detail: "Compound growth" },
+                          { label: "GROW", text: "UTILITY & DEMAND", detail: "Ecosystem maturity" }
+                        ].map((step, idx) => (
+                          <div key={idx} style={{ 
+                            position: "relative",
+                            padding: "1.25rem",
+                            background: "white",
+                            borderRadius: "16px",
+                            boxShadow: "0 4px 12px rgba(139, 92, 246, 0.04)",
+                            border: "1px solid rgba(139, 92, 246, 0.06)",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "4px"
+                          }}>
                             <div style={{ 
-                              padding: "6px 12px", 
-                              background: "white", 
-                              borderRadius: "16px", 
-                              fontSize: "11px", 
-                              fontWeight: 600,
-                              color: "#f26522",
-                              boxShadow: "0 1px 4px rgba(242, 101, 34, 0.05)",
-                              border: "1px solid rgba(242, 101, 34, 0.1)"
-                             }}>
-                              {step}
+                              fontSize: "10px", 
+                              fontWeight: 700, 
+                              color: "#8b5cf6", 
+                              letterSpacing: "0.05em",
+                              fontFamily: "var(--font-mono)",
+                              opacity: 0.6
+                            }}>
+                              STEP 0{idx + 1}
                             </div>
-                            {idx < arr.length - 1 && <span style={{ color: "rgba(242, 101, 34, 0.3)", fontSize: "10px" }}>→</span>}
-                          </React.Fragment>
+                            <div style={{ 
+                              fontSize: "12px", 
+                              fontWeight: 700, 
+                              color: "#1a1a1a",
+                              lineHeight: 1.2
+                            }}>
+                              {step.text}
+                            </div>
+                            <div style={{ 
+                              fontSize: "11px", 
+                              color: "rgba(0,0,0,0.4)",
+                              fontWeight: 500
+                            }}>
+                              {step.detail}
+                            </div>
+                            
+                            {/* Connector Arrow for all but last */}
+                            {idx < 4 && (
+                              <div style={{ 
+                                position: "absolute", 
+                                right: "-1rem", 
+                                top: "50%", 
+                                transform: "translateY(-50%)",
+                                color: "rgba(139, 92, 246, 0.2)",
+                                fontSize: "14px",
+                                zIndex: 1,
+                                display: "none" // Hidden on small grid, logic below would be complex for CSS-only
+                              }}>
+                                →
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Loop back indicator */}
+                      <div style={{ 
+                        marginTop: "1.5rem", 
+                        display: "flex", 
+                        alignItems: "center", 
+                        justifyContent: "center",
+                        gap: "12px",
+                        padding: "12px",
+                        background: "rgba(139, 92, 246, 0.04)",
+                        borderRadius: "12px",
+                        border: "1px dashed rgba(139, 92, 246, 0.2)"
+                      }}>
+                        <span style={{ fontSize: "12px", fontWeight: 600, color: "#8b5cf6" }}>CYCLICAL GROWTH LOOP</span>
+                        <div style={{ 
+                          height: "1px", 
+                          flex: 1, 
+                          background: "linear-gradient(to right, rgba(139, 92, 246, 0.2), transparent)" 
+                        }} />
+                        <span style={{ fontSize: "14px", color: "#8b5cf6", fontWeight: 700 }}>↺</span>
+                      </div>
+                    </div>
+                    <div style={{ 
+                      fontSize: "10px", 
+                      color: "rgba(0,0,0,0.4)", 
+                      marginTop: "12px", 
+                      textAlign: "left",
+                      fontWeight: 500
+                    }}>
+                      More active users → higher MGO demand → stronger ecosystem.
+                    </div>
+                  </motion.div>
+
+                  {/* 5. THE OPPORTUNITY */}
+                  <motion.div 
+                    className="modal-section"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div 
+                      className="modal-section-label"
+                      style={{ 
+                        color: "#8b5cf6", 
+                        fontWeight: 700,
+                        marginBottom: "1.5rem"
+                      }}
+                    >
+                      THE OPPORTUNITY
+                    </div>
+                    <p className="modal-body-text" style={{ marginBottom: "2rem" }}>
+                      We see high FOMO + holding incentives as momentum to convert speculators into active builders within the ecosystem. With the upcoming launch of the Film Tokenization Launchpad, this timing is crucial to:
+                    </p>
+                    
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", 
+                      gap: "1rem" 
+                    }}>
+                      {[
+                        { 
+                          icon: <Users size={18} />, 
+                          title: "Build engaged user base", 
+                          desc: "Convert passive holders into active ecosystem builders from Day 1." 
+                        },
+                        { 
+                          icon: <Activity size={18} />, 
+                          title: "Create organic demand", 
+                          desc: "Drive token utility through real participation rather than just speculation." 
+                        },
+                        { 
+                          icon: <Zap size={18} />, 
+                          title: "Prove real Web3 utility", 
+                          desc: "Demonstrate that entertainment and blockchain can create tangible value." 
+                        }
+                      ].map((card, idx) => (
+                        <div key={idx} style={{ 
+                          padding: "1.25rem", 
+                          background: "rgba(0,0,0,0.02)", 
+                          borderRadius: "16px",
+                          border: "1px solid rgba(0,0,0,0.04)",
+                          display: "flex",
+                          gap: "1rem",
+                          alignItems: "flex-start"
+                        }}>
+                          <div style={{ 
+                            padding: "8px", 
+                            background: "#fff", 
+                            borderRadius: "8px", 
+                            color: "#8b5cf6",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
+                          }}>
+                            {card.icon}
+                          </div>
+                          <div>
+                            <div style={{ 
+                              fontSize: "14px", 
+                              fontWeight: 700, 
+                              color: "#1a1a1a", 
+                              marginBottom: "4px" 
+                            }}>
+                              {card.title}
+                            </div>
+                            <div style={{ 
+                              fontSize: "12px", 
+                              color: "rgba(0,0,0,0.5)",
+                              lineHeight: 1.5
+                            }}>
+                              {card.desc}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* 6. MY ROLE: MAKING COMPLEXITY SIMPLE */}
+                  <motion.div 
+                    className="modal-section"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div 
+                      className="modal-section-label"
+                      style={{ 
+                        color: "#8b5cf6", 
+                        fontWeight: 700,
+                        marginBottom: "1.5rem"
+                      }}
+                    >
+                      MY ROLE: MAKING COMPLEXITY SIMPLE
+                    </div>
+                    <p className="modal-body-text" style={{ marginBottom: "2.5rem" }}>
+                      As a Product Marketing lead, my core challenge was translating complex Web3 concepts into language that is accessible to everyone—especially older, more traditional investors.
+                    </p>
+
+                    <div style={{ marginBottom: "3rem" }}>
+                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "1.25rem", letterSpacing: "0.02em" }}>WHAT I DID</div>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+                        <div style={{ padding: "1.5rem", background: "rgba(0,0,0,0.02)", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.04)" }}>
+                          <div style={{ color: "#8b5cf6", fontWeight: 700, fontSize: "12px", marginBottom: "0.75rem", fontFamily: "var(--font-mono)" }}>MESSAGING FRAMEWORK</div>
+                          <p style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
+                            Developed the <strong>“virtual cinema franchise”</strong> analogy to bridge Web3 jargon with familiar, traditional business mental models.
+                          </p>
+                        </div>
+                        <div style={{ padding: "1.5rem", background: "rgba(0,0,0,0.02)", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.04)" }}>
+                          <div style={{ color: "#8b5cf6", fontWeight: 700, fontSize: "12px", marginBottom: "0.75rem", fontFamily: "var(--font-mono)" }}>VALUE PROPOSITION CLARITY</div>
+                          <ul style={{ padding: 0, margin: 0, listStyle: "none" }}>
+                            {[
+                              "Simplified “tokenized participation” into “your tokens work for you.”",
+                              "Introduced an emotional hook: “from spectator to producer.”",
+                              "Elevated the social layer—where anyone can build a cinema, turning it into a digital asset."
+                            ].map((item, i) => (
+                              <li key={i} style={{ display: "flex", gap: "8px", fontSize: "13px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5, marginBottom: "8px" }}>
+                                <span style={{ color: "#8b5cf6", fontWeight: 700 }}>•</span> {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "2rem", marginBottom: "3.5rem" }}>
+                      <div>
+                        <div style={{ fontSize: "10px", fontWeight: 700, color: "#8b5cf6", marginBottom: "0.75rem", letterSpacing: "0.05em" }}>CORE PROMISE</div>
+                        <p style={{ fontSize: "15px", fontWeight: 600, color: "#1a1a1a", lineHeight: 1.4 }}>
+                          Earn more MGO Coin through shared profits from film screenings and seat ticket sales.
+                        </p>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "10px", fontWeight: 700, color: "#8b5cf6", marginBottom: "0.75rem", letterSpacing: "0.05em" }}>SIMILAR CONCEPTS</div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                          {["Farming", "Livestock / Breeding"].map(tag => (
+                            <span key={tag} style={{ padding: "4px 10px", background: "rgba(139, 92, 246, 0.05)", color: "#8b5cf6", fontSize: "11px", fontWeight: 600, borderRadius: "6px" }}>
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ padding: "2rem", background: "#1a1a1a", borderRadius: "24px", color: "#fff", marginBottom: "0.5rem" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.4)", marginBottom: "1.5rem", letterSpacing: "0.05em" }}>RESULTS I’M DRIVING FOR</div>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.5rem" }}>
+                        {[
+                          { title: "Engagement", text: "Users understand why to participate, not just why to buy." },
+                          { title: "Sustainability", text: "Investors see a sustainable ecosystem, not just a speculative asset." },
+                          { title: "Clarity", text: "Clear differentiation from other Web3 entertainment projects." }
+                        ].map((res, i) => (
+                          <div key={i}>
+                            <div style={{ color: "#8b5cf6", fontWeight: 700, fontSize: "10px", marginBottom: "4px", fontFamily: "var(--font-mono)" }}>{res.title.toUpperCase()}</div>
+                            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>{res.text}</p>
+                          </div>
                         ))}
                       </div>
                     </div>
                   </motion.div>
-                  {renderSection("APPROACH", cs.approach)}
                 </>
               ) : cs.slug === "glance-fit" ? (
                 <>
@@ -1209,242 +1595,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               )}
             </div>
 
-            {/* Gallery — each case study uses a different layout based on cs.id */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-            {cs.gallery && cs.gallery.length === 4 && cs.slug !== "tv-ambient" && (() => {
-              const imgs = cs.gallery;
-              const ph: React.CSSProperties = {
-                borderRadius: "12px",
-                overflow: "hidden",
-                background: "#f0f0f0",
-                position: "relative",
-                cursor: "zoom-in",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
-                border: "1px solid rgba(0,0,0,0.03)"
-              };
 
-              const GalleryItem = ({ src, height, style = {}, parallax = 0.15 }: { src: string, height: string, style?: any, parallax?: number }) => {
-                const [hovered, setHovered] = useState(false);
-                const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -100 * parallax]);
-
-                return (
-                  <div 
-                    className="modal-gallery-item"
-                    style={{ ...style, height: hovered ? height : `calc(${height} * 0.98)` }} 
-                    onMouseEnter={() => setHovered(true)} 
-                    onMouseLeave={() => setHovered(false)}
-                    onClick={() => setLightboxImg(src)}
-                  >
-                    <motion.div
-                      style={{ 
-                        height: "150%", 
-                        width: "100%", 
-                        position: "absolute", 
-                        top: "-25%",
-                        y: parallaxY
-                      }}
-                      animate={{ scale: hovered ? 1.05 : 1 }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <ProgressiveImage src={src} alt="" />
-                    </motion.div>
-                  </div>
-                );
-              };
-
-              // 1. Gotham: "The Investigation"
-              if (cs.slug === "gotham-risk-intelligence") return (
-                <div className="modal-section">
-                  <div className="modal-section-label">THE INVESTIGATION</div>
-                  <div className="modal-grid-1-2">
-                    <GalleryItem src={imgs[0]} height="clamp(300px, 40vh, 480px)" parallax={0.1} />
-                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      <GalleryItem src={imgs[1]} height="clamp(144px, 18vh, 184px)" parallax={0.2} />
-                      <GalleryItem src={imgs[2]} height="clamp(144px, 18vh, 184px)" parallax={0.05} />
-                    </div>
-                  </div>
-                </div>
-              );
-
-              // 2. MetaGo: "Cinematic Premiere"
-              if (cs.slug === "metago-coin") return (
-                <div className="modal-section">
-                  <div className="modal-section-label" style={{ color: "#f26522" }}>STUDIO REEL</div>
-                  <div className="modal-grid-2-1">
-                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      <GalleryItem src={imgs[0]} height="clamp(180px, 20vh, 240px)" parallax={0.08} />
-                      <div className="modal-grid-2x2" style={{ gap: "16px" }}>
-                         <GalleryItem src={imgs[1]} height="clamp(120px, 15vh, 160px)" parallax={0.12} />
-                         <GalleryItem src={imgs[2]} height="clamp(120px, 15vh, 160px)" parallax={0.05} />
-                      </div>
-                    </div>
-                    <GalleryItem src={imgs[3]} height="clamp(300px, 40vh, 416px)" parallax={0.2} />
-                  </div>
-                </div>
-              );
-
-              // 3. Toll Voice: "Zero-Gaze Safety"
-              if (cs.slug === "toll-voice-assistant") return (
-                <div className="modal-section">
-                  <div className="modal-section-label" style={{ color: "#2196f3" }}>VUI INTERACTION</div>
-                  <div className="modal-grid-2x2">
-                    <GalleryItem src={imgs[0]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px" }} />
-                    <div className="modal-offset-item" style={{ marginTop: "clamp(20px, 4vw, 40px)" }}>
-                       <GalleryItem src={imgs[1]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px" }} />
-                    </div>
-                    <GalleryItem src={imgs[2]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px", marginTop: "clamp(-40px, -4vw, -20px)" }} />
-                    <GalleryItem src={imgs[3]} height="clamp(220px, 30vh, 280px)" style={{ borderRadius: "24px" }} />
-                  </div>
-                </div>
-              );
-
-              // 4. Glance Fit: "Mobile Rewards Ecosystem"
-              if (cs.slug === "glance-fit") return (
-                <div className="modal-section">
-                  <div className="modal-section-label" style={{ color: "#4caf50" }}>MOBILE ECOSYSTEM</div>
-                  <div className="modal-grid-4">
-                    <GalleryItem src={imgs[0]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.2} />
-                    <div className="modal-offset-item" style={{ marginTop: "clamp(12px, 2vw, 24px)" }}>
-                      <GalleryItem src={imgs[1]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.1} />
-                    </div>
-                    <div className="modal-offset-item" style={{ marginTop: "clamp(24px, 4vw, 48px)" }}>
-                      <GalleryItem src={imgs[2]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.15} />
-                    </div>
-                    <div className="modal-offset-item" style={{ marginTop: "clamp(36px, 6vw, 72px)" }}>
-                      <GalleryItem src={imgs[3]} height="clamp(240px, 35vh, 320px)" style={{ borderRadius: "20px" }} parallax={0.05} />
-                    </div>
-                  </div>
-                </div>
-              );
-
-              // 5. Privy: "Operational Scale"
-              if (cs.slug === "privy-acceleration") return (
-                <div className="modal-section" style={{ gap: "2.5rem" }}>
-                  <div>
-                    <div className="modal-section-label" style={{ color: "#df0317" }}>PROCESS ARCHIVE</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }}>
-                       {/* Left Column */}
-                       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                         {[imgs[0], imgs[2]].map((src, i) => src && (
-                           <motion.div 
-                             key={`l-${i}`}
-                             style={{ 
-                               borderRadius: "16px", 
-                               overflow: "hidden", 
-                               cursor: "zoom-in",
-                               boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
-                               border: "1px solid rgba(0,0,0,0.04)",
-                               background: "#f9f8f6",
-                               height: "fit-content"
-                             }}
-                             whileHover={{ scale: 1.01, boxShadow: "0 20px 50px rgba(0,0,0,0.12)" }}
-                             onClick={() => setLightboxImg(src)}
-                           >
-                             <ProgressiveImage 
-                               src={src} 
-                               alt="Gallery" 
-                               aspectRatio="4/3"
-                             />
-                           </motion.div>
-                         ))}
-                       </div>
-                       {/* Right Column with Offset */}
-                       <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginTop: "48px" }}>
-                         {[imgs[1], imgs[3]].map((src, i) => src && (
-                           <motion.div 
-                             key={`r-${i}`}
-                             style={{ 
-                               borderRadius: "16px", 
-                               overflow: "hidden", 
-                               cursor: "zoom-in",
-                               boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
-                               border: "1px solid rgba(0,0,0,0.04)",
-                               background: "#f9f8f6",
-                               height: "fit-content"
-                             }}
-                             whileHover={{ scale: 1.01, boxShadow: "0 20px 50px rgba(0,0,0,0.12)" }}
-                             onClick={() => setLightboxImg(src)}
-                           >
-                             <ProgressiveImage 
-                               src={src} 
-                               alt="Gallery" 
-                               aspectRatio="4/3"
-                             />
-                           </motion.div>
-                         ))}
-                       </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="modal-section-label" style={{ color: "#df0317" }}>PHOTO CREDITS</div>
-                    <div className="modal-grid-2x2" style={{ gap: "20px", alignItems: "start" }}>
-                       {[
-                         { src: "/about-images/privy-case-study-image/acc-commitee-team.png", label: "Acceleration Committee" },
-                         { src: "/about-images/privy-case-study-image/privy-hr-team.jpeg", label: "Privy HR Team" }
-                       ].map((item, i) => (
-                         <div key={i} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                           <motion.div 
-                             style={{ 
-                               borderRadius: "12px", 
-                               overflow: "hidden", 
-                               cursor: "zoom-in",
-                               boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
-                               border: "1px solid rgba(0,0,0,0.02)",
-                               background: "#f9f8f6",
-                               height: "fit-content"
-                             }}
-                             whileHover={{ scale: 1.01 }}
-                             onClick={() => setLightboxImg(item.src)}
-                           >
-                             <ProgressiveImage 
-                               src={item.src} 
-                               alt={item.label} 
-                               aspectRatio="16/9"
-                             />
-                           </motion.div>
-                           <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textAlign: "center", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</div>
-                         </div>
-                       ))}
-                    </div>
-                  </div>
-                </div>
-              );
-
-              // 6. TV Ambient: "The Screen Experience"
-              if (cs.slug === "tv-ambient") return (
-                <div className="modal-section">
-                  <div className="modal-section-label">RESEARCH ARTIFACTS</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                    <GalleryItem src={imgs[0]} height="clamp(180px, 25vh, 240px)" parallax={0.05} />
-                    <div className="modal-grid-1-2" style={{ gridTemplateColumns: "1.2fr 1fr" }}>
-                       <GalleryItem src={imgs[1]} height="clamp(140px, 20vh, 180px)" parallax={0.1} />
-                       <GalleryItem src={imgs[2]} height="clamp(140px, 20vh, 180px)" parallax={0.15} />
-                    </div>
-                  </div>
-                </div>
-              );
-
-              // 7. K-Shop: "Social Discovery Feed"
-              if (cs.slug === "k-shop") return (
-                <div className="modal-section">
-                  <div className="modal-section-label">APP ARCHITECTURE</div>
-                  <div className="modal-grid-3">
-                    <GalleryItem src={imgs[0]} height="clamp(160px, 20vh, 200px)" />
-                    <GalleryItem src={imgs[1]} height="clamp(220px, 30vh, 260px)" style={{ transform: "rotate(-2deg)", zIndex: 2, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }} />
-                    <GalleryItem src={imgs[2]} height="clamp(180px, 25vh, 220px)" style={{ transform: "rotate(2deg)" }} />
-                  </div>
-                </div>
-              );
-
-              return null;
-            })()}
-            </motion.div>
 
             <motion.div 
               ref={outcomeRef}

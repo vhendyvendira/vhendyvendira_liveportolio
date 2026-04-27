@@ -130,7 +130,7 @@ export default function App() {
 
   const HEADLINE_DATA = { 
     headline: "Hi, I’m Vhendy — Product Designer & Builder", 
-    subhead: "I don’t just think about products, I build to understand them." 
+    subhead: "I don’t just think about products — I build and ship to understand them" 
   };
 
   const [hasSeenIntro, setHasSeenIntro] = useState(() => {
