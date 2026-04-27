@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import ProgressiveImage from './ProgressiveImage';
+import MusicPlayer from './MusicPlayer';
+import WorldClock from './WorldClock';
+import RunningActivity from './RunningActivity';
+import ReadingActivity from './ReadingActivity';
+import LanguageActivity from './LanguageActivity';
+import GardeningActivity from './GardeningActivity';
 
 interface SemanticTermProps {
   term: string;
@@ -127,7 +133,18 @@ export default function AboutView({ navigate }: AboutViewProps) {
   ];
 
   return (
-    <div className="about-full-container" ref={containerRef}>
+    <div 
+      className="about-full-container" 
+      ref={containerRef}
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px)
+        `,
+        backgroundSize: '120px 120px',
+        position: 'relative'
+      }}
+    >
       <div className="about-content">
         <div className="about-page">
           {/* Header */}
@@ -364,6 +381,12 @@ export default function AboutView({ navigate }: AboutViewProps) {
           </div>
         </div>
       </div>
+      <MusicPlayer />
+      <WorldClock />
+      <RunningActivity />
+      <ReadingActivity />
+      <LanguageActivity />
+      <GardeningActivity />
     </div>
   );
 }

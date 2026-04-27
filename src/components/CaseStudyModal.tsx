@@ -35,14 +35,22 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
   const heroY = useTransform(scrollYProgress, [0, 0.3], [0, 40]);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const handleEsc = (e: KeyboardEvent) => { 
+      if (e.key === "Escape") {
+        if (lightboxImg) {
+          setLightboxImg(null);
+        } else {
+          onClose();
+        }
+      }
+    };
     window.addEventListener("keydown", handleEsc);
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", handleEsc);
       document.body.style.overflow = "auto";
     };
-  }, [onClose]);
+  }, [onClose, lightboxImg]);
 
   // Calculate mask progress
   const maskString = (scrolledToBottom && ctaHov)
@@ -309,7 +317,13 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
               {/* Order and Labels for specific projects */}
               {cs.slug === "k-shop" ? (
-                <div style={{ maxWidth: "100%", padding: 0 }}>
+                <div style={{ 
+                  display: "flex", 
+                  flexDirection: "column", 
+                  gap: "clamp(3rem, 8vw, 5rem)",
+                  padding: "0 0 2rem"
+                }}>
+                  {/* The Problems */}
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
@@ -318,20 +332,28 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     className="modal-section"
                   >
                     <h2 className="modal-section-title">The problems we wanted to solve</h2>
-                    <div style={{ display: "grid", gap: "16px" }}>
+                    <div style={{ display: "grid", gap: "20px" }}>
                       {[
                         { title: "The lonely shopper", color: "#378ADD", desc: "E-commerce had stripped shopping of its social context. Discovery happened on Instagram, but transactions happened in isolated marketplace experiences." },
                         { title: "Conversion friction", color: "#1D9E75", desc: "The \"link in bio\" flow killed impulse purchases. Every click between inspiration and checkout meant losing 60%+ of potential buyers." },
                         { title: "Trust gap", color: "#D85A30", desc: "Anonymous marketplace reviews felt sketchy. Users trusted recommendations from friends and creators they followed—not 5-star ratings from strangers." }
                       ].map(p => (
-                        <div key={p.title} style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem", borderLeft: `3px solid ${p.color}` }}>
-                          <div className="modal-h3">{p.title}</div>
-                          <div className="modal-body-small">{p.desc}</div>
+                        <div key={p.title} style={{ 
+                          background: "#ffffff", 
+                          border: "1px solid rgba(0,0,0,0.04)", 
+                          borderRadius: "16px", 
+                          padding: "1.5rem", 
+                          borderLeft: `3px solid ${p.color}`,
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.02)"
+                        }}>
+                          <div className="modal-h3" style={{ fontSize: "16px", marginBottom: "6px" }}>{p.title}</div>
+                          <div className="modal-body-small" style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)" }}>{p.desc}</div>
                         </div>
                       ))}
                     </div>
                   </motion.div>
 
+                  {/* The Real Challenge */}
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
@@ -340,15 +362,32 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     className="modal-section"
                   >
                     <h2 className="modal-section-title">The real challenge wasn't design</h2>
-                    <p className="modal-body-text" style={{ color: "#1a1a1a", margin: "0 0 1.5rem" }}>It was defining the right boundaries between ambition and execution capacity.</p>
-                    <div style={{ background: "rgba(0,0,0,0.03)", borderRadius: "16px", padding: "1.5rem", marginBottom: "1.5rem" }}>
-                      <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#1a1a1a", margin: 0, fontStyle: "italic" }}>
-                        "I led product definition with a big vision: social feeds, creator profile, community features, and full e-commerce—all at once. On paper, it made sense. In reality, I had junior engineers, limited runway, and lack-of experience. The trade-off I kept facing: how big is enough to convince users, but small enough to actually ship?"
+                    <p className="modal-body-text" style={{ color: "#1a1a1a", marginBottom: "1.5rem" }}>
+                      It was defining the right boundaries between **ambition and execution capacity**.
+                    </p>
+                    <div style={{ 
+                      background: "rgba(0,0,0,0.02)", 
+                      borderRadius: "20px", 
+                      padding: "2rem", 
+                      border: "1px solid rgba(0,0,0,0.03)",
+                      position: "relative"
+                    }}>
+                      <p style={{ 
+                        fontSize: "16px", 
+                        lineHeight: 1.8, 
+                        color: "#1a1a1a", 
+                        margin: 0, 
+                        fontStyle: "italic"
+                      }}>
+                        "I led product definition with a big vision: social feeds, creator profile, community features, and full e-commerce—all at once. In reality, I had junior engineers, limited runway, and lack-of experience. The trade-off I kept facing: how big is enough to convince users, but small enough to actually ship?"
                       </p>
                     </div>
-                    <p style={{ fontSize: "16px", lineHeight: 1.7, color: "#1a1a1a", margin: 0 }}>Honestly—I failed to answer that question well in the first iteration.</p>
+                    <p style={{ fontSize: "15px", fontWeight: 500, color: "rgba(0,0,0,0.4)", marginTop: "1.25rem", textAlign: "left" }}>
+                      Honestly—I failed to answer that question well in the first iteration.
+                    </p>
                   </motion.div>
 
+                  {/* Three Pivots */}
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
@@ -357,45 +396,59 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     className="modal-section"
                   >
                     <h2 className="modal-section-title">The journey through three pivots</h2>
-                    <div className="modal-timeline-container">
-                      <div className="modal-timeline-line" />
+                    <div className="modal-timeline-container" style={{ marginTop: "1rem" }}>
+                      <div className="modal-timeline-line" style={{ left: "7px" }} />
                       {[
                         { 
                           title: "Iteration 1 — Too broad, too slow", 
                           color: "#ef4444", 
-                          status: "Failed: Performance & scope",
+                          status: "FAILED: PERFORMANCE & SCOPE",
                           desc: "Built with WebView for cross-platform speed. Result: janky performance, slow scrolling, frustrated users. Classic mistake: designed a visually lovable product that wasn't technically viable." 
                         },
                         { 
                           title: "Iteration 2 — Niche focus, wrong tech", 
                           color: "#f59e0b", 
-                          status: "Failed: Tech decision & timeline",
-                          desc: "Pivoted to beauty & skincare (strong market fit). Chose Flutter for modern tech. Problem: team didn't know Flutter. 5-8 months wasted on learning curve. Mistake: chose tech stack based on aspiration, not team capability." 
+                          status: "FAILED: TECH LEARNING CURVE",
+                          desc: "Pivoted to beauty & skincare (strong market fit). Chose Flutter for modern tech. Problem: team didn't know Flutter. Months wasted on learning curve. Mistake: chose tech stack based on aspiration, not team capability." 
                         },
                         { 
                           title: "Iteration 3 — Compress, ship, prove", 
                           color: "#10b981", 
-                          status: "Shipped successfully",
-                          desc: "Cut all social features pure ecommerce. Switched to React Native (team knew it). Added 1 senior engineer as architect. Shipped in 3 months. But the runway ended—stakeholders decided not to continue because there was no traction." 
+                          status: "SHIPPED & COMPLETED",
+                          desc: "Cut all social features, focused on pure e-commerce. Switched to React Native (team knew it). Shipped in 3 months. But the runway ended—stakeholders decided not to continue because there was no traction." 
                         }
                       ].map((p, i) => (
-                        <div key={i} className="modal-timeline-item" style={{ marginBottom: i === 2 ? "0" : "2rem" }}>
-                          <div className="modal-timeline-dot" style={{ color: p.color }} />
-                          <div style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem" }}>
-                            <div className="modal-h3">{p.title}</div>
-                            <div className="modal-body-small" style={{ marginBottom: "12px" }}>{p.desc}</div>
-                            <div style={{ display: "inline-block", background: `${p.color}15`, color: p.color, padding: "3px 8px", borderRadius: "8px", fontSize: "12px" }}>{p.status}</div>
+                        <div key={i} className="modal-timeline-item" style={{ marginBottom: i === 2 ? "0" : "3rem", paddingLeft: "1.5rem" }}>
+                          <div className="modal-timeline-dot" style={{ left: "-27px", width: "14px", height: "14px", borderColor: p.color }} />
+                          <div style={{ 
+                            background: "#ffffff", 
+                            border: "1px solid rgba(0,0,0,0.04)", 
+                            borderRadius: "16px", 
+                            padding: "1.5rem",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.02)"
+                          }}>
+                            <div style={{ 
+                              display: "inline-block", 
+                              background: `${p.color}10`, 
+                              color: p.color, 
+                              padding: "4px 10px", 
+                              borderRadius: "6px", 
+                              fontSize: "10px",
+                              fontWeight: 700,
+                              letterSpacing: "0.05em",
+                              marginBottom: "12px"
+                            }}>
+                              {p.status}
+                            </div>
+                            <div className="modal-h3" style={{ fontSize: "17px", marginBottom: "8px" }}>{p.title}</div>
+                            <div className="modal-body-small" style={{ fontSize: "14px", lineHeight: 1.7 }}>{p.desc}</div>
                           </div>
                         </div>
                       ))}
                     </div>
                   </motion.div>
 
-
-
-
-
-
+                  {/* Takeaways */}
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
@@ -404,30 +457,43 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     className="modal-section"
                   >
                     <h2 className="modal-section-title">What I took away</h2>
-                    <p className="modal-body-text" style={{ color: "#1a1a1a", margin: "0 0 1.5rem" }}>K-Shop didn't fail because of the idea—it failed because of execution and priorities. Here's what I won't repeat:</p>
-                    <div style={{ display: "grid", gap: "16px" }}>
+                    <p className="modal-body-text" style={{ color: "rgba(0,0,0,0.6)", marginBottom: "2rem" }}>
+                      K-Shop didn't fail because of the idea—it failed because of execution and priorities. Here's what I won't repeat:
+                    </p>
+                    <div style={{ display: "grid", gap: "20px" }}>
                       {[
                         { title: "MVP means proving viability, not showcasing vision", desc: "Every feature should answer: \"Is this needed to prove the product is worth building?\" Not: \"Will this make the product look impressive?\" I designed for ego, not validation." },
                         { title: "Choose tech based on team capacity, not industry trends", desc: "Pragmatic ≠ boring. It means being honest about what your team can deliver. 8 months wasted on Flutter taught me that aspiration without capability is just hubris." },
                         { title: "GTM is as important as product quality", desc: "Building a great product without a distribution strategy is an expensive hobby, not a business. I spent 100% on product, 0% on go-to-market. That was fatal." },
                         { title: "Research should drive ruthless prioritization", desc: "I created personas from research but didn't use them to make hard trade-offs. Personas are decision tools, not decoration. They should help you say \"no\" consistently." }
                       ].map(l => (
-                        <div key={l.title} style={{ background: "#ffffff", border: "0.5px solid rgba(0,0,0,0.05)", borderRadius: "16px", padding: "1.25rem" }}>
-                          <div style={{ fontWeight: 500, fontSize: "15px", marginBottom: "8px", color: "#1a1a1a" }}>{l.title}</div>
-                          <div style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.5)" }}>{l.desc}</div>
+                        <div key={l.title} style={{ 
+                          background: "#ffffff", 
+                          border: "1px solid rgba(0,0,0,0.04)", 
+                          borderRadius: "16px", 
+                          padding: "1.5rem",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.02)"
+                        }}>
+                          <div style={{ fontWeight: 600, fontSize: "16px", marginBottom: "10px", color: "#1a1a1a" }}>{l.title}</div>
+                          <div style={{ fontSize: "14px", lineHeight: 1.7, color: "rgba(0,0,0,0.5)" }}>{l.desc}</div>
                         </div>
                       ))}
                     </div>
                   </motion.div>
 
-
-                  <div style={{ background: "#ffffff", borderLeft: "3px solid #2196f3", padding: "1.5rem", marginBottom: "2rem" }}>
-                    <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#1a1a1a", margin: 0, fontStyle: "italic" }}>
+                  <div style={{ 
+                    background: "#ffffff", 
+                    borderLeft: "4px solid #f26522", 
+                    padding: "2.5rem", 
+                    borderRadius: "0 20px 20px 0",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.03)",
+                    marginTop: "1rem"
+                  }}>
+                    <p style={{ fontSize: "17px", lineHeight: 1.8, color: "#1a1a1a", margin: 0, fontStyle: "italic", fontWeight: 400 }}>
                       "At the time, I was a designer who fell too in love with solutions before fully understanding the problem. K-Shop taught me to ask more questions, validate faster, and cut more ruthlessly—even when what I'm cutting is the idea I liked most."
                     </p>
                   </div>
-
-                  </div>
+                </div>
               ) : cs.slug === "gotham-risk-intelligence" ? (
                 <>
                   {renderSection("PROBLEM", cs.problem)}
@@ -466,7 +532,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         "Inconsistent evaluation and promotion decisions"
                       ].map((item, idx) => (
                         <li key={idx} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }} className="modal-body-small">
-                          <span style={{ color: "#a855f7", fontWeight: 700 }}>—</span>
+                          <span style={{ color: "#df0317", fontWeight: 700 }}>—</span>
                           {item}
                         </li>
                       ))}
@@ -497,7 +563,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         }
                       ].map((intent, i) => (
                         <div key={intent.title} style={{ maxWidth: "500px" }}>
-                          <div className="modal-section-label" style={{ color: "#a855f7", marginBottom: "4px" }}>0{i+1}. {intent.title}</div>
+                          <div className="modal-section-label" style={{ color: "#df0317", marginBottom: "4px" }}>0{i+1}. {intent.title}</div>
                           <div className="modal-body-small">{intent.desc}</div>
                         </div>
                       ))}
@@ -560,15 +626,15 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     <div style={{ display: "flex", gap: "clamp(1.5rem, 4vw, 3rem)", flexWrap: "wrap" }}>
                       <div>
                         <div className="modal-stat-label">Participants</div>
-                        <div className="modal-stat-value" style={{ color: "#a855f7" }}>250+</div>
+                        <div className="modal-stat-value" style={{ color: "#df0317" }}>250+</div>
                       </div>
                       <div>
                         <div className="modal-stat-label">Mentors</div>
-                        <div className="modal-stat-value" style={{ color: "#a855f7" }}>30+</div>
+                        <div className="modal-stat-value" style={{ color: "#df0317" }}>30+</div>
                       </div>
                       <div>
                         <div className="modal-stat-label">Locations</div>
-                        <div className="modal-stat-value" style={{ color: "#a855f7" }}>4 <span className="modal-body-small" style={{ fontWeight: 600, color: "rgba(0,0,0,0.3)" }}>in Jogjakarta</span></div>
+                        <div className="modal-stat-value" style={{ color: "#df0317" }}>4 <span className="modal-body-small" style={{ fontWeight: 600, color: "rgba(0,0,0,0.3)" }}>in Jogjakarta</span></div>
                       </div>
                     </div>
                     <div className="modal-section-label" style={{ marginBottom: "1rem" }}>CLASS PER TRACK</div>
@@ -646,7 +712,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         "Align development outcomes with organizational needs"
                       ].map((impact, i) => (
                         <div key={i} style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                          <div style={{ fontSize: "12px", color: "#a855f7", fontWeight: 800 }}>✓</div>
+                          <div style={{ fontSize: "12px", color: "#df0317", fontWeight: 800 }}>✓</div>
                           <div className="modal-h3" style={{ margin: 0 }}>{impact}</div>
                         </div>
                       ))}
@@ -1258,13 +1324,94 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
               // 5. Privy: "Operational Scale"
               if (cs.slug === "privy-acceleration") return (
-                <div className="modal-section">
-                  <div className="modal-section-label" style={{ color: "#a855f7" }}>PROCESS ARCHIVE</div>
-                  <div className="modal-grid-2x2" style={{ gap: "12px" }}>
-                     <GalleryItem src={imgs[0]} height="clamp(160px, 20vh, 200px)" />
-                     <GalleryItem src={imgs[1]} height="clamp(160px, 20vh, 200px)" />
-                     <GalleryItem src={imgs[2]} height="clamp(160px, 20vh, 200px)" />
-                     <GalleryItem src={imgs[3]} height="clamp(160px, 20vh, 200px)" />
+                <div className="modal-section" style={{ gap: "2.5rem" }}>
+                  <div>
+                    <div className="modal-section-label" style={{ color: "#df0317" }}>PROCESS ARCHIVE</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }}>
+                       {/* Left Column */}
+                       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                         {[imgs[0], imgs[2]].map((src, i) => src && (
+                           <motion.div 
+                             key={`l-${i}`}
+                             style={{ 
+                               borderRadius: "16px", 
+                               overflow: "hidden", 
+                               cursor: "zoom-in",
+                               boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+                               border: "1px solid rgba(0,0,0,0.04)",
+                               background: "#f9f8f6",
+                               height: "fit-content"
+                             }}
+                             whileHover={{ scale: 1.01, boxShadow: "0 20px 50px rgba(0,0,0,0.12)" }}
+                             onClick={() => setLightboxImg(src)}
+                           >
+                             <ProgressiveImage 
+                               src={src} 
+                               alt="Gallery" 
+                               aspectRatio="4/3"
+                             />
+                           </motion.div>
+                         ))}
+                       </div>
+                       {/* Right Column with Offset */}
+                       <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginTop: "48px" }}>
+                         {[imgs[1], imgs[3]].map((src, i) => src && (
+                           <motion.div 
+                             key={`r-${i}`}
+                             style={{ 
+                               borderRadius: "16px", 
+                               overflow: "hidden", 
+                               cursor: "zoom-in",
+                               boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+                               border: "1px solid rgba(0,0,0,0.04)",
+                               background: "#f9f8f6",
+                               height: "fit-content"
+                             }}
+                             whileHover={{ scale: 1.01, boxShadow: "0 20px 50px rgba(0,0,0,0.12)" }}
+                             onClick={() => setLightboxImg(src)}
+                           >
+                             <ProgressiveImage 
+                               src={src} 
+                               alt="Gallery" 
+                               aspectRatio="4/3"
+                             />
+                           </motion.div>
+                         ))}
+                       </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="modal-section-label" style={{ color: "#df0317" }}>PHOTO CREDITS</div>
+                    <div className="modal-grid-2x2" style={{ gap: "20px", alignItems: "start" }}>
+                       {[
+                         { src: "/about-images/privy-case-study-image/acc-commitee-team.png", label: "Acceleration Committee" },
+                         { src: "/about-images/privy-case-study-image/privy-hr-team.jpeg", label: "Privy HR Team" }
+                       ].map((item, i) => (
+                         <div key={i} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                           <motion.div 
+                             style={{ 
+                               borderRadius: "12px", 
+                               overflow: "hidden", 
+                               cursor: "zoom-in",
+                               boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
+                               border: "1px solid rgba(0,0,0,0.02)",
+                               background: "#f9f8f6",
+                               height: "fit-content"
+                             }}
+                             whileHover={{ scale: 1.01 }}
+                             onClick={() => setLightboxImg(item.src)}
+                           >
+                             <ProgressiveImage 
+                               src={item.src} 
+                               alt={item.label} 
+                               aspectRatio="16/9"
+                             />
+                           </motion.div>
+                           <div style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)", fontWeight: 700, textAlign: "center", textTransform: "uppercase", letterSpacing: "0.1em" }}>{item.label}</div>
+                         </div>
+                       ))}
+                    </div>
                   </div>
                 </div>
               );
@@ -1373,34 +1520,60 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             </motion.div>
           </div>
         </div>
-
-        {/* Lightbox Overlay */}
-        <AnimatePresence>
-          {lightboxImg && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-8 bg-black/90 cursor-zoom-out"
-              onClick={() => setLightboxImg(null)}
-            >
-              <motion.img
-                src={lightboxImg}
-                alt="Enlarged gallery view"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "8px" }}
-                onClick={(e) => e.stopPropagation()}
-              />
-              <button 
-                onClick={() => setLightboxImg(null)}
-                style={{ position: "absolute", top: "2rem", right: "2rem", color: "white", fontSize: "2rem" }}
-              >✕</button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.div>
+
+      {/* Lightbox Overlay - Moved outside modal-panel for true top-level position */}
+      <AnimatePresence>
+        {lightboxImg && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[2000] flex items-center justify-center p-4 sm:p-20 bg-black/95 cursor-zoom-out"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxImg(null);
+            }}
+          >
+            {/* Close instruction label */}
+            <div className="absolute top-8 left-1/2 -translate-x-1/2 text-white/40 text-[10px] font-bold tracking-[0.2em] uppercase pointer-events-none">
+              Click anywhere to dismiss
+            </div>
+
+            <motion.div 
+              className="relative max-w-full max-h-full flex items-center justify-center"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={lightboxImg}
+                alt="Enlarged view"
+                style={{ 
+                  maxWidth: "100%", 
+                  maxHeight: "90vh", 
+                  borderRadius: "12px",
+                  boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
+                  display: "block"
+                }}
+              />
+              
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxImg(null);
+                }}
+                className="absolute -top-4 -right-4 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 border border-black/5"
+                aria-label="Close image preview"
+              >
+                <div style={{ transform: "scale(1.2)" }}>✕</div>
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

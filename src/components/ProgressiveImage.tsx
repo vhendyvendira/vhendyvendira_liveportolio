@@ -83,9 +83,15 @@ export default function ProgressiveImage({ src, alt, className, style, imgStyle,
             alt={alt}
             referrerPolicy="no-referrer"
             onLoad={() => setHighResLoaded(true)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: highResLoaded ? 1 : 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, filter: "blur(20px)" }}
+            animate={{ 
+              opacity: highResLoaded ? 1 : 0,
+              filter: highResLoaded ? "blur(0px)" : "blur(20px)"
+            }}
+            transition={{ 
+              opacity: { duration: 0.8 },
+              filter: { duration: 1.2, ease: "easeOut" }
+            }}
             style={{
               position: "absolute",
               inset: 0,

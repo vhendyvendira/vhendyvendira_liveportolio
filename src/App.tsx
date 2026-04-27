@@ -128,27 +128,10 @@ export default function App() {
   const { route, navigate } = useHashRouter();
   const activeCS = route.page === "work" ? CASE_STUDIES.find(c => c.slug === route.slug) : null;
 
-  const HEADLINES = {
-    first_visit: { 
-      headline: "Hi, I’m Vhendy — Product Designer & Builder", 
-      subhead: "I don’t just think about products, I build to understand them." 
-    },
-    from_about: { 
-      headline: "Designing with clarity, building with intent", 
-      subhead: "4+ years in product, with marketing and edu background, now leveraging AI." 
-    },
-    from_presence: { 
-      headline: "From real-world signals, to what gets built", 
-      subhead: "I turn real-world insights into design and scalable product decisions." 
-    }
+  const HEADLINE_DATA = { 
+    headline: "Hi, I’m Vhendy — Product Designer & Builder", 
+    subhead: "I don’t just think about products, I build to understand them." 
   };
-
-  const [hlId, setHlId] = useState<keyof typeof HEADLINES>(() => {
-    const src = sessionStorage.getItem('navSource');
-    if (src === 'about') return 'from_about';
-    if (src === 'presence') return 'from_presence';
-    return 'first_visit';
-  });
 
   const [hasSeenIntro, setHasSeenIntro] = useState(() => {
     return sessionStorage.getItem('hasSeenIntroAnimation') === 'true';
@@ -211,23 +194,15 @@ export default function App() {
     if (route.page === 'report') sessionStorage.setItem('navSource', 'report');
     
     if (route.page === 'home') {
-      const src = sessionStorage.getItem('navSource');
-      if (src) {
-        if (src === 'about') setHlId('from_about');
-        else if (src === 'presence') setHlId('from_presence');
-        // If returning from report, we might want a different headline or just skip delay
-        sessionStorage.removeItem('navSource');
-      }
+      sessionStorage.removeItem('navSource');
     }
   }, [route.page]);
 
-  const headlineData = HEADLINES[hlId];
-
   // Logic: Typewriter only for first_visit IF intro not seen yet and not skipped
-  const shouldType = hlId === 'first_visit' && !hasSeenIntro && !skipIntro;
+  const shouldType = !hasSeenIntro && !skipIntro;
 
   const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(
-    headlineData.headline, 
+    HEADLINE_DATA.headline, 
     !isLoading && shouldType
   );
 
@@ -269,7 +244,7 @@ export default function App() {
       setListVisible(false);
       setSubheadVisible(false);
     }
-  }, [hlId, hasSeenIntro]);
+  }, [hasSeenIntro]);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -386,12 +361,12 @@ export default function App() {
 
   /* ── Home Layout State ── */
 
-  const [showStatus, setShowStatus] = useState(false);
+  const [cycleIndex, setCycleIndex] = useState(0);
 
   useEffect(() => {
-    // Show status after 20s, then return to name after another 20s, repeating.
+    // Cycle between 3 different statuses every 20 seconds.
     const interval = setInterval(() => {
-      setShowStatus(current => !current);
+      setCycleIndex(prev => (prev + 1) % 3);
     }, 20000); 
 
     return () => clearInterval(interval);
@@ -505,7 +480,7 @@ export default function App() {
                 </div>
                 <div className="status-text-container">
                   <AnimatePresence mode="wait">
-                    {!showStatus ? (
+                    {cycleIndex === 0 ? (
                       <motion.span
                         key="name"
                         initial={{ opacity: 0, y: 5 }}
@@ -515,7 +490,7 @@ export default function App() {
                       >
                         VHENDY VENDIRA.
                       </motion.span>
-                    ) : (
+                    ) : cycleIndex === 1 ? (
                       <motion.span
                         key="status"
                         initial={{ opacity: 0, y: 5 }}
@@ -524,6 +499,16 @@ export default function App() {
                         className="status-text status-available"
                       >
                         AVAILABLE FOR NEXT OPPORTUNITY.
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="title"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        className="status-text status-name"
+                      >
+                        ASPIRING ASSOCIATE PM
                       </motion.span>
                     )}
                   </AnimatePresence>
@@ -534,9 +519,9 @@ export default function App() {
                 className="main-headline"
                 onClick={() => { if (shouldType) setSkipIntro(true); }}
               >
-                <div key={hlId} style={{ position: "relative" }}>
+                <div style={{ position: "relative" }}>
                   {(() => {
-                    const text = headlineData.headline;
+                    const text = HEADLINE_DATA.headline;
                     const vIndex = text.indexOf("Vhendy");
                     const vEnd = vIndex + 6; // "Vhendy".length
 
@@ -615,7 +600,7 @@ export default function App() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    {headlineData.subhead}
+                    {HEADLINE_DATA.subhead}
                   </motion.p>
                 )}
               </AnimatePresence>

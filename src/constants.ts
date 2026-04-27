@@ -92,12 +92,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Excel", "Algobash", "Google Form", "Slack"],
     projectType: "National Program",
     gallery: [
-      "https://picsum.photos/seed/privy1/800/600",
-      "https://picsum.photos/seed/privy2/800/600",
-      "https://picsum.photos/seed/privy3/800/600",
-      "https://picsum.photos/seed/privy4/800/600"
+      "/about-images/privy-case-study-image/acc-class-paris.jpg",
+      "/about-images/privy-case-study-image/acc-class-claus.jpg",
+      "/about-images/privy-case-study-image/acc-class-kapten-haryadi.jpg",
+      "/about-images/privy-case-study-image/acc-class-jakal.jpg"
     ],
-    color: "#F0E8FF",
+    color: "#df0317",
     image: "/case-study-images/privy-acc-thumbnail.png",
     videoUrl: "https://www.youtube.com/embed/MT-0AktCUaE",
     slug: "privy-acceleration",
