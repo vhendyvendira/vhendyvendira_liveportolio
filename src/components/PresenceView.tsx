@@ -66,12 +66,12 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
   };
 
   const styles = {
-    lbl: { fontSize: "11px", fontWeight: 600, color: "#f26522", fontFamily: "var(--font-mono)", textTransform: "uppercase" as const, letterSpacing: "0.1em" },
+    lbl: { fontSize: "11px", fontWeight: 600, color: "#4361ee", fontFamily: "var(--font-mono)", textTransform: "uppercase" as const, letterSpacing: "0.1em" },
     rule: { height: "1px", background: "rgba(0,0,0,0.05)", border: "none" },
     cap: { fontSize: "11px", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)" },
     pull: { fontSize: "18px", lineHeight: 1.6, color: "rgba(0,0,0,0.6)", fontWeight: 500 },
     entryT: { fontSize: "20px", fontWeight: 600, color: "#1a1a1a", letterSpacing: "-0.02em" },
-    entryR: { fontSize: "11px", fontWeight: 600, color: "#f26522", fontFamily: "var(--font-mono)", textTransform: "uppercase" as const },
+    entryR: { fontSize: "11px", fontWeight: 600, color: "#4361ee", fontFamily: "var(--font-mono)", textTransform: "uppercase" as const },
     entryD: { fontSize: "15px", lineHeight: 1.7, color: "rgba(0,0,0,0.6)" },
     commT: { fontSize: "16px", fontWeight: 600, color: "#1a1a1a" },
     commD: { fontSize: "14px", lineHeight: 1.6, color: "rgba(0,0,0,0.6)" }
@@ -125,7 +125,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
           left: '2%',
           width: '25vw',
           height: '25vw',
-          background: 'radial-gradient(circle, rgba(242, 101, 34, 0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(67, 97, 238, 0.04) 0%, transparent 70%)',
           zIndex: 0,
           pointerEvents: 'none'
         }}
@@ -234,17 +234,12 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 style={{ fontSize: "3rem", lineHeight: 1.1, fontWeight: 600, letterSpacing: "-0.04em", color: "#1a1a1a" }}
               >
                 <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                  {"Showing up —".split(" ").map((word, i) => (
+                  {"Showing up and learning,".split(" ").map((word, i) => (
                     <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                   ))}
                 </div>
                 <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                  {"learning, sharing,".split(" ").map((word, i) => (
-                    <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
-                  ))}
-                </div>
-                <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                  {"and building together.".split(" ").map((word, i) => (
+                  {"sharing and building together.".split(" ").map((word, i) => (
                     <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                   ))}
                 </div>
@@ -483,7 +478,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 top: '100px', 
                 bottom: '100px', 
                 width: '1px', 
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(242, 101, 34, 0.4), rgba(0,0,0,0.1))',
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(67, 97, 238, 0.4), rgba(0,0,0,0.1))',
                 zIndex: 0
               }} 
             />
@@ -527,8 +522,8 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 height: '12px', 
                 borderRadius: '50%', 
                 background: '#fff', 
-                border: '2px solid #f26522',
-                boxShadow: '0 0 10px rgba(242, 101, 34, 0.3)',
+                border: '2px solid #4361ee',
+                boxShadow: '0 0 10px rgba(67, 97, 238, 0.3)',
                 zIndex: 2
               }} />
               

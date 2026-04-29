@@ -294,7 +294,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
           right: '5%',
           width: '20vw',
           height: '20vw',
-          background: 'radial-gradient(circle, rgba(242, 101, 34, 0.03) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(67, 97, 238, 0.03) 0%, transparent 70%)',
           zIndex: 0,
           pointerEvents: 'none'
         }}
@@ -408,7 +408,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 top: '0',
                 bottom: '0',
                 width: '1px',
-                background: 'linear-gradient(to bottom, #f26522, rgba(242, 101, 34, 0.1))',
+                background: 'linear-gradient(to bottom, #4361ee, rgba(67, 97, 238, 0.1))',
                 scaleY: threadScale,
                 opacity: threadOpacity,
                 originY: 0,
@@ -440,10 +440,10 @@ export default function AboutView({ navigate }: AboutViewProps) {
                        width: '4px', 
                        height: '4px', 
                        borderRadius: '50%', 
-                       background: '#f26522',
+                       background: '#4361ee',
                      }} 
                    />
-                   <p style={{ fontSize: '11px', fontWeight: 600, color: '#f26522', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>{label}</p>
+                   <p style={{ fontSize: '11px', fontWeight: 600, color: '#4361ee', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>{label}</p>
                 </div>
                 <div>
                   {body}

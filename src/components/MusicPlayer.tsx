@@ -97,7 +97,7 @@ export default function MusicPlayer() {
                       duration: 0.6 + i * 0.15,
                       ease: "easeInOut"
                     }}
-                    style={{ width: '2.5px', background: '#f26522', borderRadius: '10px' }}
+                    style={{ width: '2.5px', background: '#4361ee', borderRadius: '10px' }}
                   />
                 ))}
               </div>
@@ -143,7 +143,7 @@ export default function MusicPlayer() {
                 }}
                 style={{ 
                   flex: 1, 
-                  background: isPlaying ? '#f26522' : 'rgba(0,0,0,0.05)', 
+                  background: isPlaying ? '#4361ee' : 'rgba(0,0,0,0.05)', 
                   borderRadius: '1px' 
                 }}
               />

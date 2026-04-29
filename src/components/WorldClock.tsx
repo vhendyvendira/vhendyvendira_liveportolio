@@ -111,7 +111,7 @@ export default function WorldClock() {
               alignItems: 'center',
               gap: '4px'
             }}>
-              Thanks for visiting from <MapPin size={10} style={{ color: '#f26522' }} /> <span style={{ color: '#f26522', fontWeight: 600 }}>{visitorCity}</span> — {renderTime(now)}
+              Thanks for visiting from <MapPin size={10} style={{ color: '#4361ee' }} /> <span style={{ color: '#4361ee', fontWeight: 600 }}>{visitorCity}</span> — {renderTime(now)}
             </p>
           </div>
 

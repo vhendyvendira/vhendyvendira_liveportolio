@@ -64,7 +64,7 @@ export default function CaseStudyCard({ cs, index, navigate, visible = true, has
           </div>
           
           <h3 className="card-title" style={{ 
-            color: hov ? "#f26522" : "#1a1a1a"
+            color: hov ? "#4361ee" : "#1a1a1a"
           }}>{cs.title}</h3>
           
           <p className="card-description">

@@ -74,8 +74,8 @@ export default function CustomCursor() {
         return {
           width: 32,
           height: 32,
-          backgroundColor: 'rgba(242, 101, 34, 0.15)', // Light YC Orange
-          border: '1px solid #f26522',
+          backgroundColor: 'rgba(67, 97, 238, 0.15)', // Light System Blue
+          border: '1px solid #4361ee',
         };
       default:
         return {

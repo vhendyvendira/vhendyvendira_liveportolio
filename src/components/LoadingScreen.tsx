@@ -62,9 +62,9 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         <motion.div
           style={{
             height: '100%',
-            background: '#f26522',
+            background: '#4361ee',
             width: `${progress}%`,
-            boxShadow: '0 0 10px rgba(242, 101, 34, 0.3)'
+            boxShadow: '0 0 10px rgba(67, 97, 238, 0.3)'
           }}
         />
       </motion.div>
@@ -96,7 +96,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
           width: '600px',
           height: '600px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(242, 101, 34, 0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(67, 97, 238, 0.04) 0%, transparent 70%)',
           pointerEvents: 'none'
         }}
         animate={{
@@ -150,7 +150,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
                 style={{ 
                   position: 'absolute',
                   inset: 0,
-                  background: '#f26522', // Accent color
+                  background: '#4361ee', // Accent color
                   originX: 0
                 }}
                 animate={{ scaleX: progress / 100 }}

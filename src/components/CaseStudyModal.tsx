@@ -118,7 +118,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
         <div 
           className={`modal-section-label ${isSpecial ? 'is-special' : ''}`}
           style={{ 
-            color: isMetaGo ? "#8b5cf6" : (isSpecial ? "#f26522" : "rgba(0,0,0,0.4)"), 
+            color: isMetaGo ? "#8b5cf6" : (isSpecial ? "#4361ee" : "rgba(0,0,0,0.4)"), 
             fontWeight: (isMetaGo || isSpecial) ? 700 : 600
           }}
         >
@@ -173,7 +173,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
             left: 0,
             right: 0,
             height: "2px",
-            background: "#f26522",
+            background: "#4361ee",
             transformOrigin: "0%",
             zIndex: 100,
             scaleX
@@ -514,7 +514,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
 
                   <div style={{ 
                     background: "#ffffff", 
-                    borderLeft: "4px solid #f26522", 
+                    borderLeft: "4px solid #4361ee", 
                     padding: "2.5rem", 
                     borderRadius: "0 20px 20px 0",
                     boxShadow: "0 10px 30px rgba(0,0,0,0.03)",
@@ -672,7 +672,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "1.5rem" }}>
                       {cs.tracks?.map(track => (
                         <div key={track.name} style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
-                          <span className="modal-stat-label" style={{ color: "#f26522" }}>{track.classes}</span>
+                          <span className="modal-stat-label" style={{ color: "#4361ee" }}>{track.classes}</span>
                           <span className="modal-body-small" style={{ fontWeight: 500 }}>{track.name}</span>
                         </div>
                       ))}
@@ -771,12 +771,12 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                           <div style={{ 
                             fontSize: "10px", 
                             fontWeight: 700, 
-                            color: "#f26522", 
+                            color: "#4361ee", 
                             fontFamily: "var(--font-mono)",
                             width: "18px",
                             height: "18px",
                             borderRadius: "4px",
-                            background: "rgba(242, 101, 34, 0.08)",
+                            background: "rgba(67, 97, 238, 0.08)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -859,7 +859,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                           <motion.div 
                             whileHover={{ 
                               scale: 1.15,
-                              backgroundColor: "rgba(242, 101, 34, 0.08)",
+                              backgroundColor: "rgba(67, 97, 238, 0.08)",
                               transition: { type: "spring", stiffness: 400, damping: 10 }
                             }}
                             style={{ 
@@ -905,7 +905,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   >
                     <div className="modal-section-label is-special" style={{ marginBottom: "1.5rem" }}>CORE INSIGHT</div>
                     <div className="modal-quote">
-                      “TV isn’t being replaced — it’s being <span style={{ color: "#f26522" }}>reassigned.</span>”
+                      “TV isn’t being replaced — it’s being <span style={{ color: "#4361ee" }}>reassigned.</span>”
                     </div>
                     <div className="modal-body-small" style={{ marginTop: "1.5rem", maxWidth: "440px", margin: "1.5rem auto 0" }}>
                       It no longer competes for attention, but thrives as a medium that fills gaps, anchors routines, and removes the burden of choice.
@@ -923,7 +923,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   >
                     <div className="modal-section-label">WHAT THIS MEANS</div>
                     <div className="modal-section-title" style={{ maxWidth: "500px", margin: "0 auto" }}>
-                      The opportunity isn’t to outperform digital platforms — but to <span style={{ color: "#f26522" }}>own what they can’t.</span>
+                      The opportunity isn’t to outperform digital platforms — but to <span style={{ color: "#4361ee" }}>own what they can’t.</span>
                     </div>
                   </motion.div>
 
@@ -1652,7 +1652,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     style={{
                       fontSize: "14px",
                       fontWeight: 600,
-                      color: "#f26522",
+                      color: "#4361ee",
                       display: "inline-flex",
                       alignItems: "center",
                       gap: "6px",

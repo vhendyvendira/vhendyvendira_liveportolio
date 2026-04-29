@@ -101,7 +101,7 @@ export default function SocialFooter({ visible, fullWidth, isMobile, footerYear 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: -20 }}
                     exit={{ opacity: 0, y: -30 }}
-                    className="absolute left-0 top-0 whitespace-nowrap font-medium text-[#f26522]"
+                    className="absolute left-0 top-0 whitespace-nowrap font-medium text-[#4361ee]"
                   >
                     Copied to clipboard
                   </motion.span>
