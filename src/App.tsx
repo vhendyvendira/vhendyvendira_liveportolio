@@ -146,9 +146,6 @@ export default function App() {
   const [skipIntro, setSkipIntro] = useState(false);
 
   const [isLoading, setIsLoading] = useState(() => {
-    // Only show loading screen if user hasn't seen it in this browser session
-    // Using localStorage for "first visit ever" feel, or sessionStorage for "per session"
-    // User requested "save user session" and "only first visit", usually implies persistent first visit.
     const hasSeen = localStorage.getItem('hasSeenLoadingScreen');
     if (hasSeen === 'true') return false;
 
@@ -378,7 +375,7 @@ export default function App() {
   return (
     <div className="relative min-h-full">
       <CustomCursor />
-      
+
       {(route.page === "about" || route.page === "presence" || route.page === "report") && (
         <button 
           className="about-back-btn" 
