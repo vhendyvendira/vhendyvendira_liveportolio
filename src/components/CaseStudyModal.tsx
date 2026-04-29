@@ -213,7 +213,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 height: "100%", 
                 opacity: heroOpacity, 
                 scale: heroScale,
-                y: heroY 
+                y: heroY,
+                cursor: cs.externalLink ? "pointer" : "default"
+              }}
+              onClick={() => {
+                if (cs.externalLink) {
+                  soundService.play('click');
+                  window.open(cs.externalLink, '_blank', 'noopener,noreferrer');
+                }
               }}
             >
               <ProgressiveImage 
@@ -1643,12 +1650,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     href={cs.externalLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={(e) => {
-                      if (!scrolledToBottom && outcomeRef.current) {
-                        e.preventDefault();
-                        outcomeRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }
-                    }}
+                    onClick={() => soundService.play('click')}
                     style={{
                       fontSize: "14px",
                       fontWeight: 600,
@@ -1660,7 +1662,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                       transition: "opacity 0.2s ease",
                     }}
                   >
-                    Launch Project
+                    {cs.externalLink.includes('github.com') ? 'View on GitHub' : 'Launch Project'}
                     <span style={{ transition: "transform 0.2s ease", transform: ctaHov ? "translate(2px, -2px)" : "none" }}>↗</span>
                   </a>
                 )}

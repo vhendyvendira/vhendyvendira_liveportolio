@@ -19,7 +19,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     projectType: "Personal Project",
     color: "#F2F2F2",
     image: "/case-study-images/gotham-preview.png",
-    slug: "gotham-risk-intelligence"
+    slug: "gotham-risk-intelligence",
+    externalLink: "https://github.com/vhendyvendira/gotham-risk-intelligence"
   },
   {
     id: 2, index: "02",
@@ -39,7 +40,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     projectType: "Web3, Crypto Utility",
     color: "#C8D8FF",
     image: "/case-study-images/film-studio-metago-thumbnail.png",
-    slug: "metago-coin"
+    slug: "metago-coin",
+    externalLink: "https://github.com/vhendyvendira/metago-coin"
   },
   {
     id: 3, index: "03",
@@ -59,7 +61,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     projectType: "Client Side",
     color: "#D4F0E8",
     image: "/case-study-images/glance-fit-thumbnail.png",
-    slug: "glance-fit"
+    slug: "glance-fit",
+    externalLink: "https://github.com/vhendyvendira/glance-fit"
   },
   {
     id: 4, index: "04",
@@ -88,7 +91,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       { name: "Android", classes: 1 },
       { name: "iOS", classes: 1 },
       { name: "UX Writing", classes: 1 }
-    ]
+    ],
+    externalLink: "https://github.com/vhendyvendira/privy-acceleration"
   },
   {
     id: 5, index: "05",
@@ -106,6 +110,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     color: "#FFF0D8",
     image: "/case-study-images/tv-broadcast-thumbnail.png",
     slug: "tv-ambient",
+    externalLink: "https://github.com/vhendyvendira/tv-ambient"
   },
   {
     id: 6, index: "06",
@@ -123,6 +128,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     projectType: "Startup Project",
     color: "#FFE8EC",
     image: "/case-study-images/k-shop-thumbnail.png",
-    slug: "k-shop"
+    slug: "k-shop",
+    externalLink: "https://github.com/vhendyvendira/k-shop"
   }
 ].map(cs => ({ ...cs, slug: cs.slug || slugify(cs.title) }));
