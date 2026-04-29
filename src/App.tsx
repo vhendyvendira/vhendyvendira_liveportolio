@@ -11,7 +11,6 @@ import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LearningSection from './components/LearningSection';
 import LoadingScreen from './components/LoadingScreen';
-import WelcomeScreen from './components/WelcomeScreen';
 import ReportView from './components/ReportView';
 import CustomCursor from './components/CustomCursor';
 import Magnetic from './components/Magnetic';
@@ -144,12 +143,7 @@ export default function App() {
     return sessionStorage.getItem('hasSeenIntroAnimation') === 'true';
   });
 
-  const [showWelcome, setShowWelcome] = useState(false);
-
   const [skipIntro, setSkipIntro] = useState(false);
-
-  // const isFirstVisitOrbit = !localStorage.getItem('vhendy_has_visited_orbit');
-  const isFirstVisitOrbit = true;
 
   const [isLoading, setIsLoading] = useState(() => {
     const hash = window.location.hash.replace(/^#\/?/, "");
@@ -404,24 +398,9 @@ export default function App() {
       <AnimatePresence>
         {isLoading && (
           <LoadingScreen 
-            isReload={!isFirstVisitOrbit} 
+            isReload={false} 
             onFinished={() => {
-              if (isFirstVisitOrbit) {
-                setShowWelcome(true);
-              }
               setIsLoading(false);
-            }} 
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showWelcome && (
-          <WelcomeScreen 
-            onEnter={() => {
-              localStorage.setItem('vhendy_has_visited_orbit', 'true');
-              setShowWelcome(false);
-              setHasSeenIntro(true);
             }} 
           />
         )}
