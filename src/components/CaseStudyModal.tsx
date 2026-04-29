@@ -213,14 +213,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                 height: "100%", 
                 opacity: heroOpacity, 
                 scale: heroScale,
-                y: heroY,
-                cursor: cs.externalLink ? "pointer" : "default"
-              }}
-              onClick={() => {
-                if (cs.externalLink) {
-                  soundService.play('click');
-                  window.open(cs.externalLink, '_blank', 'noopener,noreferrer');
-                }
+                y: heroY
               }}
             >
               <ProgressiveImage 
@@ -1645,28 +1638,6 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
               onMouseLeave={() => setCtaHov(false)}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                {cs.externalLink && cs.slug !== "tv-ambient" && (
-                  <a
-                    href={cs.externalLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => soundService.play('click')}
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: "#4361ee",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      textDecoration: "none",
-                      transition: "opacity 0.2s ease",
-                    }}
-                  >
-                    {cs.externalLink.includes('github.com') ? 'View on GitHub' : 'Launch Project'}
-                    <span style={{ transition: "transform 0.2s ease", transform: ctaHov ? "translate(2px, -2px)" : "none" }}>↗</span>
-                  </a>
-                )}
-
                 <div
                   style={{
                     fontSize: "14px",
