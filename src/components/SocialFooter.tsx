@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Social } from '../types';
+import { soundService } from '../services/soundService';
 
 const SOCIALS: Social[] = [
+  {
+    label: "GitHub",
+    href: "https://github.com/vhendyvendira",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.28 1.15-.28 2.35 0 3.5-.73 1.02-1.08 2.25-1 3.5 0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+        <path d="M9 18c-4.51 2-5-2-7-2" />
+      </svg>
+    )
+  },
   {
     label: "LinkedIn",
     href: "https://linkedin.com/in/vhendyvendira",
@@ -49,13 +60,14 @@ const SOCIALS: Social[] = [
   },
 ];
 
-export default function SocialFooter({ visible, fullWidth, isMobile }: { visible: boolean, fullWidth?: boolean, isMobile?: boolean }) {
+export default function SocialFooter({ visible, fullWidth, isMobile, footerYear }: { visible: boolean, fullWidth?: boolean, isMobile?: boolean, footerYear?: string }) {
   const [copied, setCopied] = useState(false);
   const email = "vhendypersonal@gmail.com";
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(email);
+      soundService.play('success');
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
@@ -66,26 +78,37 @@ export default function SocialFooter({ visible, fullWidth, isMobile }: { visible
   return (
     <div className={`social-footer ${visible ? 'visible' : ''} ${fullWidth ? 'full-width' : ''} ${isMobile ? 'is-mobile' : ''}`} aria-label="Footer contacts">
       <div className="footer-content">
-        <div className="email-contact">
-          <span className="email-label text-[10px] md:text-[12px] font-mono opacity-40">Get in touch —</span>
-          <button
-            onClick={handleCopy}
-            className="email-button group relative ml-2 cursor-pointer font-mono text-[10px] md:text-[12px] text-black/40 transition-colors hover:text-black"
-          >
-            <span className="underline underline-offset-4 decoration-black/10 group-hover:decoration-black/20">{email}</span>
-            <AnimatePresence>
-              {copied && (
-                <motion.span
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: -20 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  className="absolute left-0 top-0 whitespace-nowrap font-medium text-[#f26522]"
-                >
-                  Copied to clipboard
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </button>
+        <div className="footer-left-group flex items-center gap-6">
+          {footerYear && (
+            <div className="footer-year font-mono text-[11px] text-black/20">
+              {footerYear}
+            </div>
+          )}
+          <div className="email-contact">
+            <span className="email-label text-[10px] md:text-[12px] font-mono opacity-40">Get in touch —</span>
+            <button
+              onClick={() => {
+                soundService.play('click');
+                handleCopy();
+              }}
+              onMouseEnter={() => soundService.play('hover')}
+              className="email-button group relative ml-2 cursor-pointer font-mono text-[10px] md:text-[12px] text-black/40 transition-colors hover:text-black"
+            >
+              <span className="underline underline-offset-4 decoration-black/10 group-hover:decoration-black/20">{email}</span>
+              <AnimatePresence>
+                {copied && (
+                  <motion.span
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: -20 }}
+                    exit={{ opacity: 0, y: -30 }}
+                    className="absolute left-0 top-0 whitespace-nowrap font-medium text-[#f26522]"
+                  >
+                    Copied to clipboard
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
         </div>
 
         <div className="social-links-wrap flex items-center gap-3 md:gap-5">
@@ -94,6 +117,8 @@ export default function SocialFooter({ visible, fullWidth, isMobile }: { visible
               key={s.label}
               href={s.href}
               className="social-link"
+              onMouseEnter={() => soundService.play('hover')}
+              onClick={() => soundService.play('click')}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={s.label}

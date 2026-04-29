@@ -78,14 +78,14 @@ export default function LanguageActivity() {
               fontSize: '24px',
               lineHeight: 1,
               flexShrink: 0
-            }}>🇨🇳</div>
+            }}>🇬🇧</div>
             <div style={{ minWidth: 0 }}>
               <div style={{ 
                 fontSize: '11px', 
                 fontWeight: 600, 
                 color: '#1a1a1a',
                 marginBottom: '1px'
-              }}>Mandarin</div>
+              }}>English</div>
               <div style={{ 
                 fontSize: '9px', 
                 color: 'rgba(0,0,0,0.4)',

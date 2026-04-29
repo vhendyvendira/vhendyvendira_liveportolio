@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import ProgressiveImage from './ProgressiveImage';
 
 interface PresenceViewProps {
@@ -15,25 +15,55 @@ interface ImageMoment {
 export default function PresenceView({ navigate }: PresenceViewProps) {
   const [selectedImage, setSelectedImage] = useState<ImageMoment | null>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      },
+    },
+  };
 
-    const timer = setTimeout(() => {
-      document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-    }, 100);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
 
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, []);
+  const decorativeVariants = {
+    hidden: { opacity: 0, scale: 0.95, filter: 'blur(10px)' },
+    visible: {
+      opacity: 0.6,
+      scale: 1,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 1.2,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
 
   const styles = {
     lbl: { fontSize: "11px", fontWeight: 600, color: "#f26522", fontFamily: "var(--font-mono)", textTransform: "uppercase" as const, letterSpacing: "0.1em" },
@@ -76,7 +106,48 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
   ];
 
   return (
-    <div className="about-full-container">
+    <motion.div 
+      className="about-full-container"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.01 }}
+      variants={containerVariants}
+    >
+      {/* Decorative Accents */}
+      <motion.div
+        variants={decorativeVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        style={{
+          position: 'absolute',
+          top: '15%',
+          left: '2%',
+          width: '25vw',
+          height: '25vw',
+          background: 'radial-gradient(circle, rgba(242, 101, 34, 0.04) 0%, transparent 70%)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
+
+      <motion.div
+        variants={decorativeVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '5%',
+          width: '20vw',
+          height: '20vw',
+          background: 'radial-gradient(circle, rgba(0, 0, 0, 0.02) 0%, transparent 70%)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
+
       <AnimatePresence>
         {selectedImage && (
           <motion.div 
@@ -135,18 +206,69 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
         <div className="about-page" style={{ paddingBottom: "8rem" }}>
           {/* Header */}
           <div style={{ marginBottom: "4rem" }}>
-            <div className="scroll-reveal" style={{ ...styles.lbl, marginBottom: "1.5rem" }}>Public Presence</div>
-            <h1 className="scroll-reveal stagger-1" style={{ fontSize: "3rem", lineHeight: 1.1, fontWeight: 600, letterSpacing: "-0.04em", color: "#1a1a1a", marginBottom: "1.5rem" }}>
-              Showing up — learning, sharing, and building together.
-            </h1>
+            <motion.div 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              style={{ ...styles.lbl, marginBottom: "1.5rem" }}
+            >
+              Public Presence
+            </motion.div>
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.01 }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { 
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.08
+                  }
+                }
+              }}
+              style={{ marginBottom: '1.5rem' }}
+            >
+              <h1 
+                style={{ fontSize: "3rem", lineHeight: 1.1, fontWeight: 600, letterSpacing: "-0.04em", color: "#1a1a1a" }}
+              >
+                <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+                  {"Showing up —".split(" ").map((word, i) => (
+                    <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
+                  ))}
+                </div>
+                <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+                  {"learning, sharing,".split(" ").map((word, i) => (
+                    <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
+                  ))}
+                </div>
+                <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+                  {"and building together.".split(" ").map((word, i) => (
+                    <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
+                  ))}
+                </div>
+              </h1>
+            </motion.div>
           </div>
 
           {/* Featured moment */}
           <div style={{ marginBottom: "6rem" }}>
-            <div className="scroll-reveal" style={{ ...styles.lbl, marginBottom: "2rem" }}>Featured Moment</div>
+            <motion.div 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              style={{ ...styles.lbl, marginBottom: "2rem" }}
+            >
+              Featured Moment
+            </motion.div>
             <div style={{ marginBottom: "2.5rem" }}>
-              <div 
-                className="scroll-reveal img-reveal stagger-1" 
+              <motion.div 
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
                 onClick={() => setSelectedImage({
                   src: "/presence-images/iddr-apple-event-2025.png",
                   alt: "Apple Developer Academy Event 2025",
@@ -159,45 +281,113 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                   alt="Apple Developer Academy Event 2025"
                   style={{ width: "100%", height: "100%" }}
                 />
-              </div>
-              <div className="scroll-reveal stagger-2" style={{ marginTop: "1rem", ...styles.cap }}>
+              </motion.div>
+              <motion.div variants={itemVariants} style={{ marginTop: "1rem", ...styles.cap }}>
                 Apple Developer Academy, Binus · Jakarta 2025
-              </div>
+              </motion.div>
             </div>
             
-            <div className="scroll-reveal stagger-2" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+            <motion.div 
+              variants={itemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}
+            >
               <span style={styles.entryT}>Indonesia Design Research & Apple Developer Academy, Binus - Event</span>
               <span style={styles.entryR}>Participant</span>
-            </div>
-            <p className="scroll-reveal stagger-2" style={{ ...styles.entryD, marginBottom: "2rem" }}>
+            </motion.div>
+            <motion.p 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-50px" }} 
+              style={{ ...styles.entryD, marginBottom: "2rem" }}
+            >
               Engaging with the regional design community at events like “Design That Sells: How UI/UX Drives Business Growth.” These sessions are critical for bridging the gap between product intuition and measurable business outcomes.
-            </p>
-            <p className="scroll-reveal stagger-3" style={styles.pull}>"One-sided design fails. Great design is diplomacy."</p>
+            </motion.p>
+            <motion.p 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-50px" }} 
+              style={styles.pull}
+            >
+              "One-sided design fails. Great design is diplomacy."
+            </motion.p>
           </div>
 
-          <hr className="scroll-reveal" style={{ ...styles.rule, marginBottom: "6rem" }} />
+          <motion.hr 
+            variants={itemVariants} 
+            initial="hidden"
+            whileInView="visible" 
+            viewport={{ once: true, margin: "-50px" }} 
+            style={{ ...styles.rule, marginBottom: "6rem" }} 
+          />
 
           {/* Speaking & Mentorship */}
           <div style={{ marginBottom: "6rem" }}>
-            <div className="scroll-reveal stagger-1" style={{ ...styles.lbl, marginBottom: "3rem" }}>Speaking & Mentorship</div>
+            <motion.div 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-50px" }} 
+              style={{ ...styles.lbl, marginBottom: "3rem" }}
+            >
+              Speaking & Mentorship
+            </motion.div>
             
-            <div className="scroll-reveal stagger-1" style={{ marginBottom: "4rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+            <div style={{ marginBottom: "4rem" }}>
+              <motion.div 
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}
+              >
                 <span style={styles.entryT}>Kanvas Conference 2025, MyEduSolve</span>
                 <span style={styles.entryR}>Guest Speaker</span>
-              </div>
-              <p className="scroll-reveal stagger-2" style={styles.entryD}>Workshop lead on Inclusivity Design Mapping. Focused on teaching participants the mechanics of intent-based interface design and Wizard of Oz testing for AI systems.</p>
+              </motion.div>
+              <motion.p 
+                variants={itemVariants} 
+                initial="hidden"
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }} 
+                style={styles.entryD}
+              >
+                Workshop lead on Inclusivity Design Mapping. Focused on teaching participants the mechanics of intent-based interface design and Wizard of Oz testing for AI systems.
+              </motion.p>
             </div>
 
-            <div className="scroll-reveal stagger-2" style={{ marginBottom: "4rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+            <div style={{ marginBottom: "4rem" }}>
+              <motion.div 
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}
+              >
                 <span style={styles.entryT}>MSIB Kampus Merdeka, Binar Academy</span>
                 <span style={styles.entryR}>Design Mentor</span>
-              </div>
-              <p className="scroll-reveal stagger-3" style={styles.entryD}>Mentoring cross-disciplinary students in UI/UX fundamentals. Supporting the transition from academic theory to industry-ready product execution through structured projects.</p>
+              </motion.div>
+              <motion.p 
+                variants={itemVariants} 
+                initial="hidden"
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }} 
+                style={styles.entryD}
+              >
+                Mentoring cross-disciplinary students in UI/UX fundamentals. Supporting the transition from academic theory to industry-ready product execution through structured projects.
+              </motion.p>
             </div>
             
-            <div className="scroll-reveal img-reveal stagger-3" style={{ padding: "2rem 0 0" }}>
+            <motion.div 
+              variants={itemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              style={{ padding: "2rem 0 0" }}
+            >
               <div 
                 onClick={() => setSelectedImage({
                   src: "/presence-images/uix-mentor-binaracademy-2022.png",
@@ -216,47 +406,96 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
               <div style={{ marginTop: "1rem", ...styles.cap }}>
                 Mentorship Session — Binar Academy, 2022
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Community */}
           <div style={{ marginBottom: "6rem" }}>
-            <div className="scroll-reveal" style={{ ...styles.lbl, marginBottom: "2rem" }}>Community Involvement</div>
+            <motion.div 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-50px" }} 
+              style={{ ...styles.lbl, marginBottom: "2rem" }}
+            >
+              Community Involvement
+            </motion.div>
             <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
-              <div className="scroll-reveal stagger-1">
+              <motion.div 
+                variants={itemVariants} 
+                initial="hidden"
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }}
+              >
                 <p style={styles.commT}>Connect Group (CG) GMS</p>
                 <p style={styles.commD}>Active in a local spiritual community (Church CG – GMS), with a belief that every blessing and ability comes from God—not solely from personal strength or logic.</p>
-              </div>
-              <div className="scroll-reveal stagger-2">
+              </motion.div>
+              <motion.div 
+                variants={itemVariants} 
+                initial="hidden"
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }}
+              >
                 <p style={styles.commT}>Interaction Design Foundation (IxDF)</p>
                 <p style={styles.commD}>Contributing to a global UX community by sharing insights on career growth and user-centered design, while engaging in meaningful discussions and learning from diverse perspectives across the field.</p>
-              </div>
-              <div className="scroll-reveal stagger-3">
+              </motion.div>
+              <motion.div 
+                variants={itemVariants} 
+                initial="hidden"
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }}
+              >
                 <p style={styles.commT}>Indonesia Design Research (IDDR)</p>
                 <p style={styles.commD}>Active member of the national research community, focused on creating a network effect for emerging designers in the region.</p>
-              </div>
+              </motion.div>
             </div>
           </div>
 
-          <hr className="scroll-reveal" style={{ ...styles.rule, marginBottom: "6rem" }} />
+          <motion.hr 
+            variants={itemVariants} 
+            initial="hidden"
+            whileInView="visible" 
+            viewport={{ once: true, margin: "-50px" }} 
+            style={{ ...styles.rule, marginBottom: "6rem" }} 
+          />
 
           {/* Travel Reflections */}
           <div style={{ marginBottom: "6rem", position: 'relative' }}>
-            <div className="scroll-reveal" style={{ ...styles.lbl, marginBottom: "3rem" }}>Travel Reflections</div>
+            <motion.div 
+              variants={itemVariants} 
+              initial="hidden"
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-50px" }} 
+              style={{ ...styles.lbl, marginBottom: "3rem" }}
+            >
+              Travel Reflections
+            </motion.div>
             
             {/* The Path Line */}
-            <div className="scroll-reveal" style={{ 
-              position: 'absolute', 
-              left: '7px', 
-              top: '100px', 
-              bottom: '100px', 
-              width: '1px', 
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(242, 101, 34, 0.4), rgba(0,0,0,0.1))',
-              zIndex: 0
-            }} />
+            <motion.div 
+              variants={decorativeVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              style={{ 
+                position: 'absolute', 
+                left: '7px', 
+                top: '100px', 
+                bottom: '100px', 
+                width: '1px', 
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(242, 101, 34, 0.4), rgba(0,0,0,0.1))',
+                zIndex: 0
+              }} 
+            />
 
             {/* Singapore 2022 - Top Node */}
-            <div className="scroll-reveal stagger-1" style={{ marginBottom: "5rem", position: 'relative', zIndex: 1, paddingLeft: '2.5rem' }}>
+            <motion.div 
+              variants={itemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              style={{ marginBottom: "5rem", position: 'relative', zIndex: 1, paddingLeft: '2.5rem' }}
+            >
               <div style={{ 
                 position: 'absolute', 
                 left: '-2.25rem', 
@@ -276,7 +515,7 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
               <p style={styles.entryD}>
                 Engaging in cross-border startup pitching and regional summits. First international expansion of operational perspective, visiting regional offices and tech hubs.
               </p>
-            </div>
+            </motion.div>
 
             {/* Bali 2025 - Bottom Node (Focus) */}
             <div style={{ position: 'relative', zIndex: 1, paddingLeft: '2.5rem' }}>
@@ -293,15 +532,41 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 zIndex: 2
               }} />
               
-              <div className="scroll-reveal stagger-1" style={{ marginBottom: "1.5rem" }}>
-                <div style={styles.entryT}>Bali, Denpasar (2025)</div>
-                <div style={styles.cap}>REF: REST & RECOVERY</div>
+              <div style={{ marginBottom: "1.5rem" }}>
+                <motion.div 
+                  variants={itemVariants} 
+                  initial="hidden"
+                  whileInView="visible" 
+                  viewport={{ once: true, margin: "-50px" }} 
+                  style={styles.entryT}
+                >
+                  Bali, Denpasar (2025)
+                </motion.div>
+                <motion.div 
+                  variants={itemVariants} 
+                  initial="hidden"
+                  whileInView="visible" 
+                  viewport={{ once: true, margin: "-50px" }} 
+                  style={styles.cap}
+                >
+                  REF: REST & RECOVERY
+                </motion.div>
               </div>
-              <p className="scroll-reveal stagger-2" style={{ ...styles.entryD, marginBottom: "2rem" }}>
+              <motion.p 
+                variants={itemVariants} 
+                initial="hidden"
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }} 
+                style={{ ...styles.entryD, marginBottom: "2rem" }}
+              >
                 Documenting the importance of recovery for long-term operational excellence. Stepping out of daily routines to gain objective perspective on complex systems.
-              </p>
-              <div className="scroll-reveal img-reveal stagger-3" style={{ display: "flex", gap: "1rem" }}>
-                <div 
+              </motion.p>
+              <div style={{ display: "flex", gap: "1rem" }}>
+                <motion.div 
+                  variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-50px" }}
                   onClick={() => setSelectedImage({
                     src: "/presence-images/vhendy-bali-airport-2025.46.36.jpeg",
                     alt: "Bali Airport 2025",
@@ -315,8 +580,12 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                     style={{ width: "100%", height: "100%" }} 
                     imgStyle={{ objectFit: "cover" }}
                   />
-                </div>
-                <div 
+                </motion.div>
+                <motion.div 
+                   variants={itemVariants}
+                   initial="hidden"
+                   whileInView="visible"
+                   viewport={{ once: true, margin: "-50px" }}
                   onClick={() => setSelectedImage({
                     src: "/presence-images/pantaimelasti.jpeg",
                     alt: "Pantai Melasti",
@@ -330,16 +599,22 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                     style={{ width: "100%", height: "100%" }} 
                     imgStyle={{ objectFit: "cover" }}
                   />
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
 
-          <hr className="scroll-reveal" style={{ ...styles.rule, marginBottom: "6rem" }} />
+          <motion.hr 
+            variants={itemVariants} 
+            initial="hidden"
+            whileInView="visible" 
+            viewport={{ once: true, margin: "-50px" }} 
+            style={{ ...styles.rule, marginBottom: "6rem" }} 
+          />
 
           {/* Closing Narrative & Reel */}
           <div style={{ marginBottom: "4rem" }}>
-            <h2 className="scroll-reveal stagger-1" style={{ 
+            <motion.h2 variants={itemVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} style={{ 
               fontSize: "2.5rem", 
               lineHeight: 1.2, 
               fontWeight: 600, 
@@ -347,13 +622,13 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
               color: "#1a1a1a",
               marginBottom: "3rem"
             }}>
-              <div className="scroll-reveal stagger-1">It’s never just the work.</div>
-              <div className="scroll-reveal stagger-2" style={{ color: "rgba(0,0,0,0.35)" }}>It’s the rooms you choose to be in.</div>
-            </h2>
+              <div>It’s never just the work.</div>
+              <div style={{ color: "rgba(0,0,0,0.35)" }}>It’s the rooms you choose to be in.</div>
+            </motion.h2>
           </div>
 
           {/* Presence Reel - Visual Breakout with Safe Margins */}
-          <div className="scroll-reveal" style={{ 
+          <div style={{ 
             width: "calc(100vw - 6rem)", 
             maxWidth: "none", 
             position: "relative", 
@@ -368,9 +643,12 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
               width: "100%"
             }}>
               {REEL_IMAGES.map((img, i) => (
-                <div 
+                <motion.div 
                   key={i} 
-                  className={`scroll-reveal stagger-${i + 1}`} 
+                  variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-50px" }}
                   onClick={() => setSelectedImage(img)}
                   style={{ 
                     aspectRatio: "1/1.25", 
@@ -394,19 +672,25 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                     }}
                     imgStyle={{ objectFit: "cover" }}
                   />
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
 
-          <hr className="scroll-reveal" style={{ ...styles.rule, marginBottom: "4rem" }} />
+          <motion.hr 
+            variants={itemVariants} 
+            initial="hidden"
+            whileInView="visible" 
+            viewport={{ once: true, margin: "-50px" }} 
+            style={{ ...styles.rule, marginBottom: "4rem" }} 
+          />
 
-          <div className="scroll-reveal stagger-1" style={{ textAlign: "center", padding: "0 2rem" }}>
-            <p className="scroll-reveal stagger-2" style={{ ...styles.pull, marginBottom: "1.5rem" }}>Live In the Future Then Build What's Missing - Y.C</p>
-            <span className="scroll-reveal stagger-3" style={styles.cap}>V. VENDIRA // 2026</span>
+          <div style={{ textAlign: "center", padding: "0 2rem 8rem" }}>
+            <motion.p variants={itemVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} style={{ ...styles.pull, marginBottom: "1.5rem" }}>Live In the Future Then Build What's Missing - Y.C</motion.p>
+            <motion.span variants={itemVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} style={styles.cap}>V. VENDIRA // 2026</motion.span>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

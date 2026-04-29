@@ -4,6 +4,7 @@ import { Activity, Award, ShoppingBag, RefreshCw, Zap, Users, Target, CheckCircl
 import { CaseStudy } from '../types';
 import ProgressiveImage from './ProgressiveImage';
 import GothamChallengeMotion from './GothamChallengeMotion';
+import { soundService } from '../services/soundService';
 
 interface CaseStudyModalProps {
   cs: CaseStudy;
@@ -45,6 +46,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
       }
     };
     window.addEventListener("keydown", handleEsc);
+    soundService.play('transition');
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", handleEsc);
@@ -133,7 +135,12 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
     <motion.div
       className="modal-backdrop"
       role="dialog" aria-modal="true" aria-label={cs.title}
-      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={e => { 
+        if (e.target === e.currentTarget) {
+          soundService.play('click');
+          onClose(); 
+        }
+      }}
       initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
       animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
       exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
@@ -174,7 +181,17 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
         />
 
         {/* Close Button UI fixed at top */}
-        <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">✕</button>
+        <button 
+          className="modal-close-btn" 
+          onClick={() => {
+            soundService.play('click');
+            onClose();
+          }} 
+          onMouseEnter={() => soundService.play('hover')}
+          aria-label="Close modal"
+        >
+          ✕
+        </button>
 
         {/* Hero image or Video with inner zoom effect */}
         <div className="modal-hero-wrap">

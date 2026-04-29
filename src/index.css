@@ -925,6 +925,7 @@ body {
   padding: 0 4rem;
   max-width: 1200px;
   margin: 0 auto;
+  gap: 1.5rem;
 }
 
 .footer-content {
@@ -933,6 +934,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-left-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .email-contact {

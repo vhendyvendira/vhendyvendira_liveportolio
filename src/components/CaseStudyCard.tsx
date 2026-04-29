@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { CaseStudy } from '../types';
 import ProgressiveImage from './ProgressiveImage';
+import { soundService } from '../services/soundService';
 
 interface CaseStudyCardProps {
   cs: CaseStudy;
   index: number;
   navigate: (path: string) => void;
   visible?: boolean;
+  hasSeenIntro?: boolean;
   key?: React.Key;
 }
 
-export default function CaseStudyCard({ cs, index, navigate, visible = true }: CaseStudyCardProps) {
+export default function CaseStudyCard({ cs, index, navigate, visible = true, hasSeenIntro = false }: CaseStudyCardProps) {
   const [hov, setHov] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -27,19 +29,25 @@ export default function CaseStudyCard({ cs, index, navigate, visible = true }: C
     <motion.div
       className="case-study-card"
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHov(true)}
+      onMouseEnter={() => {
+        setHov(true);
+        soundService.play('hover');
+      }}
       onMouseLeave={() => {
         setHov(false);
         setMousePos({ x: 0, y: 0 });
       }}
-      onClick={() => navigate(`/work/${cs.slug}`)}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={visible ? { opacity: 1, y: 0 } : {}}
+      onClick={() => {
+        soundService.play('click');
+        navigate(`/work/${cs.slug}`);
+      }}
+      initial={hasSeenIntro ? false : { opacity: 0, y: 20 }}
+      whileInView={visible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : {})}
       whileHover={{ y: -4 }}
       viewport={{ once: true, margin: "-100px 0px" }}
       transition={{ 
         duration: 0.6, 
-        delay: index * 0.1, // Maintains staggering
+        delay: hasSeenIntro ? 0 : index * 0.1, // Maintains staggering only on first visit
         ease: [0.16, 1, 0.3, 1] 
       }}
       style={{

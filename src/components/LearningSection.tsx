@@ -9,11 +9,11 @@ const COMPANIES = [
   { name: "RWS Group", info: "Linguistic Prompt Design", logo: "/images-company-logo/rws-group.png", scale: 0.9 }
 ];
 
-export default function LearningSection({ visible }: { visible: boolean }) {
+export default function LearningSection({ visible, hasSeenIntro = false }: { visible: boolean; hasSeenIntro?: boolean }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={visible ? { opacity: 1, y: 0 } : {}}
+      initial={hasSeenIntro ? false : { opacity: 0, y: 30 }}
+      whileInView={visible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : {})}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       style={{ 
@@ -48,12 +48,12 @@ export default function LearningSection({ visible }: { visible: boolean }) {
         {COMPANIES.map((company, i) => (
           <motion.div 
             key={company.name}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={visible ? { opacity: 1, y: 0 } : {}}
+            initial={hasSeenIntro ? false : { opacity: 0, y: 20 }}
+            whileInView={visible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : {})}
             viewport={{ once: true }}
             transition={{ 
               duration: 1, 
-              delay: i * 0.12,
+              delay: hasSeenIntro ? 0 : i * 0.12,
               ease: [0.16, 1, 0.3, 1]
             }}
             className="border-r border-b border-black/[0.04] p-8 flex flex-col items-start justify-between min-h-[160px] group transition-colors cursor-default hover:bg-black/[0.01]"

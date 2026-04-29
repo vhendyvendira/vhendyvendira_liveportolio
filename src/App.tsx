@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import { CASE_STUDIES } from './constants';
+import { soundService } from './services/soundService';
 import CaseStudyModal from './components/CaseStudyModal';
 import CaseStudyCard from './components/CaseStudyCard';
 import AboutView from './components/AboutView';
@@ -11,6 +12,7 @@ import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LearningSection from './components/LearningSection';
 import LoadingScreen from './components/LoadingScreen';
+import WelcomeScreen from './components/WelcomeScreen';
 import ReportView from './components/ReportView';
 import CustomCursor from './components/CustomCursor';
 import Magnetic from './components/Magnetic';
@@ -126,6 +128,12 @@ function useTypewriter(text: string, active = true) {
 
 export default function App() {
   const { route, navigate } = useHashRouter();
+
+  const handleNavigate = useCallback((path: string) => {
+    soundService.play('transition');
+    navigate(path);
+  }, [navigate]);
+
   const activeCS = route.page === "work" ? CASE_STUDIES.find(c => c.slug === route.slug) : null;
 
   const HEADLINE_DATA = { 
@@ -137,16 +145,11 @@ export default function App() {
     return sessionStorage.getItem('hasSeenIntroAnimation') === 'true';
   });
 
+  const [showWelcome, setShowWelcome] = useState(false);
+
   const [skipIntro, setSkipIntro] = useState(false);
 
-  const [isFirstVisit] = useState(() => {
-    const visited = sessionStorage.getItem('vhendy_visited');
-    if (!visited) {
-      sessionStorage.setItem('vhendy_visited', 'true');
-      return true;
-    }
-    return false;
-  });
+  const isFirstVisitOrbit = !localStorage.getItem('vhendy_has_visited_orbit');
 
   const [isLoading, setIsLoading] = useState(() => {
     const hash = window.location.hash.replace(/^#\/?/, "");
@@ -379,7 +382,11 @@ export default function App() {
       {(route.page === "about" || route.page === "presence" || route.page === "report") && (
         <button 
           className="about-back-btn" 
-          onClick={() => navigate("/")}
+          onClick={() => {
+            soundService.play('click');
+            handleNavigate("/");
+          }}
+          onMouseEnter={() => soundService.play('hover')}
           style={{ 
             opacity: 1, 
             transform: "none",
@@ -395,18 +402,41 @@ export default function App() {
       )}
 
       <AnimatePresence>
-        {isLoading && <LoadingScreen isReload={!isFirstVisit} onFinished={() => setIsLoading(false)} />}
+        {isLoading && (
+          <LoadingScreen 
+            isReload={!isFirstVisitOrbit} 
+            onFinished={() => {
+              if (isFirstVisitOrbit) {
+                setShowWelcome(true);
+              }
+              setIsLoading(false);
+            }} 
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showWelcome && (
+          <WelcomeScreen 
+            onEnter={() => {
+              localStorage.setItem('vhendy_has_visited_orbit', 'true');
+              setShowWelcome(false);
+              setHasSeenIntro(true);
+            }} 
+          />
+        )}
       </AnimatePresence>
 
       <GalaxyBackground />
+
           {route.page === "about" ? (
         <motion.div
           key="about"
           className="page-scroll-container"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 20, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.98 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           style={{ position: "fixed", inset: 0, zIndex: 50, overflowY: "auto" }}
         >
           <AboutView navigate={navigate} />
@@ -415,10 +445,10 @@ export default function App() {
         <motion.div
           key="presence"
           className="page-scroll-container"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 20, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.98 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           style={{ position: "fixed", inset: 0, zIndex: 50, overflowY: "auto" }}
         >
           <PresenceView navigate={navigate} />
@@ -435,7 +465,7 @@ export default function App() {
             <motion.div 
               className="intro-section" 
               style={{ position: "relative", zIndex: 2 }}
-              initial="hidden"
+              initial={hasSeenIntro ? "visible" : "hidden"}
               animate="visible"
               variants={{
                 visible: {
@@ -451,6 +481,7 @@ export default function App() {
                   hidden: { opacity: 0, x: -10 },
                   visible: { opacity: 1, x: 0 }
                 }}
+                initial={hasSeenIntro ? "visible" : "hidden"}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div className="status-dot-container">
@@ -566,8 +597,8 @@ export default function App() {
                     } else {
                       if (vIndex === -1) {
                         return (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10 }}
+                      <motion.div
+                            initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                           >
@@ -578,7 +609,7 @@ export default function App() {
 
                       return (
                         <motion.div
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, ease: "easeOut" }}
                         >
@@ -596,7 +627,7 @@ export default function App() {
                 {subheadVisible && (
                   <motion.p 
                     className="main-subheadline"
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
@@ -618,12 +649,16 @@ export default function App() {
                     <Magnetic key={item.label} strength={0.1}>
                       <motion.button
                         className={`nav-item${isActive ? " active" : ""}`}
-                        onClick={() => navigate(item.path === "home" ? "/" : `/${item.path}`)}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={subheadVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
+                        onClick={() => {
+                          soundService.play('click');
+                          handleNavigate(item.path === "home" ? "/" : `/${item.path}`);
+                        }}
+                        onMouseEnter={() => soundService.play('hover')}
+                        initial={hasSeenIntro ? false : { opacity: 0, x: -8 }}
+                        animate={subheadVisible ? { opacity: 1, x: 0 } : (hasSeenIntro ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 })}
                         transition={{ 
                           duration: 0.5, 
-                          delay: subheadVisible ? 0.3 + (i * 0.1) : 0,
+                          delay: (subheadVisible && !hasSeenIntro) ? 0.3 + (i * 0.1) : 0,
                           ease: [0.16, 1, 0.3, 1]
                         }}
                       >
@@ -649,23 +684,31 @@ export default function App() {
                   paddingBottom: "3rem", 
                   borderBottom: "1px solid rgba(0, 0, 0, 0.05)"
                 }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={listVisible ? { opacity: 1, y: 0 } : {}}
+                initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
+                animate={listVisible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : {})}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>MISSION LAUNCHED </span>
                 <span style={{ fontSize: "11px", color: "rgba(0,0,0,0.3)", fontFamily: "var(--font-mono)" }}>0{CASE_STUDIES.length} // OPS</span>
               </motion.div>
               {CASE_STUDIES.map((cs, i) => (
-                <CaseStudyCard key={cs.id} cs={cs} index={i} navigate={navigate} visible={listVisible} />
+                <CaseStudyCard key={cs.id} cs={cs} index={i} navigate={handleNavigate} visible={listVisible} hasSeenIntro={hasSeenIntro} />
               ))}
 
-              <LearningSection visible={listVisible} />
+              <LearningSection visible={listVisible} hasSeenIntro={hasSeenIntro} />
             </div>
 
             {/* Scroll to Top Button */}
             <button
-              onClick={scrollToTop}
+              onClick={() => {
+                soundService.play('click');
+                scrollToTop();
+              }}
+              onMouseEnter={(e) => {
+                soundService.play('hover');
+                e.currentTarget.style.background = "#f26522";
+              }}
+              onMouseLeave={(e) => e.currentTarget.style.background = "#1a1a1a"}
               style={{
                 position: "fixed",
                 bottom: "5.5rem", // Moved up to avoid overlap with social icons
@@ -687,8 +730,6 @@ export default function App() {
                 zIndex: 100,
                 boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
               }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "#f26522"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "#1a1a1a"}
             >
               <ArrowUp size={18} />
             </button>
@@ -709,11 +750,14 @@ export default function App() {
         </div>
       )}
 
-      <div className={`year-footer ${route.page !== '/' && route.page !== 'home' && route.page !== 'work' ? 'full-width' : ''} ${isMobile ? 'is-mobile' : ''}`}>© 2026</div>
+      {!isMobile && route.page !== "about" && route.page !== "presence" && (
+        <div className={`year-footer ${route.page !== '/' && route.page !== 'home' && route.page !== 'work' ? 'full-width' : ''} ${isMobile ? 'is-mobile' : ''}`}>© 2026</div>
+      )}
       <SocialFooter 
         visible={footerVisible} 
         fullWidth={route.page !== '/' && route.page !== 'home' && route.page !== 'work'} 
         isMobile={isMobile}
+        footerYear={(route.page === "about" || route.page === "presence" || isMobile) ? "© 2026" : undefined}
       />
     </div>
   );

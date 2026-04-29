@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { MapPin } from 'lucide-react';
 import HoverTooltip from './HoverTooltip';
 
 export default function WorldClock() {
-  const [times, setTimes] = useState({
-    gmt: new Date(),
-    wib: new Date(),
-    wita: new Date()
-  });
-
+  const [now, setNow] = useState(new Date());
+  const [visitorCity, setVisitorCity] = useState('somewhere');
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -18,13 +15,21 @@ export default function WorldClock() {
     window.addEventListener('resize', checkMobile);
     
     const timer = setInterval(() => {
-      const now = new Date();
-      setTimes({
-        gmt: now,
-        wib: now,
-        wita: now
-      });
+      setNow(new Date());
     }, 1000);
+
+    // Detect visitor context via timezone
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz) {
+        const parts = tz.split('/');
+        const cityPart = parts[parts.length - 1];
+        const formattedCity = cityPart.replace(/_/g, ' ');
+        setVisitorCity(formattedCity);
+      }
+    } catch (e) {
+      console.warn("Could not detect timezone", e);
+    }
 
     return () => {
       window.removeEventListener('resize', checkMobile);
@@ -32,25 +37,43 @@ export default function WorldClock() {
     };
   }, []);
 
-  const formatTime = (date: Date, offset: number) => {
-    const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
-    const targetDate = new Date(utc + (3600000 * offset));
+  const renderTime = (date: Date, offset?: number, isLight = false) => {
+    let targetDate = date;
+    if (offset !== undefined) {
+      const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+      targetDate = new Date(utc + (3600000 * offset));
+    }
     
-    return targetDate.toLocaleTimeString('en-US', {
-      hour: '2-digit',
+    const timeStr = targetDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
       minute: '2-digit',
-      second: '2-digit',
       hour12: true
     });
+    
+    const [time, ampm] = timeStr.split(' ');
+    
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '3px' }}>
+        <span>{time}</span>
+        <span style={{ 
+          fontSize: '0.7em', 
+          opacity: isLight ? 0.4 : 0.5, 
+          fontWeight: 500,
+          letterSpacing: '0.02em'
+        }}>
+          {ampm}
+        </span>
+      </span>
+    );
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.7, rotate: 5 }}
       animate={{ 
-        opacity: isHovered ? 0.95 : 0.4, 
-        scale: isHovered ? 0.78 : 0.75, 
-        rotate: isHovered ? 1 : 2.5 
+        opacity: isHovered ? 0.95 : 0.6, 
+        scale: isHovered ? 0.8 : 0.75, 
+        rotate: isHovered ? 0 : 2.5 
       }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => setIsHovered(true)}
@@ -64,97 +87,68 @@ export default function WorldClock() {
         transformOrigin: 'top left'
       }}
     >
-      <HoverTooltip text="my timezone" isMobile={isMobile}>
+      <HoverTooltip text="the temporal context" isMobile={isMobile}>
         <div style={{
-          background: isHovered ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.5)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          border: '1px solid rgba(0, 0, 0, 0.03)',
-          borderRadius: '16px',
-          padding: '14px',
-          width: '170px',
-          boxShadow: isHovered ? '0 15px 35px rgba(0, 0, 0, 0.05)' : '0 8px 20px rgba(0, 0, 0, 0.02)',
+          background: isHovered ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.6)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(0, 0, 0, 0.05)',
+          borderRadius: '20px',
+          padding: '20px',
+          width: '240px',
+          boxShadow: isHovered ? '0 20px 40px rgba(0, 0, 0, 0.08)' : '0 10px 25px rgba(0, 0, 0, 0.03)',
           position: 'relative',
-          transition: 'all 0.6s ease'
+          transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
         }}>
-          {/* Subtle "Tape" Decoration */}
-          <div style={{
-            position: 'absolute',
-            top: '-8px',
-            left: '50%',
-            transform: 'translateX(-50%) rotate(-1deg)',
-            width: '50px',
-            height: '16px',
-            background: 'rgba(0,0,0,0.03)',
-            border: '1px solid rgba(0,0,0,0.02)',
-            borderRadius: '2px'
-          }} />
+          {/* Header Context */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <p style={{ 
+              fontSize: '11px', 
+              color: 'rgba(0,0,0,0.45)', 
+              lineHeight: 1.5,
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              Thanks for visiting from <MapPin size={10} style={{ color: '#f26522' }} /> <span style={{ color: '#f26522', fontWeight: 600 }}>{visitorCity}</span> — {renderTime(now)}
+            </p>
+          </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ 
-                fontSize: '9px', 
+                fontSize: '10px', 
                 fontFamily: 'var(--font-mono)', 
                 color: 'rgba(0,0,0,0.3)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                marginBottom: '4px'
-              }}>Jakarta (WIB)</div>
+                letterSpacing: '0.05em'
+              }}>Jakarta (GMT+7)</div>
               <div style={{ 
-                fontSize: '15px', 
+                fontSize: '13px', 
                 fontWeight: 600, 
                 color: '#1a1a1a',
                 fontFamily: 'var(--font-mono)'
-              }}>{formatTime(times.wib, 7)}</div>
+              }}>{renderTime(now, 7)}</div>
             </div>
 
-            <div style={{ height: '1px', background: 'rgba(0,0,0,0.04)', width: '40px' }} />
+            <div style={{ height: '1px', background: 'rgba(0,0,0,0.05)', width: '100%' }} />
 
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ 
-                fontSize: '9px', 
+                fontSize: '10px', 
                 fontFamily: 'var(--font-mono)', 
                 color: 'rgba(0,0,0,0.3)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                marginBottom: '4px'
-              }}>Manado (WITA)</div>
+                letterSpacing: '0.05em'
+              }}>Manado (GMT+8)</div>
               <div style={{ 
-                fontSize: '15px', 
+                fontSize: '13px', 
                 fontWeight: 500, 
                 color: 'rgba(0,0,0,0.6)',
                 fontFamily: 'var(--font-mono)'
-              }}>{formatTime(times.wita, 8)}</div>
+              }}>{renderTime(now, 8, true)}</div>
             </div>
-
-            <div>
-              <div style={{ 
-                fontSize: '9px', 
-                fontFamily: 'var(--font-mono)', 
-                color: 'rgba(0,0,0,0.3)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                marginBottom: '4px'
-              }}>London (GMT)</div>
-              <div style={{ 
-                fontSize: '13px', 
-                fontWeight: 400, 
-                color: 'rgba(0,0,0,0.4)',
-                fontFamily: 'var(--font-mono)'
-              }}>{formatTime(times.gmt, 0)}</div>
-            </div>
-          </div>
-
-          <div style={{ 
-            marginTop: '16px', 
-            fontSize: '8px', 
-            fontFamily: 'var(--font-mono)', 
-            color: 'rgba(0,0,0,0.2)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            textAlign: 'center'
-          }}>
-            Global Sync • 2026
           </div>
         </div>
       </HoverTooltip>

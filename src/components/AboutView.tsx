@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
 import ProgressiveImage from './ProgressiveImage';
 import MusicPlayer from './MusicPlayer';
+import { soundService } from '../services/soundService';
 import WorldClock from './WorldClock';
 import RunningActivity from './RunningActivity';
 import ReadingActivity from './ReadingActivity';
@@ -25,7 +26,10 @@ function SemanticTerm({ term, info, imgSrc }: SemanticTermProps) {
   return (
     <span 
       className="semantic-term"
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        soundService.play('hover');
+      }}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
       style={{ 
@@ -80,268 +84,511 @@ interface AboutViewProps {
   navigate: (path: string) => void;
 }
 
-export default function AboutView({ navigate }: AboutViewProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isLogicMode, setIsLogicMode] = useState(false);
+interface OperatingPrincipleProps {
+  key?: React.Key;
+  idx: number;
+  h: string;
+  p: string;
+}
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!containerRef.current) return;
-      const els = containerRef.current.querySelectorAll('.about-story-item');
-      if (!els || els.length === 0) return;
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('about-story-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-      
-      els.forEach(el => observer.observe(el));
-      return () => observer.disconnect();
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+function OperatingPrinciple({ idx, h, p }: OperatingPrincipleProps) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      onMouseEnter={() => soundService.play('hover')}
+      transition={{ 
+        duration: 0.5,
+        delay: idx * 0.1,
+        ease: [0.16, 1, 0.3, 1]
+      }}
+      style={{ 
+        display: 'flex',
+        gap: '1.5rem',
+        alignItems: 'flex-start',
+        borderLeft: '1px solid rgba(0,0,0,0.05)',
+        paddingLeft: '1.5rem',
+        paddingBottom: '0.5rem'
+      }}
+    >
+      <div style={{ 
+        fontSize: '10px', 
+        fontFamily: 'var(--font-mono)', 
+        color: 'rgba(0,0,0,0.2)', 
+        marginTop: '4px',
+        width: '20px',
+        fontWeight: 600
+      }}>
+        0{idx + 1}
+      </div>
+
+      <div style={{ flex: 1 }}>
+        <h4 style={{ 
+          fontSize: '15px', 
+          fontWeight: 600, 
+          marginBottom: '0.35rem', 
+          color: '#1a1a1a',
+          letterSpacing: '-0.01em'
+        }}>
+          {h}
+        </h4>
+        <p style={{ 
+          fontSize: '14px', 
+          lineHeight: 1.5, 
+          color: 'rgba(0,0,0,0.5)',
+          maxWidth: '320px'
+        }}>
+          {p}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function AboutView({ navigate }: AboutViewProps) {
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const storyContainerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: imageScrollProgress } = useScroll({
+    target: imageContainerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const { scrollYProgress: storyScrollProgress } = useScroll({
+    target: storyContainerRef,
+    offset: ["start 70%", "end 70%"]
+  });
+
+  const imageY = useTransform(imageScrollProgress, [0, 1], ["-15%", "15%"]);
+  const threadScale = useTransform(storyScrollProgress, [0, 1], [0, 1]);
+  const threadOpacity = useTransform(storyScrollProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
+
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const decorativeVariants = {
+    hidden: { opacity: 0, scale: 0.95, filter: 'blur(10px)' },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 1.2,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const decorativeEntranceVariants = {
+    hidden: { opacity: 0, y: 15, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
 
   const STORY = [
     {
       label: 'Origin',
       body: (
-        <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
+        <div style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
           I entered <SemanticTerm term="product development" info="From ideation to final rollout, focusing on bridging the gap between vision and execution." /> through a non-linear path. With a background in information systems and early experience in marketing communications, I learned that no knowledge is wasted—each piece shaping how I think about clarity: what a product solves, why it exists, and why it matters. 
-        </p>
+        </div>
       ),
     },
     {
       label: 'Perspective',
       body: (
-        <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
+        <div style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
           I tend to start with questions rather than answers, often thinking through a <SemanticTerm term="first-principles" info="Breaking problems down to their most basic components to build fresh, unbiased solutions." /> lens. Even in the AI era, taking the time to define the problem well still matters. To me, products are shaped by real needs—and clarified through the act of building, testing, and refining over time.
-        </p>
+        </div>
       ),
     },
     {
       label: 'Direction',
       body: (
-        <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
+        <div style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(0,0,0,0.7)' }}>
           I’m currently focused on products that absorb complexity so users don’t have to—especially in Web3, financial, healthcare, and enterprise contexts where clarity is critical. With AI, I take a more hands-on approach to building, turning ideas into working products through <SemanticTerm term="rapid iteration" info="A cycle of shipping, learning, and refining that drastically reduces time-to-market." /> and continuous learning.
-        </p>
+        </div>
       ),
     },
   ];
 
   return (
-    <div 
+    <motion.div 
       className="about-full-container" 
-      ref={containerRef}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.01 }}
+      variants={containerVariants}
       style={{
-        backgroundImage: `
-          linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px)
-        `,
-        backgroundSize: '120px 120px',
-        position: 'relative'
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
-      <div className="about-content">
+      {/* Grid Background Layer with Center Mask */}
+      <div 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: '120px 120px',
+          maskImage: 'linear-gradient(to right, black 0%, black 10%, transparent 50%, black 90%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 0%, black 10%, transparent 50%, black 90%, black 100%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+      {/* Decorative Accents */}
+      <motion.div
+        variants={decorativeVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        style={{
+          position: 'absolute',
+          top: '10%',
+          right: '5%',
+          width: '20vw',
+          height: '20vw',
+          background: 'radial-gradient(circle, rgba(242, 101, 34, 0.03) 0%, transparent 70%)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
+
+      <motion.div
+        variants={decorativeVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        style={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '5%',
+          width: '15vw',
+          height: '15vw',
+          background: 'radial-gradient(circle, rgba(0, 0, 0, 0.02) 0%, transparent 70%)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
+
+      <div className="about-content" style={{ paddingBottom: '8rem' }}>
         <div className="about-page">
           {/* Header */}
-          <div className="about-story-item" style={{ marginBottom: '2.5rem' }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: '2.5rem' }}>
             <span className="about-label">Personal Narrative</span>
-          </div>
+          </motion.div>
 
-          <div className="about-story-item" style={{ marginBottom: '2rem' }}>
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { 
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.08
+                }
+              }
+            }}
+            style={{ marginBottom: '2rem' }}
+          >
             <h1 style={{ fontSize: '3rem', lineHeight: 1.2, fontWeight: 600, letterSpacing: '-0.04em', color: '#1a1a1a' }}>
-              <div>I make things legible —</div>
-              <div style={{ color: 'rgba(0,0,0,0.35)' }}>for people, for teams,</div>
-              <div style={{ color: 'rgba(0,0,0,0.35)' }}>for the future.</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+                {"I make things legible —".split(" ").map((word, i) => (
+                  <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
+                ))}
+              </div>
+              <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+                {"for people, for teams,".split(" ").map((word, i) => (
+                  <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
+                ))}
+              </div>
+              <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+                {"for the future.".split(" ").map((word, i) => (
+                  <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
+                ))}
+              </div>
             </h1>
-          </div>
+          </motion.div>
 
-          <div className="about-story-item" style={{ marginBottom: '4rem' }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: '4rem' }}>
             <p style={{ fontSize: '18px', lineHeight: 1.6, color: 'rgba(0,0,0,0.6)', maxWidth: '540px' }}>
               Building products and teams people choose, trust, and grow with.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Simple Image */}
-          <div className="about-story-item" style={{ marginBottom: '6rem' }}>
-            <div style={{ width: '100%', aspectRatio: '16/10', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5', position: 'relative' }}>
-              <ProgressiveImage 
-                src="/about-images/google-singapore-2022.png" 
-                alt="Working environment at Google Singapore"
-                style={{ width: '100%', height: '100%' }}
-              />
+          {/* Simple Image with Parallax Window Effect */}
+          <motion.div 
+            variants={itemVariants} 
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            style={{ marginBottom: '6rem' }}
+          >
+            <div 
+              ref={imageContainerRef}
+              style={{ 
+                width: '100%', 
+                aspectRatio: '16/10', 
+                borderRadius: '8px', 
+                overflow: 'hidden', 
+                background: '#f5f5f5', 
+                position: 'relative' 
+              }}
+            >
+              <motion.div 
+                style={{ 
+                  y: imageY,
+                  width: '100%',
+                  height: '130%', // Taller to allow for movement
+                  position: 'absolute',
+                  top: '-15%', // Center the extra height
+                  left: 0
+                }}
+              >
+                <ProgressiveImage 
+                  src="/about-images/google-singapore-2022.png" 
+                  alt="Working environment at Google Singapore"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </motion.div>
             </div>
             <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.4)', marginTop: '1rem', fontFamily: 'var(--font-mono)' }}>IASTI, 2022</p>
-          </div>
+          </motion.div>
+          
+          <div ref={storyContainerRef} style={{ position: 'relative' }}>
+            {/* The Narrative Thread */}
+            <motion.div
+              style={{
+                position: 'absolute',
+                left: '-2rem',
+                top: '0',
+                bottom: '0',
+                width: '1px',
+                background: 'linear-gradient(to bottom, #f26522, rgba(242, 101, 34, 0.1))',
+                scaleY: threadScale,
+                opacity: threadOpacity,
+                originY: 0,
+                zIndex: 1
+              }}
+            />
 
-          <hr className="about-rule" />
-
-          {/* Story Sections */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', marginBottom: '6rem' }}>
+            {/* Story Sections */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', marginBottom: '6rem' }}>
             {STORY.map(({ label, body }) => (
-              <div key={label} className="about-story-item">
-                <div style={{ marginBottom: '1rem' }}>
+              <motion.div 
+                key={label} 
+                variants={itemVariants}
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <div style={{ marginBottom: '1rem', position: 'relative' }}>
+                   {/* Small Accent Dot */}
+                   <motion.div 
+                     variants={{
+                       hidden: { opacity: 0, y: 10 },
+                       visible: { opacity: 0.4, y: 0 }
+                     }}
+                     style={{ 
+                       position: 'absolute', 
+                       left: '-1rem', 
+                       top: '50%', 
+                       transform: 'translateY(-50%)',
+                       width: '4px', 
+                       height: '4px', 
+                       borderRadius: '50%', 
+                       background: '#f26522',
+                     }} 
+                   />
                    <p style={{ fontSize: '11px', fontWeight: 600, color: '#f26522', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>{label}</p>
                 </div>
                 <div>
                   {body}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          <hr className="about-rule" />
-
           {/* Arsenal vs Mentality Section */}
-          <div style={{ marginBottom: '6rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }}>
+          <div style={{ marginBottom: '8rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '6rem' }}>
               
               {/* THE ARSENAL */}
-              <div className="about-story-item">
-                <div style={{ marginBottom: '2rem' }}>
+              <motion.div 
+                variants={itemVariants}
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <div style={{ marginBottom: '2.5rem' }}>
                   <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>01 / THE ARSENAL</span>
                   <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Hard Skills & Tools</h3>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                  borderTop: '1px solid rgba(0,0,0,0.05)',
+                }}>
                   {[
                     { h: 'Product Design', p: 'Shaping flows from concept to UI using Whimsical & Figma.' },
                     { h: 'Technical Frameworks', p: 'Using JavaScript to navigate constraints and inform design decisions.' },
                     { h: 'AI Implementation', p: 'Designing AI flows with Claude, Cursor, Lovable, Antigravity.' },
                     { h: 'Program Operations', p: 'Structuring workflows with Jira, ClickUp, Trello from plan to delivery.' },
                   ].map((item, idx) => (
-                    <div key={idx} style={{ borderLeft: '1px solid rgba(0,0,0,0.1)', paddingLeft: '1.5rem' }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '0.25rem' }}>{item.h}</h4>
-                      <p style={{ fontSize: '14px', lineHeight: 1.5, color: 'rgba(0,0,0,0.5)' }}>{item.p}</p>
-                    </div>
+                    <motion.div 
+                      key={idx} 
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ 
+                        duration: 0.8,
+                        delay: idx * 0.1,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                      style={{ 
+                        padding: '2rem 1.5rem',
+                        borderBottom: '1px solid rgba(0,0,0,0.05)',
+                        borderRight: '1px solid rgba(0,0,0,0.05)',
+                        background: 'transparent',
+                        position: 'relative',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem'
+                      }}
+                    >
+                      <div style={{ 
+                        fontSize: '9px', 
+                        fontFamily: 'var(--font-mono)', 
+                        color: 'rgba(0,0,0,0.2)', 
+                        fontWeight: 700,
+                        letterSpacing: '0.1em'
+                      }}>
+                        TRACK_0{idx + 1}
+                      </div>
+
+                      <div>
+                        <h4 style={{ 
+                          fontSize: '14px', 
+                          fontWeight: 600, 
+                          marginBottom: '0.5rem',
+                          letterSpacing: '-0.01em',
+                          color: '#1a1a1a'
+                        }}>
+                          {item.h}
+                        </h4>
+                        <p style={{ 
+                          fontSize: '13px', 
+                          lineHeight: 1.6, 
+                          color: 'rgba(0,0,0,0.5)',
+                          maxWidth: '240px'
+                        }}>
+                          {item.p}
+                        </p>
+                      </div>
+                      
+                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem' }}>
+                        <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
+                      </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* THE MENTALITY */}
-              <div className="about-story-item">
-                <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                  <div>
-                    <span className="about-label" style={{ color: '#f26522' }}>02 / THE MENTALITY</span>
-                    <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Operating Principles</h3>
-                  </div>
-                  
-                  {/* Surprising Moment: The Switch */}
-                  <div 
-                    onClick={() => setIsLogicMode(!isLogicMode)}
-                    style={{ 
-                      cursor: 'pointer', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '8px', 
-                      padding: '4px 8px', 
-                      background: isLogicMode ? 'rgba(242, 101, 34, 0.1)' : 'rgba(0,0,0,0.03)',
-                      borderRadius: '40px',
-                      transition: 'all 0.3s ease',
-                      border: isLogicMode ? '1px solid rgba(242, 101, 34, 0.2)' : '1px solid transparent'
-                    }}
-                  >
-                    <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', fontWeight: 700, color: isLogicMode ? '#f26522' : 'rgba(0,0,0,0.3)' }}>
-                      {isLogicMode ? 'FIRST PRINCIPLES ON' : 'POLISH MODE'}
-                    </span>
-                    <div style={{ 
-                      width: '24px', 
-                      height: '12px', 
-                      background: isLogicMode ? '#f26522' : 'rgba(0,0,0,0.1)', 
-                      borderRadius: '10px', 
-                      position: 'relative',
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '2px'
-                    }}>
-                      <motion.div 
-                        animate={{ x: isLogicMode ? 12 : 0 }}
-                        style={{ width: '8px', height: '8px', background: '#fff', borderRadius: '50%' }} 
-                      />
-                    </div>
-                  </div>
+              <motion.div 
+                variants={itemVariants}
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <div style={{ marginBottom: '2.5rem' }}>
+                  <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>02 / THE MENTALITY</span>
+                  <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Operating Principles</h3>
                 </div>
 
-                <div style={{ position: 'relative' }}>
-                  {/* Logic mode grid background reveal */}
-                  <AnimatePresence>
-                    {isLogicMode && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        style={{ 
-                          position: 'absolute', 
-                          inset: '-20px', 
-                          zIndex: -1, 
-                          backgroundImage: 'radial-gradient(rgba(242, 101, 34, 0.15) 1px, transparent 1px)', 
-                          backgroundSize: '20px 20px',
-                          pointerEvents: 'none'
-                        }}
-                      />
-                    )}
-                  </AnimatePresence>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    {[
-                      { 
-                        h: isLogicMode ? 'Root-Cause Analysis' : 'Understand the Real Problem', 
-                        p: isLogicMode ? 'Bypass surface symptoms; identify the first-principles logic before architecting a solution.' : 'Start by identifying the root cause and current state before deciding.' 
-                      },
-                      { 
-                        h: isLogicMode ? 'Contextual Mapping' : 'Context-Driven Decisions', 
-                        p: isLogicMode ? 'Initiative is variable, calibrated to system maturity and organizational velocity.' : 'Knowing when to take initiative and when to align with direction.' 
-                      },
-                      { 
-                        h: isLogicMode ? 'Constraint Reframing' : 'Think Beyond Constraints', 
-                        p: isLogicMode ? 'Treating friction as a boundary marker rather than a terminal point. Re-routing as a default loop.' : 'When blocked, explore alternative paths instead of forcing solutions.' 
-                      },
-                      { 
-                        h: isLogicMode ? 'Systemic Harmony' : 'Calm, Collaborative Thinking', 
-                        p: isLogicMode ? 'Aligning human variables to reduce friction in the final delivery output.' : 'Staying composed, understanding how others think, and aligning decisions.' 
-                      },
-                    ].map((item, idx) => (
-                      <motion.div 
-                        key={idx + (isLogicMode ? 'logic' : 'polish')}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        style={{ 
-                          position: 'relative',
-                          background: (isLogicMode || idx === 0) ? (isLogicMode ? '#fff' : '#fafafa') : 'transparent', 
-                          padding: (isLogicMode || idx === 0) ? '1.25rem' : '0 0 0 1.5rem', 
-                          borderRadius: '8px', 
-                          borderLeft: (isLogicMode || idx === 0) ? 'none' : '1px solid rgba(0,0,0,0.1)',
-                          border: isLogicMode ? '1px solid rgba(242, 101, 34, 0.1)' : 'none',
-                          boxShadow: isLogicMode ? '0 10px 30px rgba(242, 101, 34, 0.05)' : 'none'
-                        }}
-                      >
-                        {/* Logic mode "measurement" marks */}
-                        {isLogicMode && (
-                          <div style={{ position: 'absolute', top: '-5px', left: '-5px', fontSize: '8px', color: '#f26522', fontFamily: 'var(--font-mono)' }}>+</div>
-                        )}
-                        {isLogicMode && (
-                          <div style={{ position: 'absolute', bottom: '-5px', right: '-5px', fontSize: '8px', color: '#f26522', fontFamily: 'var(--font-mono)' }}>+</div>
-                        )}
-
-                        <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '0.25rem', color: isLogicMode ? '#f26522' : '#1a1a1a' }}>{item.h}</h4>
-                        <p style={{ fontSize: '14px', lineHeight: 1.5, color: isLogicMode ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)' }}>{item.p}</p>
-                      </motion.div>
-                    ))}
-                  </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', position: 'relative' }}>
+                  {[
+                    { 
+                      h: 'Understand the Real Problem', 
+                      p: 'Start by identifying the root cause and current state before deciding.' 
+                    },
+                    { 
+                      h: 'Context-Driven Decisions', 
+                      p: 'Knowing when to take initiative and when to align with direction.' 
+                    },
+                    { 
+                      h: 'Think Beyond Constraints', 
+                      p: 'When blocked, explore alternative paths instead of forcing solutions.' 
+                    },
+                    { 
+                      h: 'Calm, Collaborative Thinking', 
+                      p: 'Staying composed, understanding how others think, and aligning decisions.' 
+                    },
+                  ].map((item, idx) => (
+                    <OperatingPrinciple
+                      key={idx}
+                      idx={idx}
+                      h={item.h}
+                      p={item.p}
+                    />
+                  ))}
                 </div>
-              </div>
+              </motion.div>
 
-            </div> {/* End Grid */}
-          </div> {/* End Arsenal/Mentality Wrapper */}
+            </div>
+          </div>
 
-          <hr className="about-rule" />
+          <motion.hr variants={itemVariants} className="about-rule" />
 
           {/* Beyond What I Know Section */}
-          <div className="about-story-item" style={{ marginTop: '6rem', marginBottom: '6rem' }}>
+          <motion.div 
+            variants={itemVariants} 
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            style={{ marginTop: '6rem', marginBottom: '6rem' }}
+          >
             <div style={{ marginBottom: '1.5rem' }}>
               <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>03 / GROWTH</span>
               <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Beyond What I Know</h3>
@@ -358,12 +605,15 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 and learning through them.
               </motion.span>
             </p>
-          </div>
+          </motion.div>
+        </div>
 
-          <hr className="about-rule" />
-
-          {/* Contact */}
-          <div className="about-story-item" style={{ marginBottom: '4rem' }}>
+        <motion.div 
+          variants={itemVariants} 
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          style={{ marginBottom: '4rem' }}
+        >
             <p style={{ fontSize: '14px', color: 'rgba(0,0,0,0.5)', marginBottom: '2.5rem' }}>
               Curriculum vitae — available on request or below.
             </p>
@@ -378,15 +628,29 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 <a href="mailto:vhendyvendira@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>vhendyvendira@gmail.com · Jakarta, ID · Open to Collaboration</a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-      <MusicPlayer />
-      <WorldClock />
-      <RunningActivity />
-      <ReadingActivity />
-      <LanguageActivity />
-      <GardeningActivity />
-    </div>
+
+      {/* Floating Widgets - Staggered entrance */}
+      <motion.div variants={decorativeEntranceVariants}>
+        <MusicPlayer />
+      </motion.div>
+      <motion.div variants={decorativeEntranceVariants}>
+        <WorldClock />
+      </motion.div>
+      <motion.div variants={decorativeEntranceVariants}>
+        <RunningActivity />
+      </motion.div>
+      <motion.div variants={decorativeEntranceVariants}>
+        <ReadingActivity />
+      </motion.div>
+      <motion.div variants={decorativeEntranceVariants}>
+        <LanguageActivity />
+      </motion.div>
+      <motion.div variants={decorativeEntranceVariants}>
+        <GardeningActivity />
+      </motion.div>
+    </motion.div>
   );
 }
