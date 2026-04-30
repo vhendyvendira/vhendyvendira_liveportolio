@@ -39,7 +39,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Notion", "Gamma", "WhatsApp"],
     projectType: "Web3, Crypto Utility",
     color: "#C8D8FF",
-    image: "/case-study-images/film-studio-metago-thumbnail.png",
+    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/film-studio-metago-thumbnail.png",
     slug: "metago-coin",
     externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/refs/heads/main/film-studio-metago-thumbnail.png"
   },
@@ -60,9 +60,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Figma", "Whimsical", "ClickUp"],
     projectType: "Client Side",
     color: "#D4F0E8",
-    image: "/case-study-images/glance-fit-thumbnail.png",
+    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/glance-fit-thumbnail.png",
     slug: "glance-fit",
-    externalLink: "https://github.com/vhendyvendira/glance-fit"
+    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/glance-fit-thumbnail.png"
   },
   {
     id: 4, index: "04",
@@ -79,7 +79,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Excel", "Algobash", "Google Form", "Slack"],
     projectType: "National Program",
     color: "#df0317",
-    image: "/case-study-images/privy-acc-thumbnail.png",
+    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/privyacceleration.png",
     videoUrl: "https://www.youtube.com/embed/MT-0AktCUaE",
     slug: "privy-acceleration",
     tracks: [
@@ -92,7 +92,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { name: "iOS", classes: 1 },
       { name: "UX Writing", classes: 1 }
     ],
-    externalLink: "https://github.com/vhendyvendira/privy-acceleration"
+    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/privyacceleration.png"
   },
   {
     id: 5, index: "05",
@@ -108,9 +108,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Figma", "Figjam", "Zoom", "Google Forms"],
     projectType: "Bootcamp Capstone Project",
     color: "#FFF0D8",
-    image: "/case-study-images/tv-broadcast-thumbnail.png",
+    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/tv-broadcast-thumbnail.png",
     slug: "tv-ambient",
-    externalLink: "https://github.com/vhendyvendira/tv-ambient"
+    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/tv-broadcast-thumbnail.png"
   },
   {
     id: 6, index: "06",
@@ -127,8 +127,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Figma", "Whimsical", "Trello", "React Native", "Flutter", "Wordpress"],
     projectType: "Startup Project",
     color: "#FFE8EC",
-    image: "/case-study-images/k-shop-thumbnail.png",
+    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/k-shop-thumbnail.png",
     slug: "k-shop",
-    externalLink: "https://github.com/vhendyvendira/k-shop"
+    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/k-shop-thumbnail.png"
   }
 ].map(cs => ({ ...cs, slug: cs.slug || slugify(cs.title) }));
