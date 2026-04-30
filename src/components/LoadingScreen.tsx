@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CRITICAL_IMAGES, preloadAllAssets } from '../assets';
 
 const LOG_LINES = [
   "Initializing launch systems...",
@@ -10,16 +11,27 @@ const LOG_LINES = [
 ];
 
 export default function LoadingScreen({ onFinished, isReload = false }: { onFinished: () => void, isReload?: boolean }) {
-  const [progress, setProgress] = useState(0);
+  const [uiProgress, setUiProgress] = useState(0);
+  const [assetProgress, setAssetProgress] = useState(0);
   const [currentLine, setCurrentLine] = useState(0);
+  const [assetsReady, setAssetsReady] = useState(false);
+  const isFinishedCalled = useRef(false);
+
+  // Sync assets
+  useEffect(() => {
+    preloadAllAssets(CRITICAL_IMAGES, (p) => {
+      setAssetProgress(p);
+    }).then(() => {
+      setAssetsReady(true);
+    });
+  }, []);
 
   useEffect(() => {
-    const speed = isReload ? 40 : 120; // Slightly faster for mission feel
+    const speed = isReload ? 40 : 120;
     const timer = setInterval(() => {
-      setProgress(prev => {
+      setUiProgress(prev => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onFinished, isReload ? 100 : 1500); 
           return 100;
         }
         
@@ -37,7 +49,19 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
     }, speed);
 
     return () => clearInterval(timer);
-  }, [onFinished, isReload]);
+  }, [isReload]);
+
+  // Combined progress for display
+  // We show at least the UI progress, but we don't let it finish until assets are ready
+  const displayProgress = Math.min(uiProgress, 99); 
+  const finalProgress = assetsReady && uiProgress >= 100 ? 100 : displayProgress;
+
+  useEffect(() => {
+    if (finalProgress === 100 && !isFinishedCalled.current) {
+      isFinishedCalled.current = true;
+      setTimeout(onFinished, isReload ? 100 : 800); 
+    }
+  }, [finalProgress, onFinished, isReload]);
 
   useEffect(() => {
     if (isReload) return;
@@ -68,7 +92,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
           style={{
             height: '100%',
             background: '#ffffff',
-            width: `${progress}%`,
+            width: `${finalProgress}%`,
             boxShadow: '0 0 10px rgba(255, 255, 255, 0.3)'
           }}
         />
@@ -84,7 +108,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#1a1a1a', // Dark grey background
+        background: '#1a1a1a', 
         zIndex: 5000,
         display: 'flex',
         flexDirection: 'column',
@@ -94,7 +118,6 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         overflow: 'hidden'
       }}
     >
-      {/* Subtle Scanlight Effect */}
       <motion.div 
         style={{
           position: 'absolute',
@@ -123,7 +146,6 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
           alignItems: 'center',
           gap: '2.5rem'
         }}>
-          {/* Mission Control Identification */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -143,9 +165,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
             <div style={{ height: '1px', width: '20px', background: 'rgba(255,255,255,0.1)', margin: '0 auto' }} />
           </motion.div>
 
-          {/* Centered Progress Indicator */}
           <div style={{ width: '100%' }}>
-            {/* Minimal Technical Bar */}
             <div style={{ 
               width: '100%', 
               height: '2px', 
@@ -158,10 +178,10 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
                 style={{ 
                   position: 'absolute',
                   inset: 0,
-                  background: '#ffffff', // White accent for cinematic look
+                  background: '#ffffff', 
                   originX: 0
                 }}
-                animate={{ scaleX: progress / 100 }}
+                animate={{ scaleX: finalProgress / 100 }}
                 transition={{ type: 'spring', damping: 30, stiffness: 45 }}
               />
             </div>
@@ -175,12 +195,11 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
               letterSpacing: '0.1em',
               color: 'rgba(255,255,255,0.4)'
             }}>
-              <span>VELOCITY: {Math.floor(progress * 175).toLocaleString()} KM/H</span>
-              <span>{Math.floor(progress).toString().padStart(3, '0')}%</span>
+              <span>SYNCING DATA: {Math.floor(assetProgress * 100)}%</span>
+              <span>{Math.floor(finalProgress).toString().padStart(3, '0')}%</span>
             </div>
           </div>
 
-          {/* Mission Log Output */}
           <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <AnimatePresence mode="wait">
               <motion.div
@@ -218,7 +237,6 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         </div>
       </div>
 
-      {/* Grid Pattern Overlay - Dark Theme */}
       <div style={{ 
         position: 'absolute', 
         inset: 0, 
@@ -227,9 +245,8 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         pointerEvents: 'none'
       }} />
 
-      {/* Frame details for cinematic feel */}
       <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', fontSize: '9px', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
-        SYS_VER: 2.0.6-STARSHIP
+        SYS_VER: 2.1.0-PRELOADER
       </div>
       <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', fontSize: '9px', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
         LAT: 28.5729° N | LONG: 80.6490° W

@@ -146,11 +146,15 @@ export default function App() {
   const [skipIntro, setSkipIntro] = useState(false);
 
   const [isLoading, setIsLoading] = useState(() => {
-    const hasSeen = localStorage.getItem('hasSeenLoadingScreen');
-    if (hasSeen === 'true') return false;
-
+    // If we're hitting a direct report link, we might want to skip the main preloader
+    // but the requirement says "Only transition to the main page after image loading is complete"
     const hash = window.location.hash.replace(/^#\/?/, "");
-    return !hash.startsWith("report/");
+    if (hash.startsWith("report/")) return false;
+
+    const hasSeenInSession = sessionStorage.getItem('hasSeenLoadingScreen');
+    if (hasSeenInSession === 'true') return false;
+
+    return true;
   });
 
   const rightPanelRef = useRef<HTMLDivElement>(null);
@@ -403,7 +407,7 @@ export default function App() {
           <LoadingScreen 
             isReload={false} 
             onFinished={() => {
-              localStorage.setItem('hasSeenLoadingScreen', 'true');
+              sessionStorage.setItem('hasSeenLoadingScreen', 'true');
               setIsLoading(false);
             }} 
           />

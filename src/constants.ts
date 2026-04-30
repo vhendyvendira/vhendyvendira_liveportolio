@@ -18,9 +18,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Notion", "Jira", "Antigravity"],
     projectType: "Personal Project",
     color: "#F2F2F2",
-    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/gotham-preview.png",
+    image: "https://ik.imagekit.io/0ghhw9jvx/gotham-preview.png?updatedAt=1777486020525",
     slug: "gotham-risk-intelligence",
-    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/gotham-preview.png"
+    externalLink: "https://ik.imagekit.io/0ghhw9jvx/gotham-preview.png?updatedAt=1777486020525"
   },
   {
     id: 2, index: "02",
@@ -39,9 +39,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Notion", "Gamma", "WhatsApp"],
     projectType: "Web3, Crypto Utility",
     color: "#C8D8FF",
-    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/film-studio-metago-thumbnail.png",
+    image: "https://ik.imagekit.io/0ghhw9jvx/film-studio-metago-thumbnail.png?updatedAt=1777486024548",
     slug: "metago-coin",
-    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/refs/heads/main/film-studio-metago-thumbnail.png"
+    externalLink: "https://ik.imagekit.io/0ghhw9jvx/film-studio-metago-thumbnail.png?updatedAt=1777486024548"
   },
   {
     id: 3, index: "03",
@@ -60,9 +60,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Figma", "Whimsical", "ClickUp"],
     projectType: "Client Side",
     color: "#D4F0E8",
-    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/glance-fit-thumbnail.png",
+    image: "https://ik.imagekit.io/0ghhw9jvx/glance-fit-thumbnail.png?updatedAt=1777486020751",
     slug: "glance-fit",
-    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/glance-fit-thumbnail.png"
+    externalLink: "https://ik.imagekit.io/0ghhw9jvx/glance-fit-thumbnail.png?updatedAt=1777486020751"
   },
   {
     id: 4, index: "04",
@@ -79,7 +79,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Excel", "Algobash", "Google Form", "Slack"],
     projectType: "National Program",
     color: "#df0317",
-    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/privyacceleration.png",
+    image: "https://ik.imagekit.io/0ghhw9jvx/privyacceleration.png?updatedAt=1777486013390",
     videoUrl: "https://www.youtube.com/embed/MT-0AktCUaE",
     slug: "privy-acceleration",
     tracks: [
@@ -92,7 +92,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { name: "iOS", classes: 1 },
       { name: "UX Writing", classes: 1 }
     ],
-    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/privyacceleration.png"
+    externalLink: "https://ik.imagekit.io/0ghhw9jvx/privyacceleration.png?updatedAt=1777486013390"
   },
   {
     id: 5, index: "05",
@@ -108,9 +108,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Figma", "Figjam", "Zoom", "Google Forms"],
     projectType: "Bootcamp Capstone Project",
     color: "#FFF0D8",
-    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/tv-broadcast-thumbnail.png",
+    image: "https://ik.imagekit.io/0ghhw9jvx/privy-acc-thumbnail.png?updatedAt=1777486015678",
     slug: "tv-ambient",
-    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/tv-broadcast-thumbnail.png"
+    externalLink: "https://ik.imagekit.io/0ghhw9jvx/privy-acc-thumbnail.png?updatedAt=1777486015678"
   },
   {
     id: 6, index: "06",
@@ -127,8 +127,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Figma", "Whimsical", "Trello", "React Native", "Flutter", "Wordpress"],
     projectType: "Startup Project",
     color: "#FFE8EC",
-    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/k-shop-thumbnail.png",
+    image: "https://ik.imagekit.io/0ghhw9jvx/k-shop-thumbnail.png?updatedAt=1777486019427",
     slug: "k-shop",
-    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/k-shop-thumbnail.png"
+    externalLink: "https://ik.imagekit.io/0ghhw9jvx/k-shop-thumbnail.png?updatedAt=1777486019427"
   }
 ].map(cs => ({ ...cs, slug: cs.slug || slugify(cs.title) }));
