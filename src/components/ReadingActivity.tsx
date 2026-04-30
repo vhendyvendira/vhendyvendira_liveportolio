@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { BookOpen } from 'lucide-react';
 import HoverTooltip from './HoverTooltip';
 
 export default function ReadingActivity() {
@@ -72,16 +71,17 @@ export default function ReadingActivity() {
             <div style={{ 
               width: '40px', 
               height: '56px', 
-              background: 'linear-gradient(135deg, #e2e2e2, #f5f5f5)', 
+              background: '#f5f5f5', 
               borderRadius: '4px',
               boxShadow: '2px 4px 8px rgba(0,0,0,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'rgba(0,0,0,0.2)',
+              overflow: 'hidden',
               flexShrink: 0
             }}>
-              <BookOpen size={20} />
+              <img 
+                src="https://ik.imagekit.io/0ghhw9jvx/about-page-images/emotional-agility-book.jpg" 
+                alt="Emotional Agility Book Cover" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ 
