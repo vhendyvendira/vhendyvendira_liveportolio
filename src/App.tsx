@@ -234,13 +234,20 @@ export default function App() {
     if (shouldType) {
       if (titleProgress >= 0.4 && !subheadVisible) setSubheadVisible(true);
       if (titleProgress >= 0.8 && !listVisible) setListVisible(true);
-      if (titleDone) sessionStorage.setItem('hasSeenIntroAnimation', 'true');
+      if (titleDone) {
+        sessionStorage.setItem('hasSeenIntroAnimation', 'true');
+        setHasSeenIntro(true);
+      }
     } else {
       // Instant/Fade-up state: show everything quickly
       setSubheadVisible(true);
       setListVisible(true);
+      if (skipIntro) {
+        sessionStorage.setItem('hasSeenIntroAnimation', 'true');
+        setHasSeenIntro(true);
+      }
     }
-  }, [titleProgress, titleDone, shouldType, subheadVisible, listVisible]);
+  }, [titleProgress, titleDone, shouldType, subheadVisible, listVisible, skipIntro]);
 
   useEffect(() => {
     // Reset visibility states when changing headlines unless it's the returning state
@@ -453,9 +460,12 @@ export default function App() {
               initial={hasSeenIntro ? "visible" : "hidden"}
               animate="visible"
               variants={{
+                hidden: { opacity: 0 },
                 visible: {
+                  opacity: 1,
                   transition: {
-                    staggerChildren: 0.15
+                    staggerChildren: 0.12,
+                    delayChildren: 0.3
                   }
                 }
               }}
@@ -463,11 +473,12 @@ export default function App() {
               <motion.div 
                 className="status-indicator-wrap"
                 variants={{
-                  hidden: { opacity: 0, x: -10 },
+                  hidden: { opacity: 0, x: -12 },
                   visible: { opacity: 1, x: 0 }
                 }}
                 initial={hasSeenIntro ? "visible" : "hidden"}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                animate="visible"
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div className="status-dot-container">
                   <motion.div 
@@ -663,15 +674,15 @@ export default function App() {
               {/* Header Animates separately */}
               <motion.div 
                 style={{ 
-                  display: listVisible ? "flex" : "none", 
+                  display: "flex",
                   justifyContent: "space-between", 
                   alignItems: "baseline", 
                   paddingBottom: "3rem", 
                   borderBottom: "1px solid rgba(0, 0, 0, 0.05)"
                 }}
-                initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
-                animate={listVisible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : {})}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                initial={hasSeenIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                animate={listVisible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 })}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>MISSION LAUNCHED </span>
                 <span style={{ fontSize: "11px", color: "rgba(0,0,0,0.3)", fontFamily: "var(--font-mono)" }}>0{CASE_STUDIES.length} // OPS</span>

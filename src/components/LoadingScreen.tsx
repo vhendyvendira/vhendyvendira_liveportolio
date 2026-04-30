@@ -54,12 +54,13 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
   // Combined progress for display
   // We show at least the UI progress, but we don't let it finish until assets are ready
   const displayProgress = Math.min(uiProgress, 99); 
-  const finalProgress = assetsReady && uiProgress >= 100 ? 100 : displayProgress;
+  const isComplete = assetsReady && uiProgress >= 100;
+  const finalProgress = isComplete ? 100 : displayProgress;
 
   useEffect(() => {
     if (finalProgress === 100 && !isFinishedCalled.current) {
       isFinishedCalled.current = true;
-      setTimeout(onFinished, isReload ? 100 : 800); 
+      setTimeout(onFinished, isReload ? 100 : 400); 
     }
   }, [finalProgress, onFinished, isReload]);
 
@@ -104,7 +105,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -115,7 +116,8 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        pointerEvents: finalProgress === 100 ? 'none' : 'auto'
       }}
     >
       <motion.div 
