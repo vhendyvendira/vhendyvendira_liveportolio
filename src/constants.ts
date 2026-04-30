@@ -41,7 +41,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     color: "#C8D8FF",
     image: "/case-study-images/film-studio-metago-thumbnail.png",
     slug: "metago-coin",
-    externalLink: "https://github.com/vhendyvendira/metago-coin"
+    externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/refs/heads/main/film-studio-metago-thumbnail.png"
   },
   {
     id: 3, index: "03",
