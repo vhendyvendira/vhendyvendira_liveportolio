@@ -78,28 +78,17 @@ function useTypewriter(text: string, active = true) {
     const type = () => {
       if (i < text.length) {
         const char = text[i];
-        const nextPartial = text.slice(0, i + 1);
         
-        // Base speeds (tuned to fit 1.2-1.5s total duration)
-        let delay = char === " " ? 15 : 22; 
+        // Consistent, premium speed
+        let delay = char === " " ? 40 : 35; 
         
-        // Punctuation pauses
-        if ([",", "—", ".", "&", "\n"].includes(char)) {
-          delay = 120;
+        // Slightly longer pause for punctuation to feel natural
+        if ([",", "—", ".", "&"].includes(char)) {
+          delay = 180;
         }
 
-        // Logic-based micro-pauses for specific phrases
-        if (nextPartial.endsWith("Hi,")) delay = 160;
-        if (nextPartial.endsWith("Vhendy")) delay = 220;
-        if (nextPartial.endsWith("—")) delay = 180;
-
-        // Apply a tiny bit of natural jitter to non-pauses
-        if (delay < 100) {
-          delay += (Math.random() - 0.5) * 10;
-        }
-
-        setDisplayed(nextPartial);
         i++;
+        setDisplayed(text.slice(0, i));
         setProgress(i / text.length);
         
         timeoutId = window.setTimeout(type, delay);
@@ -109,7 +98,8 @@ function useTypewriter(text: string, active = true) {
       }
     };
 
-    const startTimeout = window.setTimeout(type, 600);
+    // Initial wait before starting
+    const startTimeout = window.setTimeout(type, 800);
 
     return () => {
       window.clearTimeout(startTimeout);
@@ -546,77 +536,62 @@ export default function App() {
                 className="main-headline"
                 onClick={() => { if (shouldType) setSkipIntro(true); }}
               >
-                <div style={{ position: "relative" }}>
-                  {(() => {
-                    const text = HEADLINE_DATA.headline;
-                    const vIndex = text.indexOf("Vhendy");
-                    const vEnd = vIndex + 6; // "Vhendy".length
+                {(() => {
+                  const text = HEADLINE_DATA.headline;
+                  const vIndex = text.indexOf("Vhendy");
+                  const vEnd = vIndex + 6; // length of "Vhendy"
+                  
+                  if (vIndex === -1) return typedTitle;
 
-                    if (shouldType) {
-                      if (vIndex === -1) {
-                        return (
-                          <div style={{ transition: "opacity 0.4s ease" }}>
-                            {typedTitle}
-                            <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
-                          </div>
-                        );
-                      }
+                  const before = text.slice(0, vIndex);
+                  const vhendy = "Vhendy";
+                  const after = text.slice(vEnd);
 
-                      return (
-                        <div style={{ transition: "opacity 0.4s ease" }}>
-                          {typedTitle.length <= vIndex ? (
-                            typedTitle
-                          ) : (
-                            <>
-                              {text.slice(0, vIndex)}
-                              <motion.span
-                                className="vhendy-span"
-                                animate={titleDone ? {
-                                  filter: ["blur(2px)", "blur(0px)"],
-                                  y: [2, 0],
-                                  opacity: [0.85, 1],
-                                } : {}}
-                                transition={{
-                                  delay: 0.25,
-                                  duration: 0.6,
-                                  ease: [0.16, 1, 0.3, 1]
-                                }}
-                              >
-                                {typedTitle.slice(vIndex, Math.min(typedTitle.length, vEnd))}
-                              </motion.span>
-                              {typedTitle.length > vEnd && typedTitle.slice(vEnd)}
-                            </>
-                          )}
-                          <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
-                        </div>
-                      );
-                    } else {
-                      if (vIndex === -1) {
-                        return (
-                      <motion.div
-                            initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                          >
-                            {text}
-                          </motion.div>
-                        );
-                      }
+                  if (shouldType) {
+                    return (
+                      <div className="relative inline-block">
+                        {typedTitle.length <= vIndex ? (
+                          typedTitle
+                        ) : (
+                          <>
+                            {before}
+                            <motion.span
+                              className="vhendy-span"
+                              initial={{ opacity: 0.85, filter: "blur(2px)", y: 2 }}
+                              animate={titleDone ? { 
+                                opacity: 1, 
+                                filter: "blur(0px)", 
+                                y: 0 
+                              } : { 
+                                opacity: 0.85, 
+                                filter: "blur(2px)", 
+                                y: 2 
+                              }}
+                              transition={{
+                                delay: 0.3,
+                                duration: 0.5,
+                                ease: [0.16, 1, 0.3, 1]
+                              }}
+                            >
+                              {typedTitle.slice(vIndex, Math.min(typedTitle.length, vEnd))}
+                            </motion.span>
+                            {typedTitle.length > vEnd && typedTitle.slice(vEnd)}
+                          </>
+                        )}
+                        <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
+                      </div>
+                    );
+                  }
 
-                      return (
-                        <motion.div
-                          initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
-                        >
-                          {text.slice(0, vIndex)}
-                          <span className="vhendy-span">Vhendy</span>
-                          {text.slice(vEnd)}
-                        </motion.div>
-                      );
-                    }
-                  })()}
-                </div>
+                  // Non-typing state (instant display)
+                  return (
+                    <div className="relative inline-block">
+                      {before}
+                      <span className="vhendy-span">{vhendy}</span>
+                      {after}
+                    </div>
+                  );
+                })()}
               </h1>
 
               <AnimatePresence>

@@ -67,33 +67,33 @@ body {
 
 @keyframes cursorPulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0; }
 }
 
 .vhendy-span {
   display: inline-block;
   cursor: default;
-  transition: letter-spacing 0.4s ease, opacity 0.4s ease;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   color: #1a1a1a;
+  will-change: transform, filter, opacity;
 }
 
 .vhendy-span:hover {
-  opacity: 0.8;
-  letter-spacing: 0.01em;
+  opacity: 0.7;
+  letter-spacing: 0.005em;
 }
 
 .type-cursor {
   display: inline-block;
-  width: 2px;
-  height: 1em;
-  background-color: #4361ee; /* System Blue */
-  margin-left: 2px;
-  vertical-align: middle;
-  transition: opacity 0.5s ease;
+  width: 1.5px;
+  height: 1.1em;
+  background-color: #4361ee;
+  margin-left: 1px;
+  vertical-align: -0.15em;
 }
 
 .type-cursor.blinking {
-  animation: cursorPulse 1s ease-in-out infinite;
+  animation: cursorPulse 1.2s step-end infinite;
 }
 
 .type-cursor.done {
