@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 
 const COMPANIES = [
-  { name: "Google", info: "Project Management", logo: "/images-company-logo/google-logo.png", scale: 1.0 },
-  { name: "IBM", info: "Enterprise Design Thinking", logo: "/images-company-logo/ibm-logo.png", scale: 0.85 },
-  { name: "McKinsey", info: "Core Skills Level", logo: "/images-company-logo/mckinsey-&-company.png", scale: 1.1 },
-  { name: "Anthropic", info: "AI & Claude Skills", logo: "/images-company-logo/anthropic-logo.png", scale: 0.75 },
-  { name: "RWS Group", info: "Linguistic Prompt Design", logo: "/images-company-logo/rws-group.png", scale: 0.9 }
+  { name: "Google", info: "Project Management", logo: "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/google-logo.png", scale: 1.0 },
+  { name: "IBM", info: "Enterprise Design Thinking", logo: "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/ibm-logo.png", scale: 0.85 },
+  { name: "McKinsey", info: "Core Skills Level", logo: "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/mckinsey-&-company.png", scale: 1.1 },
+  { name: "Anthropic", info: "AI & Claude Skills", logo: "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/anthropic-logo.png", scale: 0.75 },
+  { name: "RWS Group", info: "Linguistic Prompt Design", logo: "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/rws-group.png", scale: 0.9 }
 ];
 
 export default function LearningSection({ visible, hasSeenIntro = false }: { visible: boolean; hasSeenIntro?: boolean }) {

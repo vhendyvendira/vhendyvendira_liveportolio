@@ -24,11 +24,11 @@ export const CRITICAL_IMAGES = [
   '/presence-images/vhendy-andrew-singapore.jpg',
 
   // Learning Section Logos
-  "/images-company-logo/google-logo.png",
-  "/images-company-logo/ibm-logo.png",
-  "/images-company-logo/mckinsey-&-company.png",
-  "/images-company-logo/anthropic-logo.png",
-  "/images-company-logo/rws-group.png"
+  "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/google-logo.png",
+  "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/ibm-logo.png",
+  "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/mckinsey-&-company.png",
+  "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/anthropic-logo.png",
+  "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/rws-group.png"
 ];
 
 export function preloadImage(url: string): Promise<void> {
