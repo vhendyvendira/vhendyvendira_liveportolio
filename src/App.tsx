@@ -557,70 +557,58 @@ export default function App() {
                 <div style={{ position: "relative" }}>
                   {(() => {
                     const text = HEADLINE_DATA.headline;
-                    const vIndex = text.indexOf("Vhendy");
-                    const vEnd = vIndex + 6; // "Vhendy".length
+                    const vName = "Vhendy";
+                    const vIndex = text.indexOf(vName);
+                    const vEnd = vIndex > -1 ? vIndex + vName.length : -1;
 
-                    if (shouldType) {
-                      if (vIndex === -1) {
-                        return (
-                          <div style={{ transition: "opacity 0.4s ease" }}>
-                            {typedTitle}
-                            <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
-                          </div>
-                        );
-                      }
+                    const renderSegmented = (content: string, isFinished: boolean) => {
+                      if (vIndex === -1) return content;
+                      
+                      const before = content.slice(0, vIndex);
+                      const name = content.length > vIndex ? content.slice(vIndex, vEnd) : "";
+                      const after = content.length > vEnd ? content.slice(vEnd) : "";
 
                       return (
-                        <div style={{ transition: "opacity 0.6s ease" }}>
-                          {typedTitle.length <= vIndex ? (
-                            typedTitle
-                          ) : (
-                            <>
-                              {typedTitle.slice(0, vIndex)}
-                              <motion.span
-                                className="vhendy-span"
-                                initial={{ filter: "blur(0px)", y: 0, opacity: 1 }}
-                                animate={titleDone ? {
-                                  filter: ["blur(2px)", "blur(0px)"],
-                                  y: [3, 0],
-                                  opacity: [0.85, 1],
-                                } : {}}
-                                transition={{
-                                  delay: 0.3,
-                                  duration: 0.6,
-                                  ease: [0.16, 1, 0.3, 1]
-                                }}
-                              >
-                                {typedTitle.slice(vIndex, Math.min(typedTitle.length, vEnd))}
-                              </motion.span>
-                              {typedTitle.length > vEnd && typedTitle.slice(vEnd)}
-                            </>
+                        <>
+                          {before}
+                          {name && (
+                            <motion.span
+                              className="vhendy-span"
+                              initial={false}
+                              animate={isFinished ? {
+                                filter: ["blur(0px)", "blur(2px)", "blur(0px)"],
+                                y: [0, -3, 0],
+                                opacity: [1, 0.85, 1],
+                              } : { filter: "blur(0px)", y: 0, opacity: 1 }}
+                              transition={{
+                                delay: 0.3,
+                                duration: 0.6,
+                                ease: [0.16, 1, 0.3, 1]
+                              }}
+                            >
+                              {name}
+                            </motion.span>
                           )}
+                          {after}
+                        </>
+                      );
+                    };
+
+                    if (shouldType) {
+                      return (
+                        <div style={{ transition: "opacity 0.6s ease" }}>
+                          {renderSegmented(typedTitle, titleDone)}
                           <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
                         </div>
                       );
                     } else {
-                      if (vIndex === -1) {
-                        return (
-                      <motion.div
-                            initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                          >
-                            {text}
-                          </motion.div>
-                        );
-                      }
-
                       return (
                         <motion.div
                           initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                          {text.slice(0, vIndex)}
-                          <span className="vhendy-span">Vhendy</span>
-                          {text.slice(vEnd)}
+                          {renderSegmented(text, !hasSeenIntro)}
                         </motion.div>
                       );
                     }
