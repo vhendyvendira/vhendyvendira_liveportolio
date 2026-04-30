@@ -265,14 +265,14 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
                 onClick={() => setSelectedImage({
-                  src: "/presence-images/iddr-apple-event-2025.png",
+                  src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/iddr-apple-event-2025.png",
                   alt: "Apple Developer Academy Event 2025",
                   backstory: "Networking with the Apple ecosystem taught me that simplicity in developer tools requires the most complex engineering."
                 })}
                 style={{ width: "100%", borderRadius: "8px", background: "#f5f5f5", overflow: "hidden", aspectRatio: "16/9", position: 'relative', cursor: 'zoom-in' }}
               >
                 <ProgressiveImage
-                  src="/presence-images/iddr-apple-event-2025.png"
+                  src="https://ik.imagekit.io/0ghhw9jvx/presence-page-images/iddr-apple-event-2025.png"
                   alt="Apple Developer Academy Event 2025"
                   style={{ width: "100%", height: "100%" }}
                 />
@@ -385,14 +385,14 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
             >
               <div 
                 onClick={() => setSelectedImage({
-                  src: "/presence-images/uix-mentor-binaracademy-2022.png",
+                  src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/uix-mentor-binaracademy-2022.png",
                   alt: "Mentorship Session — Binar Academy, 2022",
                   backstory: "Guiding the next generation of designers reinforced that the best way to master a craft is to teach its first principles."
                 })}
                 style={{ width: "100%", aspectRatio: "2/1", borderRadius: "8px", overflow: "hidden", background: "#f5f5f5", position: 'relative', cursor: 'zoom-in' }}
               >
                 <ProgressiveImage
-                  src="/presence-images/uix-mentor-binaracademy-2022.png"
+                  src="https://ik.imagekit.io/0ghhw9jvx/presence-page-images/uix-mentor-binaracademy-2022.png"
                   alt="Mentorship Session — Binar Academy, 2022"
                   style={{ width: "100%", height: "100%" }}
                   imgStyle={{ objectFit: "cover" }}
@@ -563,14 +563,14 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-50px" }}
                   onClick={() => setSelectedImage({
-                    src: "/presence-images/vhendy-bali-airport-2025.46.36.jpeg",
+                    src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-bali-airport-2025.jpeg",
                     alt: "Bali Airport 2025",
                     backstory: "Recovery isn't downtime; it's the recalibration period necessary for high-performance leadership."
                   })}
                   style={{ flex: 1, aspectRatio: "4/3", borderRadius: "8px", overflow: "hidden", background: "#f5f5f5", position: 'relative', cursor: 'zoom-in' }}
                 >
                   <ProgressiveImage 
-                    src="/presence-images/vhendy-bali-airport-2025.46.36.jpeg" 
+                    src="https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-bali-airport-2025.jpeg" 
                     alt="Bali Airport 2025" 
                     style={{ width: "100%", height: "100%" }} 
                     imgStyle={{ objectFit: "cover" }}
@@ -582,14 +582,14 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
                    whileInView="visible"
                    viewport={{ once: true, margin: "-50px" }}
                   onClick={() => setSelectedImage({
-                    src: "/presence-images/pantaimelasti.jpeg",
+                    src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/pantai-melasti.jpeg",
                     alt: "Pantai Melasti",
                     backstory: "Finding perspective at the edge of the world helps in prioritizing what truly matters in product roadmaps."
                   })}
                   style={{ flex: 1, aspectRatio: "4/3", borderRadius: "8px", overflow: "hidden", background: "#f5f5f5", position: 'relative', cursor: 'zoom-in' }}
                 >
                   <ProgressiveImage 
-                    src="/presence-images/pantaimelasti.jpeg" 
+                    src="https://ik.imagekit.io/0ghhw9jvx/presence-page-images/pantai-melasti.jpeg" 
                     alt="Pantai Melasti" 
                     style={{ width: "100%", height: "100%" }} 
                     imgStyle={{ objectFit: "cover" }}

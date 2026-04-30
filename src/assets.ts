@@ -8,13 +8,13 @@ export const CRITICAL_IMAGES = [
   ...CASE_STUDIES.map(cs => cs.image),
   
   // About Page Images
-  '/about-images/google-singapore-2022.png',
+  'https://ik.imagekit.io/0ghhw9jvx/about-page-images/google-singapore-2022.png',
   
   // Presence Page Images
-  '/presence-images/iddr-apple-event-2025.png',
-  '/presence-images/uix-mentor-binaracademy-2022.png',
-  '/presence-images/vhendy-bali-airport-2025.46.36.jpeg',
-  '/presence-images/pantaimelasti.jpeg',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/iddr-apple-event-2025.png',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/uix-mentor-binaracademy-2022.png',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-bali-airport-2025.jpeg',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/pantai-melasti.jpeg',
   
   // Reel Images
   '/presence-images/vhendy-with-angga-iqbal-jogja.jpg',

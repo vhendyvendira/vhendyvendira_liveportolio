@@ -390,7 +390,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 }}
               >
                 <ProgressiveImage 
-                  src="/about-images/google-singapore-2022.png" 
+                  src="https://ik.imagekit.io/0ghhw9jvx/about-page-images/google-singapore-2022.png" 
                   alt="Working environment at Google Singapore"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
