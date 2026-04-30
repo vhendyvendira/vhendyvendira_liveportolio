@@ -67,21 +67,19 @@ body {
 
 @keyframes cursorPulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+  50% { opacity: 0.3; }
 }
 
 .vhendy-span {
   display: inline-block;
   cursor: default;
-  transition: letter-spacing 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+  transition: letter-spacing 0.4s ease, opacity 0.4s ease;
   color: #1a1a1a;
-  position: relative;
-  will-change: filter, transform, opacity;
 }
 
 .vhendy-span:hover {
-  opacity: 0.7;
-  letter-spacing: 0.005em;
+  opacity: 0.8;
+  letter-spacing: 0.01em;
 }
 
 .type-cursor {
@@ -91,11 +89,11 @@ body {
   background-color: #4361ee; /* System Blue */
   margin-left: 2px;
   vertical-align: middle;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s ease;
 }
 
 .type-cursor.blinking {
-  animation: cursorPulse 1.2s ease-in-out infinite;
+  animation: cursorPulse 1s ease-in-out infinite;
 }
 
 .type-cursor.done {

@@ -80,27 +80,23 @@ function useTypewriter(text: string, active = true) {
         const char = text[i];
         const nextPartial = text.slice(0, i + 1);
         
-        // Premium Stable Speed
-        // We use a base delay and subtle adjustments for punctuation
-        // to create a "human-refined" rhythm without jitter.
-        let delay = 32; // Primary character speed
+        // Base speeds (tuned to fit 1.2-1.5s total duration)
+        let delay = char === " " ? 15 : 22; 
         
-        if (char === " ") delay = 25; 
-        
-        // Natural Easing: slightly faster as we progress through a word
-        if (i > 0 && text[i-1] !== " " && char !== " ") {
-          delay = 28;
-        }
-
-        // Punctuation pauses (Clean & Intentional)
+        // Punctuation pauses
         if ([",", "—", ".", "&", "\n"].includes(char)) {
-          delay = 180;
+          delay = 120;
         }
 
-        // Logical breaths for first visit impacts
-        if (nextPartial.endsWith("Hi,")) delay = 350;
-        if (nextPartial.endsWith("Vhendy")) delay = 400;
-        if (nextPartial.endsWith("—")) delay = 300;
+        // Logic-based micro-pauses for specific phrases
+        if (nextPartial.endsWith("Hi,")) delay = 160;
+        if (nextPartial.endsWith("Vhendy")) delay = 220;
+        if (nextPartial.endsWith("—")) delay = 180;
+
+        // Apply a tiny bit of natural jitter to non-pauses
+        if (delay < 100) {
+          delay += (Math.random() - 0.5) * 10;
+        }
 
         setDisplayed(nextPartial);
         i++;
@@ -108,16 +104,12 @@ function useTypewriter(text: string, active = true) {
         
         timeoutId = window.setTimeout(type, delay);
       } else {
-        // Delay the "done" state slightly for a softer finish
-        timeoutId = window.setTimeout(() => {
-          setDone(true);
-          setProgress(1);
-        }, 300);
+        setDone(true);
+        setProgress(1);
       }
     };
 
-    // Entrance delay for focus
-    const startTimeout = window.setTimeout(type, 800);
+    const startTimeout = window.setTimeout(type, 600);
 
     return () => {
       window.clearTimeout(startTimeout);
@@ -240,8 +232,8 @@ export default function App() {
 
   useEffect(() => {
     if (shouldType) {
-      if (titleProgress >= 0.9 && !subheadVisible) setSubheadVisible(true);
-      if (titleDone && !listVisible) setListVisible(true);
+      if (titleProgress >= 0.4 && !subheadVisible) setSubheadVisible(true);
+      if (titleProgress >= 0.8 && !listVisible) setListVisible(true);
       if (titleDone) {
         sessionStorage.setItem('hasSeenIntroAnimation', 'true');
         setHasSeenIntro(true);
@@ -557,58 +549,69 @@ export default function App() {
                 <div style={{ position: "relative" }}>
                   {(() => {
                     const text = HEADLINE_DATA.headline;
-                    const vName = "Vhendy";
-                    const vIndex = text.indexOf(vName);
-                    const vEnd = vIndex > -1 ? vIndex + vName.length : -1;
-
-                    const renderSegmented = (content: string, isFinished: boolean) => {
-                      if (vIndex === -1) return content;
-                      
-                      const before = content.slice(0, vIndex);
-                      const name = content.length > vIndex ? content.slice(vIndex, vEnd) : "";
-                      const after = content.length > vEnd ? content.slice(vEnd) : "";
-
-                      return (
-                        <>
-                          {before}
-                          {name && (
-                            <motion.span
-                              className="vhendy-span"
-                              initial={false}
-                              animate={isFinished ? {
-                                filter: ["blur(0px)", "blur(2px)", "blur(0px)"],
-                                y: [0, -3, 0],
-                                opacity: [1, 0.85, 1],
-                              } : { filter: "blur(0px)", y: 0, opacity: 1 }}
-                              transition={{
-                                delay: 0.3,
-                                duration: 0.6,
-                                ease: [0.16, 1, 0.3, 1]
-                              }}
-                            >
-                              {name}
-                            </motion.span>
-                          )}
-                          {after}
-                        </>
-                      );
-                    };
+                    const vIndex = text.indexOf("Vhendy");
+                    const vEnd = vIndex + 6; // "Vhendy".length
 
                     if (shouldType) {
+                      if (vIndex === -1) {
+                        return (
+                          <div style={{ transition: "opacity 0.4s ease" }}>
+                            {typedTitle}
+                            <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
+                          </div>
+                        );
+                      }
+
                       return (
-                        <div style={{ transition: "opacity 0.6s ease" }}>
-                          {renderSegmented(typedTitle, titleDone)}
+                        <div style={{ transition: "opacity 0.4s ease" }}>
+                          {typedTitle.length <= vIndex ? (
+                            typedTitle
+                          ) : (
+                            <>
+                              {text.slice(0, vIndex)}
+                              <motion.span
+                                className="vhendy-span"
+                                animate={titleDone ? {
+                                  filter: ["blur(2px)", "blur(0px)"],
+                                  y: [2, 0],
+                                  opacity: [0.85, 1],
+                                } : {}}
+                                transition={{
+                                  delay: 0.25,
+                                  duration: 0.6,
+                                  ease: [0.16, 1, 0.3, 1]
+                                }}
+                              >
+                                {typedTitle.slice(vIndex, Math.min(typedTitle.length, vEnd))}
+                              </motion.span>
+                              {typedTitle.length > vEnd && typedTitle.slice(vEnd)}
+                            </>
+                          )}
                           <span className={`type-cursor ${titleDone ? 'done' : 'blinking'}`} />
                         </div>
                       );
                     } else {
+                      if (vIndex === -1) {
+                        return (
+                      <motion.div
+                            initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                          >
+                            {text}
+                          </motion.div>
+                        );
+                      }
+
                       return (
                         <motion.div
                           initial={hasSeenIntro ? false : { opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                          {renderSegmented(text, !hasSeenIntro)}
+                          {text.slice(0, vIndex)}
+                          <span className="vhendy-span">Vhendy</span>
+                          {text.slice(vEnd)}
                         </motion.div>
                       );
                     }
