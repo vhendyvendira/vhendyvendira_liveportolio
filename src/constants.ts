@@ -18,7 +18,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: ["Notion", "Jira", "Antigravity"],
     projectType: "Personal Project",
     color: "#F2F2F2",
-    image: "/case-study-images/gotham-preview.png",
+    image: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/gotham-preview.png",
     slug: "gotham-risk-intelligence",
     externalLink: "https://raw.githubusercontent.com/vhendyvendira/cuddly-guacamole/main/gotham-preview.png"
   },
