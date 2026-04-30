@@ -619,7 +619,13 @@ export default function AboutView({ navigate }: AboutViewProps) {
             </p>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <a href="#" className="about-cta-link" style={{ fontSize: '16px', fontWeight: 600 }}>
+              <a 
+                href="https://drive.google.com/file/d/1VVxShI_sOAfDhzkl0xRd_kXM3gZeimbE/view?usp=sharing" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-cta-link" 
+                style={{ fontSize: '16px', fontWeight: 600 }}
+              >
                 View full CV
                 <span style={{ fontSize: '18px' }}>→</span>
               </a>

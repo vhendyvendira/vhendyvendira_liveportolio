@@ -20,7 +20,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     color: "#F2F2F2",
     image: "/case-study-images/gotham-preview.png",
     slug: "gotham-risk-intelligence",
-    externalLink: "https://github.com/vhendyvendira/gotham-risk-intelligence"
+    externalLink: "https://github.com/vhendyvendira/cuddly-guacamole/blob/main/gotham-preview.png?raw=true"
   },
   {
     id: 2, index: "02",
