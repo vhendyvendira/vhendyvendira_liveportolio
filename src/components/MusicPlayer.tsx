@@ -30,10 +30,10 @@ export default function MusicPlayer() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.7, rotate: -5 }}
+      initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
       animate={{ 
         opacity: isHovered ? 0.95 : 0.4, 
-        scale: isHovered ? 0.78 : 0.75, 
+        scale: isHovered ? 0.88 : 0.85, 
         rotate: isHovered ? -1 : -2.5 
       }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}

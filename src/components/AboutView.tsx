@@ -94,40 +94,40 @@ interface OperatingPrincipleProps {
 function OperatingPrinciple({ idx, h, p }: OperatingPrincipleProps) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       onMouseEnter={() => soundService.play('hover')}
       transition={{ 
-        duration: 0.5,
+        duration: 0.8,
         delay: idx * 0.1,
         ease: [0.16, 1, 0.3, 1]
       }}
       style={{ 
+        padding: '2rem 1.5rem',
+        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        borderRight: '1px solid rgba(0,0,0,0.05)',
+        background: 'transparent',
         display: 'flex',
-        gap: '1.5rem',
-        alignItems: 'flex-start',
-        borderLeft: '1px solid rgba(0,0,0,0.05)',
-        paddingLeft: '1.5rem',
-        paddingBottom: '0.5rem'
+        flexDirection: 'column',
+        gap: '1rem'
       }}
     >
       <div style={{ 
-        fontSize: '10px', 
+        fontSize: '9px', 
         fontFamily: 'var(--font-mono)', 
         color: 'rgba(0,0,0,0.2)', 
-        marginTop: '4px',
-        width: '20px',
-        fontWeight: 600
+        fontWeight: 700,
+        letterSpacing: '0.1em'
       }}>
-        0{idx + 1}
+        PRINCIPLE_0{idx + 1}
       </div>
 
-      <div style={{ flex: 1 }}>
+      <div>
         <h4 style={{ 
           fontSize: '15px', 
           fontWeight: 600, 
-          marginBottom: '0.35rem', 
+          marginBottom: '0.4rem', 
           color: '#1a1a1a',
           letterSpacing: '-0.01em'
         }}>
@@ -137,7 +137,7 @@ function OperatingPrinciple({ idx, h, p }: OperatingPrincipleProps) {
           fontSize: '14px', 
           lineHeight: 1.5, 
           color: 'rgba(0,0,0,0.5)',
-          maxWidth: '320px'
+          maxWidth: '280px'
         }}>
           {p}
         </p>
@@ -452,132 +452,52 @@ export default function AboutView({ navigate }: AboutViewProps) {
             ))}
           </div>
 
-          {/* Arsenal vs Mentality Section */}
+          {/* Mentality / Operating Principles Section */}
           <div style={{ marginBottom: '8rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '6rem' }}>
-              
-              {/* THE ARSENAL */}
-              <motion.div 
-                variants={itemVariants}
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-              >
-                <div style={{ marginBottom: '2.5rem' }}>
-                  <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>01 / THE ARSENAL</span>
-                  <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Hard Skills & Tools</h3>
-                </div>
-                
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                  borderTop: '1px solid rgba(0,0,0,0.05)',
-                }}>
-                  {[
-                    { h: 'Product Design', p: 'Shaping flows from concept to UI using Whimsical & Figma.' },
-                    { h: 'Technical Frameworks', p: 'Using JavaScript to navigate constraints and inform design decisions.' },
-                    { h: 'AI Implementation', p: 'Designing AI flows with Claude, Cursor, Lovable, Antigravity.' },
-                    { h: 'Program Operations', p: 'Structuring workflows with Jira, ClickUp, Trello from plan to delivery.' },
-                  ].map((item, idx) => (
-                    <motion.div 
-                      key={idx} 
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ 
-                        duration: 0.8,
-                        delay: idx * 0.1,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                      style={{ 
-                        padding: '2rem 1.5rem',
-                        borderBottom: '1px solid rgba(0,0,0,0.05)',
-                        borderRight: '1px solid rgba(0,0,0,0.05)',
-                        background: 'transparent',
-                        position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1rem'
-                      }}
-                    >
-                      <div style={{ 
-                        fontSize: '9px', 
-                        fontFamily: 'var(--font-mono)', 
-                        color: 'rgba(0,0,0,0.2)', 
-                        fontWeight: 700,
-                        letterSpacing: '0.1em'
-                      }}>
-                        TRACK_0{idx + 1}
-                      </div>
+            <motion.div 
+              variants={itemVariants}
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              style={{ marginBottom: '3rem' }}
+            >
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Operating Principles</h3>
+              </div>
 
-                      <div>
-                        <h4 style={{ 
-                          fontSize: '14px', 
-                          fontWeight: 600, 
-                          marginBottom: '0.5rem',
-                          letterSpacing: '-0.01em',
-                          color: '#1a1a1a'
-                        }}>
-                          {item.h}
-                        </h4>
-                        <p style={{ 
-                          fontSize: '13px', 
-                          lineHeight: 1.6, 
-                          color: 'rgba(0,0,0,0.5)',
-                          maxWidth: '240px'
-                        }}>
-                          {item.p}
-                        </p>
-                      </div>
-                      
-                      <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem' }}>
-                        <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)' }} />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* THE MENTALITY */}
-              <motion.div 
-                variants={itemVariants}
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-              >
-                <div style={{ marginBottom: '2.5rem' }}>
-                  <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>02 / THE MENTALITY</span>
-                  <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Operating Principles</h3>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', position: 'relative' }}>
-                  {[
-                    { 
-                      h: 'Understand the Real Problem', 
-                      p: 'Start by identifying the root cause and current state before deciding.' 
-                    },
-                    { 
-                      h: 'Context-Driven Decisions', 
-                      p: 'Knowing when to take initiative and when to align with direction.' 
-                    },
-                    { 
-                      h: 'Think Beyond Constraints', 
-                      p: 'When blocked, explore alternative paths instead of forcing solutions.' 
-                    },
-                    { 
-                      h: 'Calm, Collaborative Thinking', 
-                      p: 'Staying composed, understanding how others think, and aligning decisions.' 
-                    },
-                  ].map((item, idx) => (
-                    <OperatingPrinciple
-                      key={idx}
-                      idx={idx}
-                      h={item.h}
-                      p={item.p}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-
-            </div>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+                gap: '0',
+                borderTop: '1px solid rgba(0,0,0,0.05)',
+                borderLeft: '1px solid rgba(0,0,0,0.05)'
+              }}>
+                {[
+                  { 
+                    h: 'Understand the Real Problem', 
+                    p: 'Start by identifying the root cause and current state before deciding.' 
+                  },
+                  { 
+                    h: 'Context-Driven Decisions', 
+                    p: 'Knowing when to take initiative and when to align with direction.' 
+                  },
+                  { 
+                    h: 'Think Beyond Constraints', 
+                    p: 'When blocked, explore alternative paths instead of forcing solutions.' 
+                  },
+                  { 
+                    h: 'Calm, Collaborative Thinking', 
+                    p: 'Staying composed, understanding how others think, and aligning decisions.' 
+                  },
+                ].map((item, idx) => (
+                  <OperatingPrinciple
+                    key={idx}
+                    idx={idx}
+                    h={item.h}
+                    p={item.p}
+                  />
+                ))}
+              </div>
+            </motion.div>
           </div>
 
           <motion.hr variants={itemVariants} className="about-rule" />
@@ -590,7 +510,6 @@ export default function AboutView({ navigate }: AboutViewProps) {
             style={{ marginTop: '6rem', marginBottom: '6rem' }}
           >
             <div style={{ marginBottom: '1.5rem' }}>
-              <span className="about-label" style={{ color: '#000', opacity: 0.4 }}>03 / GROWTH</span>
               <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Beyond What I Know</h3>
             </div>
             <p style={{ fontSize: '18px', lineHeight: 1.6, color: 'rgba(0,0,0,0.7)', maxWidth: '600px' }}>

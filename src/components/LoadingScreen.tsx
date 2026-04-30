@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CRITICAL_IMAGES, preloadAllAssets } from '../assets';
 
 const LOG_LINES = [
-  "Initializing launch systems...",
-  "Calibrating navigation for orbit...",
-  "Preparing Dragon Starship for ignition...",
-  "Running pre-launch diagnostics...",
-  "Systems nominal. Ready for ignition."
+  "Finding the right light...",
+  "Mapping out the journey...",
+  "Gathering scattered thoughts...",
+  "Putting the final pieces together...",
+  "Almost there. Welcome home."
 ];
 
 export default function LoadingScreen({ onFinished, isReload = false }: { onFinished: () => void, isReload?: boolean }) {
@@ -155,14 +155,14 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
             style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
           >
             <span style={{ 
-              fontSize: '10px', 
+              fontSize: '11px', 
               fontFamily: 'var(--font-mono)', 
-              color: 'rgba(255,255,255,0.3)',
-              letterSpacing: '0.3em',
+              color: 'rgba(255,255,255,0.4)',
+              letterSpacing: '0.2em',
               fontWeight: 500,
               textTransform: 'uppercase'
             }}>
-              Mission Command Center
+              Setting the stage
             </span>
             <div style={{ height: '1px', width: '20px', background: 'rgba(255,255,255,0.1)', margin: '0 auto' }} />
           </motion.div>
@@ -191,13 +191,13 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
             <div style={{ 
               display: 'flex', 
               justifyContent: 'space-between',
-              marginTop: '1rem',
+              marginTop: '1.2rem',
               fontFamily: 'var(--font-mono)',
-              fontSize: '9px',
-              letterSpacing: '0.1em',
+              fontSize: '11px',
+              letterSpacing: '0.05em',
               color: 'rgba(255,255,255,0.4)'
             }}>
-              <span>SYNCING DATA: {Math.floor(assetProgress * 100)}%</span>
+              <span>BRINGING DETAILS TOGETHER: {Math.floor(assetProgress * 100)}%</span>
               <span>{Math.floor(finalProgress).toString().padStart(3, '0')}%</span>
             </div>
           </div>
@@ -224,12 +224,12 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
                   boxShadow: '0 0 8px rgba(255,255,255,0.5)' 
                 }} />
                 <p style={{
-                  fontSize: '12px',
+                  fontSize: '14px',
                   fontFamily: 'var(--font-mono)',
-                  color: 'rgba(255,255,255,0.8)',
+                  color: 'rgba(255,255,255,0.9)',
                   textAlign: 'center',
-                  fontWeight: 400,
-                  textTransform: 'uppercase'
+                  fontWeight: 500,
+                  textTransform: 'none'
                 }}>
                   {LOG_LINES[currentLine]}
                 </p>
@@ -247,11 +247,11 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         pointerEvents: 'none'
       }} />
 
-      <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', fontSize: '9px', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
-        SYS_VER: 2.1.0-PRELOADER
+      <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
+        PRELOADER // V2.1.0
       </div>
-      <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', fontSize: '9px', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
-        LAT: 28.5729° N | LONG: 80.6490° W
+      <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
+        VHENDY.COM | EST. 2026
       </div>
     </motion.div>
   );

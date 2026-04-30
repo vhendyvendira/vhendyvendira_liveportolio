@@ -679,6 +679,102 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </div>
                   </motion.div>
 
+                  {/* CONTENT GALLERY */}
+                  <motion.div 
+                    className="modal-section"
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    {/* PROCESS ARCHIVE */}
+                    <div style={{ marginBottom: "5rem" }}>
+                      <div className="modal-section-label" style={{ marginBottom: "2rem", color: "#4361ee", letterSpacing: "0.15em" }}>PROCESS ARCHIVE</div>
+                      <div style={{ 
+                        columnCount: 2, 
+                        columnGap: "40px",
+                        width: "100%"
+                      }}>
+                        {[
+                          { src: "https://ik.imagekit.io/0ghhw9jvx/privy-acceleration-images/paris-acc-class.jpg", alt: "Privy Acceleration - Paris Class" },
+                          { src: "https://ik.imagekit.io/0ghhw9jvx/privy-acceleration-images/clus-acc-class-.jpg", alt: "Privy Acceleration - Clus Class" },
+                          { src: "https://ik.imagekit.io/0ghhw9jvx/privy-acceleration-images/jakal-acc-class.jpg", alt: "Privy Acceleration - Jakal Class" },
+                          { src: "https://ik.imagekit.io/0ghhw9jvx/privy-acceleration-images/kapten-haryadi-acc-class.jpg", alt: "Privy Acceleration - Kapten Haryadi Class" }
+                        ].map((img, i) => (
+                          <motion.div 
+                            key={i}
+                            className="modal-gallery-item"
+                            whileHover={{ scale: 1.01 }}
+                            onClick={() => setLightboxImg(img.src)}
+                            style={{ 
+                              borderRadius: "24px", 
+                              boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+                              breakInside: "avoid",
+                              marginBottom: "40px",
+                              background: "transparent"
+                            }}
+                          >
+                             <img 
+                               src={img.src} 
+                               alt={img.alt} 
+                               style={{ width: "100%", height: "auto", display: "block" }}
+                             />
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* TEAM BEHINDED */}
+                    <div>
+                      <div className="modal-section-label" style={{ marginBottom: "2rem", color: "#4361ee", letterSpacing: "0.15em" }}>TEAM BEHINDED</div>
+                      <div className="modal-grid-2x2" style={{ gap: "40px", alignItems: "start" }}>
+                        {[
+                          { 
+                            src: "https://ik.imagekit.io/0ghhw9jvx/privy-acceleration-images/acc-commitee-team.jpg", 
+                            alt: "Acceleration Committee Team", 
+                            label: "ACCELERATION COMMITTEE" 
+                          },
+                          { 
+                            src: "https://ik.imagekit.io/0ghhw9jvx/privy-acceleration-images/hr-team-2023.jpeg", 
+                            alt: "Core Program Team", 
+                            label: "PRIVY HR TEAM" 
+                          }
+                        ].map((img, i) => (
+                          <div key={i} style={{ display: "flex", flexDirection: "column" }}>
+                            <motion.div 
+                              className="modal-gallery-item"
+                              whileHover={{ scale: 1.01 }}
+                              onClick={() => setLightboxImg(img.src)}
+                              style={{ 
+                                borderRadius: "24px", 
+                                marginBottom: "2rem", 
+                                boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+                                background: "transparent"
+                              }}
+                            >
+                               <img 
+                                 src={img.src} 
+                                 alt={img.alt} 
+                                 style={{ width: "100%", height: "auto", display: "block" }}
+                               />
+                            </motion.div>
+                            <div style={{ 
+                              textAlign: "center", 
+                              fontSize: "12px", 
+                              fontFamily: "var(--font-mono)", 
+                              color: "rgba(0,0,0,0.4)", 
+                              fontWeight: 600,
+                              letterSpacing: "0.1em",
+                              textTransform: "uppercase"
+                            }}>
+                              {img.label}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
                   {/* KEY OWNERSHIP */}
                   <motion.div 
                     className="modal-section"

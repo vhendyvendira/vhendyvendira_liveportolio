@@ -16,10 +16,10 @@ export default function ReadingActivity() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.7, rotate: -2 }}
+      initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
       animate={{ 
         opacity: isHovered ? 0.95 : 0.4, 
-        scale: isHovered ? 0.78 : 0.75, 
+        scale: isHovered ? 0.88 : 0.85, 
         rotate: isHovered ? -2 : -4 
       }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
