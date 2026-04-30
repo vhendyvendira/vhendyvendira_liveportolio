@@ -80,23 +80,27 @@ function useTypewriter(text: string, active = true) {
         const char = text[i];
         const nextPartial = text.slice(0, i + 1);
         
-        // Base speeds (tuned to fit 1.2-1.5s total duration)
-        let delay = char === " " ? 15 : 22; 
+        // Premium Stable Speed
+        // We use a base delay and subtle adjustments for punctuation
+        // to create a "human-refined" rhythm without jitter.
+        let delay = 32; // Primary character speed
         
-        // Punctuation pauses
+        if (char === " ") delay = 25; 
+        
+        // Natural Easing: slightly faster as we progress through a word
+        if (i > 0 && text[i-1] !== " " && char !== " ") {
+          delay = 28;
+        }
+
+        // Punctuation pauses (Clean & Intentional)
         if ([",", "—", ".", "&", "\n"].includes(char)) {
-          delay = 120;
+          delay = 180;
         }
 
-        // Logic-based micro-pauses for specific phrases
-        if (nextPartial.endsWith("Hi,")) delay = 160;
-        if (nextPartial.endsWith("Vhendy")) delay = 220;
-        if (nextPartial.endsWith("—")) delay = 180;
-
-        // Apply a tiny bit of natural jitter to non-pauses
-        if (delay < 100) {
-          delay += (Math.random() - 0.5) * 10;
-        }
+        // Logical breaths for first visit impacts
+        if (nextPartial.endsWith("Hi,")) delay = 350;
+        if (nextPartial.endsWith("Vhendy")) delay = 400;
+        if (nextPartial.endsWith("—")) delay = 300;
 
         setDisplayed(nextPartial);
         i++;
@@ -104,12 +108,16 @@ function useTypewriter(text: string, active = true) {
         
         timeoutId = window.setTimeout(type, delay);
       } else {
-        setDone(true);
-        setProgress(1);
+        // Delay the "done" state slightly for a softer finish
+        timeoutId = window.setTimeout(() => {
+          setDone(true);
+          setProgress(1);
+        }, 300);
       }
     };
 
-    const startTimeout = window.setTimeout(type, 600);
+    // Entrance delay for focus
+    const startTimeout = window.setTimeout(type, 800);
 
     return () => {
       window.clearTimeout(startTimeout);
@@ -232,8 +240,8 @@ export default function App() {
 
   useEffect(() => {
     if (shouldType) {
-      if (titleProgress >= 0.4 && !subheadVisible) setSubheadVisible(true);
-      if (titleProgress >= 0.8 && !listVisible) setListVisible(true);
+      if (titleProgress >= 0.9 && !subheadVisible) setSubheadVisible(true);
+      if (titleDone && !listVisible) setListVisible(true);
       if (titleDone) {
         sessionStorage.setItem('hasSeenIntroAnimation', 'true');
         setHasSeenIntro(true);
@@ -563,7 +571,7 @@ export default function App() {
                       }
 
                       return (
-                        <div style={{ transition: "opacity 0.4s ease" }}>
+                        <div style={{ transition: "opacity 0.6s ease" }}>
                           {typedTitle.length <= vIndex ? (
                             typedTitle
                           ) : (
@@ -572,13 +580,13 @@ export default function App() {
                               <motion.span
                                 className="vhendy-span"
                                 animate={titleDone ? {
-                                  filter: ["blur(2px)", "blur(0px)"],
-                                  y: [2, 0],
-                                  opacity: [0.85, 1],
+                                  filter: ["blur(1px)", "blur(0px)"],
+                                  y: [1, 0],
+                                  opacity: [0.9, 1],
                                 } : {}}
                                 transition={{
-                                  delay: 0.25,
-                                  duration: 0.6,
+                                  delay: 0.1,
+                                  duration: 0.8,
                                   ease: [0.16, 1, 0.3, 1]
                                 }}
                               >
