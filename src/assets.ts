@@ -17,11 +17,11 @@ export const CRITICAL_IMAGES = [
   'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/pantai-melasti.jpeg',
   
   // Reel Images
-  '/presence-images/vhendy-with-angga-iqbal-jogja.jpg',
-  '/presence-images/vhendy-hafidz.png',
-  '/presence-images/vhendy-on-kanvas-confrence.png',
-  '/presence-images/vhendy-femmy-nabila.jpeg',
-  '/presence-images/vhendy-andrew-singapore.jpg',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-with-angga-iqbal-jogja.jpg',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-hafidz.png',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-on-kanvas-confrence.png',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-femmy-nabila.jpeg',
+  'https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-andrew-singapore.jpg',
 
   // Learning Section Logos
   "https://ik.imagekit.io/0ghhw9jvx/image-company-logo/google-logo.png",

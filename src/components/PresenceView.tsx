@@ -79,27 +79,27 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
 
   const REEL_IMAGES: ImageMoment[] = [
     { 
-      src: "/presence-images/vhendy-with-angga-iqbal-jogja.jpg", 
+      src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-with-angga-iqbal-jogja.jpg", 
       alt: "Jogja Professional Meetup",
       backstory: "Community is the multiplier; sharing space with fellow creators in Jogja reminded me that innovation is a social act."
     },
     { 
-      src: "/presence-images/vhendy-hafidz.png", 
+      src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-hafidz.png", 
       alt: "Portrait moment",
       backstory: "Quiet moments of reflection are where system optimizations are often born, away from the screen."
     },
     { 
-      src: "/presence-images/vhendy-on-kanvas-confrence.png", 
+      src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-on-kanvas-confrence.png", 
       alt: "Guest Speaker at Kanvas Conference",
       backstory: "Speaking at Kanvas was about operational empathy—ensuring that design systems actually serve the people using them."
     },
     { 
-      src: "/presence-images/vhendy-femmy-nabila.jpeg", 
+      src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-femmy-nabila.jpeg", 
       alt: "Community with Femmy & Nabila",
       backstory: "Building in community means growing together; these shared moments define the mission behind the work."
     },
     { 
-      src: "/presence-images/vhendy-andrew-singapore.jpg", 
+      src: "https://ik.imagekit.io/0ghhw9jvx/presence-page-images/vhendy-andrew-singapore.jpg", 
       alt: "Startup Summit Singapore",
       backstory: "Singapore's pace of innovation is a reminder that operational speed is a competitive advantage when paired with clarity."
     }
