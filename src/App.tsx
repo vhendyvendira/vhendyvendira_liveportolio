@@ -576,17 +576,18 @@ export default function App() {
                             typedTitle
                           ) : (
                             <>
-                              {text.slice(0, vIndex)}
+                              {typedTitle.slice(0, vIndex)}
                               <motion.span
                                 className="vhendy-span"
+                                initial={{ filter: "blur(0px)", y: 0, opacity: 1 }}
                                 animate={titleDone ? {
-                                  filter: ["blur(1px)", "blur(0px)"],
-                                  y: [1, 0],
-                                  opacity: [0.9, 1],
+                                  filter: ["blur(2px)", "blur(0px)"],
+                                  y: [3, 0],
+                                  opacity: [0.85, 1],
                                 } : {}}
                                 transition={{
-                                  delay: 0.1,
-                                  duration: 0.8,
+                                  delay: 0.3,
+                                  duration: 0.6,
                                   ease: [0.16, 1, 0.3, 1]
                                 }}
                               >
