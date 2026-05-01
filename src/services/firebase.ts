@@ -1,10 +1,28 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, updateDoc, setDoc, increment } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, updateDoc, setDoc, increment, writeBatch } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 // @ts-ignore - firestoreDatabaseId is in the JSON but not in the standard AppOptions type
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+const getIPHash = async (): Promise<string | null> => {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    const ip = data.ip;
+    
+    // Create a simple hash of the IP for privacy
+    const msgUint8 = new TextEncoder().encode(ip);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  } catch (error) {
+    console.error("Error detecting IP:", error);
+    return null;
+  }
+};
 
 export const getVisitorCount = async () => {
   try {
@@ -22,26 +40,41 @@ export const getVisitorCount = async () => {
 };
 
 export const trackVisit = async () => {
-  // Check if we've already counted this session
-  if (sessionStorage.getItem('visited')) return;
+  // 1. Detect IP Hash
+  const visitorHash = await getIPHash();
+  if (!visitorHash) return;
 
   try {
-    const docRef = doc(db, 'stats', 'global');
-    const docSnap = await getDoc(docRef);
+    // 2. Check if this visitor has been tracked before
+    const visitorRef = doc(db, 'uniqueVisitors', visitorHash);
+    const visitorSnap = await getDoc(visitorRef);
 
-    if (docSnap.exists()) {
-      await updateDoc(docRef, {
+    if (visitorSnap.exists()) {
+      // Already counted this IP
+      return;
+    }
+
+    // 3. Increment count and record visitor atomically
+    const batch = writeBatch(db);
+    const statsRef = doc(db, 'stats', 'global');
+    const statsSnap = await getDoc(statsRef);
+
+    if (statsSnap.exists()) {
+      batch.update(statsRef, {
         visitorCount: increment(1)
       });
     } else {
-      // Initialize if it doesn't exist
-      await setDoc(docRef, {
+      batch.set(statsRef, {
         visitorCount: 1
       });
     }
-    
-    sessionStorage.setItem('visited', 'true');
+
+    batch.set(visitorRef, {
+      visitedAt: new Date().toISOString()
+    });
+
+    await batch.commit();
   } catch (error) {
-    console.error("Error tracking visit:", error);
+    console.error("Error tracking unique visit:", error);
   }
 };

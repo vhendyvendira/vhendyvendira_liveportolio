@@ -165,6 +165,14 @@ export default function AboutView({ navigate }: AboutViewProps) {
   const threadOpacity = useTransform(storyScrollProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
 
   // Animation Variants
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -557,25 +565,44 @@ export default function AboutView({ navigate }: AboutViewProps) {
         </div>
       </div>
 
-      {/* Floating Widgets - Staggered entrance */}
-      <motion.div variants={decorativeEntranceVariants}>
-        <MusicPlayer />
-      </motion.div>
-      <motion.div variants={decorativeEntranceVariants}>
-        <WorldClock />
-      </motion.div>
-      <motion.div variants={decorativeEntranceVariants}>
-        <RunningActivity />
-      </motion.div>
-      <motion.div variants={decorativeEntranceVariants}>
-        <ReadingActivity />
-      </motion.div>
-      <motion.div variants={decorativeEntranceVariants}>
-        <LanguageActivity />
-      </motion.div>
-      <motion.div variants={decorativeEntranceVariants}>
-        <GardeningActivity />
-      </motion.div>
+      {/* Floating Widgets / Life Context Section */}
+      <div className={isMobile ? "about-widgets-section" : ""}>
+        {isMobile && (
+          <motion.div 
+            variants={itemVariants}
+            style={{ 
+              padding: '0 2rem', 
+              marginBottom: '2rem', 
+              maxWidth: '640px', 
+              margin: '0 auto 2rem' 
+            }}
+          >
+            <h3 style={{ fontSize: '20px', fontWeight: 600, letterSpacing: '-0.02em', color: 'rgba(0,0,0,0.8)' }}>Life Context</h3>
+            <p style={{ fontSize: '13px', color: 'rgba(0,0,0,0.4)', marginTop: '0.25rem' }}>Atmosphere & interests while building.</p>
+          </motion.div>
+        )}
+        
+        <div className={isMobile ? "about-widgets-grid" : ""}>
+          <motion.div variants={decorativeEntranceVariants}>
+            <MusicPlayer />
+          </motion.div>
+          <motion.div variants={decorativeEntranceVariants}>
+            <WorldClock />
+          </motion.div>
+          <motion.div variants={decorativeEntranceVariants}>
+            <RunningActivity />
+          </motion.div>
+          <motion.div variants={decorativeEntranceVariants}>
+            <ReadingActivity />
+          </motion.div>
+          <motion.div variants={decorativeEntranceVariants}>
+            <LanguageActivity />
+          </motion.div>
+          <motion.div variants={decorativeEntranceVariants}>
+            <GardeningActivity />
+          </motion.div>
+        </div>
+      </div>
     </motion.div>
   );
 }
