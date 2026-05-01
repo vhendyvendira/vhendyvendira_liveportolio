@@ -550,7 +550,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
               </a>
               
               <div style={{ marginTop: '0.75rem', fontSize: '14px', color: 'rgba(0,0,0,0.4)', lineHeight: 1.6 }}>
-                <a href="mailto:vhendyvendira@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>vhendyvendira@gmail.com · Jakarta, ID · Open to Collaboration</a>
+                Built with Love · Jakarta, ID · Open to Collaboration
               </div>
             </div>
           </motion.div>
