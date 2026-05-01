@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import { CASE_STUDIES } from './constants';
 import { soundService } from './services/soundService';
+import { trackVisit } from './services/firebase';
 import CaseStudyModal from './components/CaseStudyModal';
 import CaseStudyCard from './components/CaseStudyCard';
 import AboutView from './components/AboutView';
@@ -116,6 +117,10 @@ function useTypewriter(text: string, active = true) {
 
 export default function App() {
   const { route, navigate } = useHashRouter();
+
+  useEffect(() => {
+    trackVisit();
+  }, []);
 
   const handleNavigate = useCallback((path: string) => {
     soundService.play('transition');

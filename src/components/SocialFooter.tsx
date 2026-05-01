@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Social } from '../types';
 import { soundService } from '../services/soundService';
+import { getVisitorCount } from '../services/firebase';
 
 const SOCIALS: Social[] = [
   {
@@ -62,7 +63,14 @@ const SOCIALS: Social[] = [
 
 export default function SocialFooter({ visible, fullWidth, isMobile, footerYear }: { visible: boolean, fullWidth?: boolean, isMobile?: boolean, footerYear?: string }) {
   const [copied, setCopied] = useState(false);
+  const [vcount, setVcount] = useState<number | null>(null);
   const email = "vhendypersonal@gmail.com";
+
+  useEffect(() => {
+    if (visible) {
+      getVisitorCount().then(setVcount);
+    }
+  }, [visible]);
 
   const handleCopy = async () => {
     try {
@@ -78,12 +86,20 @@ export default function SocialFooter({ visible, fullWidth, isMobile, footerYear 
   return (
     <div className={`social-footer ${visible ? 'visible' : ''} ${fullWidth ? 'full-width' : ''} ${isMobile ? 'is-mobile' : ''}`} aria-label="Footer contacts">
       <div className="footer-content">
-        <div className="footer-left-group flex items-center gap-6">
-          {footerYear && (
-            <div className="footer-year font-mono text-[11px] text-black/20">
-              {footerYear}
-            </div>
-          )}
+        <div className="footer-left-group flex items-center gap-4 md:gap-8">
+          <div className="flex items-center gap-3">
+            {footerYear && (
+              <div className="footer-year font-mono text-[10px] md:text-[11px] text-black/20 uppercase tracking-widest">
+                {footerYear}
+              </div>
+            )}
+            {vcount !== null && (
+              <div className="visitor-count flex items-center gap-2 font-mono text-[9px] md:text-[10px] text-black/15 uppercase tracking-widest">
+                <span className="opacity-40">/</span>
+                <span>{vcount.toLocaleString()} Visits</span>
+              </div>
+            )}
+          </div>
           <div className="email-contact">
             <span className="email-label text-[10px] md:text-[12px] font-mono opacity-40">Get in touch —</span>
             <button

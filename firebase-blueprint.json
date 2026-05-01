@@ -1,0 +1,22 @@
+{
+  "entities": {
+    "siteStats": {
+      "title": "Site Statistics",
+      "description": "General statistics for the website",
+      "type": "object",
+      "properties": {
+        "visitorCount": {
+          "type": "number",
+          "description": "Total number of visits"
+        }
+      },
+      "required": ["visitorCount"]
+    }
+  },
+  "firestore": {
+    "stats/global": {
+      "schema": "siteStats",
+      "description": "Global statistics for the site"
+    }
+  }
+}
