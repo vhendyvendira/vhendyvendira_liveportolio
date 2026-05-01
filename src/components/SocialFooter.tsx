@@ -67,7 +67,7 @@ export default function SocialFooter({ visible, fullWidth, isMobile, footerYear 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(email);
-      soundService.play('success');
+      soundService.play('smooth');
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
@@ -87,10 +87,7 @@ export default function SocialFooter({ visible, fullWidth, isMobile, footerYear 
           <div className="email-contact">
             <span className="email-label text-[10px] md:text-[12px] font-mono opacity-40">Get in touch —</span>
             <button
-              onClick={() => {
-                soundService.play('click');
-                handleCopy();
-              }}
+              onClick={handleCopy}
               onMouseEnter={() => soundService.play('hover')}
               className="email-button group relative ml-2 cursor-pointer font-mono text-[10px] md:text-[12px] text-black/40 transition-colors hover:text-black"
             >

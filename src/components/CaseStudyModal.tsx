@@ -1191,36 +1191,52 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                   {renderSection("WHY THIS MATTERS", cs.strategy)}
                   
                   {/* 4. IMPACT LOOP */}
-                  <motion.div 
-                    className="modal-section"
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <div 
+                  <div className="modal-section">
+                    <motion.div 
                       className="modal-section-label"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
                       style={{ 
                         color: "#8b5cf6", 
                         fontWeight: 700
                       }}
                     >
                       IMPACT LOOP
-                    </div>
-                    <div style={{ 
-                      padding: "2rem", 
-                      background: "rgba(139, 92, 246, 0.02)", 
-                      borderRadius: "24px", 
-                      border: "1px solid rgba(139, 92, 246, 0.08)",
-                      position: "relative",
-                      overflow: "hidden"
-                    }}>
-                      <div style={{ 
-                        display: "grid", 
-                        gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", 
-                        gap: "1.5rem",
-                        position: "relative"
-                      }}>
+                    </motion.div>
+                    <motion.div 
+                      style={{ 
+                        padding: "2rem", 
+                        background: "rgba(139, 92, 246, 0.02)", 
+                        borderRadius: "24px", 
+                        border: "1px solid rgba(139, 92, 246, 0.08)",
+                        position: "relative",
+                        overflow: "hidden"
+                      }}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <motion.div 
+                        style={{ 
+                          display: "grid", 
+                          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", 
+                          gap: "1.5rem",
+                          position: "relative"
+                        }}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={{
+                          visible: {
+                            transition: {
+                              staggerChildren: 0.1,
+                              delayChildren: 0.2
+                            }
+                          }
+                        }}
+                      >
                         {[
                           { label: "HOLD", text: "HOLD MGO", detail: "Fuel the ecosystem" },
                           { label: "ENGAGE", text: "OPERATE + CAMPAIGN", detail: "Active participation" },
@@ -1228,17 +1244,25 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                           { label: "REINVEST", text: "SCALE EMPIRE", detail: "Compound growth" },
                           { label: "GROW", text: "UTILITY & DEMAND", detail: "Ecosystem maturity" }
                         ].map((step, idx) => (
-                          <div key={idx} style={{ 
-                            position: "relative",
-                            padding: "1.25rem",
-                            background: "white",
-                            borderRadius: "16px",
-                            boxShadow: "0 4px 12px rgba(139, 92, 246, 0.04)",
-                            border: "1px solid rgba(139, 92, 246, 0.06)",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "4px"
-                          }}>
+                          <motion.div 
+                            key={idx} 
+                            variants={{
+                              hidden: { opacity: 0, y: 20 },
+                              visible: { opacity: 1, y: 0 }
+                            }}
+                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                            style={{ 
+                              position: "relative",
+                              padding: "1.25rem",
+                              background: "white",
+                              borderRadius: "16px",
+                              boxShadow: "0 4px 12px rgba(139, 92, 246, 0.04)",
+                              border: "1px solid rgba(139, 92, 246, 0.06)",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "4px"
+                            }}
+                          >
                             <div style={{ 
                               fontSize: "10px", 
                               fontWeight: 700, 
@@ -1275,14 +1299,14 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                                 color: "rgba(139, 92, 246, 0.2)",
                                 fontSize: "14px",
                                 zIndex: 1,
-                                display: "none" // Hidden on small grid, logic below would be complex for CSS-only
+                                display: "none" // Hidden on small grid
                               }}>
                                 →
                               </div>
                             )}
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
+                      </motion.div>
 
                       {/* Loop back indicator */}
                       <div style={{ 
@@ -1304,7 +1328,7 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                         }} />
                         <span style={{ fontSize: "14px", color: "#8b5cf6", fontWeight: 700 }}>↺</span>
                       </div>
-                    </div>
+                    </motion.div>
                     <div style={{ 
                       fontSize: "10px", 
                       color: "rgba(0,0,0,0.4)", 
@@ -1314,15 +1338,15 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     }}>
                       More active users → higher MGO demand → stronger ecosystem.
                     </div>
-                  </motion.div>
+                  </div>
 
                   {/* 5. THE OPPORTUNITY */}
                   <motion.div 
                     className="modal-section"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div 
                       className="modal-section-label"
@@ -1334,15 +1358,35 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     >
                       THE OPPORTUNITY
                     </div>
-                    <p className="modal-body-text" style={{ marginBottom: "2rem" }}>
+                    <motion.p 
+                      className="modal-body-text" 
+                      style={{ marginBottom: "2rem" }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 }}
+                    >
                       We see high FOMO + holding incentives as momentum to convert speculators into active builders within the ecosystem. With the upcoming launch of the Film Tokenization Launchpad, this timing is crucial to:
-                    </p>
+                    </motion.p>
                     
-                    <div style={{ 
-                      display: "grid", 
-                      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", 
-                      gap: "1rem" 
-                    }}>
+                    <motion.div 
+                      style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", 
+                        gap: "1rem" 
+                      }}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      variants={{
+                        visible: {
+                          transition: {
+                            staggerChildren: 0.1,
+                            delayChildren: 0.4
+                          }
+                        }
+                      }}
+                    >
                       {[
                         { 
                           icon: <Users size={18} />, 
@@ -1360,15 +1404,23 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                           desc: "Demonstrate that entertainment and blockchain can create tangible value." 
                         }
                       ].map((card, idx) => (
-                        <div key={idx} style={{ 
-                          padding: "1.25rem", 
-                          background: "rgba(0,0,0,0.02)", 
-                          borderRadius: "16px",
-                          border: "1px solid rgba(0,0,0,0.04)",
-                          display: "flex",
-                          gap: "1rem",
-                          alignItems: "flex-start"
-                        }}>
+                        <motion.div 
+                          key={idx} 
+                          variants={{
+                            hidden: { opacity: 0, x: -10 },
+                            visible: { opacity: 1, x: 0 }
+                          }}
+                          transition={{ duration: 0.6 }}
+                          style={{ 
+                            padding: "1.25rem", 
+                            background: "rgba(0,0,0,0.02)", 
+                            borderRadius: "16px",
+                            border: "1px solid rgba(0,0,0,0.04)",
+                            display: "flex",
+                            gap: "1rem",
+                            alignItems: "flex-start"
+                          }}
+                        >
                           <div style={{ 
                             padding: "8px", 
                             background: "#fff", 
@@ -1395,9 +1447,9 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                               {card.desc}
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                   </motion.div>
 
                   {/* 6. MY ROLE: MAKING COMPLEXITY SIMPLE */}
@@ -1423,15 +1475,46 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                     </p>
 
                     <div style={{ marginBottom: "3rem" }}>
-                      <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "1.25rem", letterSpacing: "0.02em" }}>WHAT I DID</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
-                        <div style={{ padding: "1.5rem", background: "rgba(0,0,0,0.02)", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.04)" }}>
+                      <motion.div 
+                        style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "1.25rem", letterSpacing: "0.02em" }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                      >
+                        WHAT I DID
+                      </motion.div>
+                      <motion.div 
+                        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={{
+                          visible: {
+                            transition: {
+                              staggerChildren: 0.1
+                            }
+                          }
+                        }}
+                      >
+                        <motion.div 
+                          variants={{
+                            hidden: { opacity: 0, y: 15 },
+                            visible: { opacity: 1, y: 0 }
+                          }}
+                          style={{ padding: "1.5rem", background: "rgba(0,0,0,0.02)", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.04)" }}
+                        >
                           <div style={{ color: "#8b5cf6", fontWeight: 700, fontSize: "12px", marginBottom: "0.75rem", fontFamily: "var(--font-mono)" }}>MESSAGING FRAMEWORK</div>
                           <p style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)", lineHeight: 1.6 }}>
                             Developed the <strong>“virtual cinema franchise”</strong> analogy to bridge Web3 jargon with familiar, traditional business mental models.
                           </p>
-                        </div>
-                        <div style={{ padding: "1.5rem", background: "rgba(0,0,0,0.02)", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.04)" }}>
+                        </motion.div>
+                        <motion.div 
+                          variants={{
+                            hidden: { opacity: 0, y: 15 },
+                            visible: { opacity: 1, y: 0 }
+                          }}
+                          style={{ padding: "1.5rem", background: "rgba(0,0,0,0.02)", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.04)" }}
+                        >
                           <div style={{ color: "#8b5cf6", fontWeight: 700, fontSize: "12px", marginBottom: "0.75rem", fontFamily: "var(--font-mono)" }}>VALUE PROPOSITION CLARITY</div>
                           <ul style={{ padding: 0, margin: 0, listStyle: "none" }}>
                             {[
@@ -1444,8 +1527,8 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                               </li>
                             ))}
                           </ul>
-                        </div>
-                      </div>
+                        </motion.div>
+                      </motion.div>
                     </div>
 
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "2rem", marginBottom: "3.5rem" }}>
@@ -1467,21 +1550,46 @@ export default function CaseStudyModal({ cs, onClose, navigate }: CaseStudyModal
                       </div>
                     </div>
 
-                    <div style={{ padding: "2rem", background: "#1a1a1a", borderRadius: "24px", color: "#fff", marginBottom: "0.5rem" }}>
+                    <motion.div 
+                      style={{ padding: "2rem", background: "#1a1a1a", borderRadius: "24px", color: "#fff", marginBottom: "0.5rem" }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
+                    >
                       <div style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.4)", marginBottom: "1.5rem", letterSpacing: "0.05em" }}>RESULTS I’M DRIVING FOR</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.5rem" }}>
+                      <motion.div 
+                        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.5rem" }}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={{
+                          visible: {
+                            transition: {
+                              staggerChildren: 0.1,
+                              delayChildren: 0.3
+                            }
+                          }
+                        }}
+                      >
                         {[
                           { title: "Engagement", text: "Users understand why to participate, not just why to buy." },
                           { title: "Sustainability", text: "Investors see a sustainable ecosystem, not just a speculative asset." },
                           { title: "Clarity", text: "Clear differentiation from other Web3 entertainment projects." }
                         ].map((res, i) => (
-                          <div key={i}>
+                          <motion.div 
+                            key={i}
+                            variants={{
+                              hidden: { opacity: 0, y: 10 },
+                              visible: { opacity: 1, y: 0 }
+                            }}
+                          >
                             <div style={{ color: "#8b5cf6", fontWeight: 700, fontSize: "10px", marginBottom: "4px", fontFamily: "var(--font-mono)" }}>{res.title.toUpperCase()}</div>
                             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>{res.text}</p>
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
-                    </div>
+                      </motion.div>
+                    </motion.div>
                   </motion.div>
                 </>
               ) : cs.slug === "glance-fit" ? (

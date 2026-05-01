@@ -20,13 +20,17 @@ class SoundService {
         volume: 0.1,
       }),
       success: new Howl({
-        src: ['https://assets.mixkit.co/active_storage/sfx/2704/2704-preview.mp3'], // Soft chime
+        src: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'], // Use soft click for success too for now, or find another
         volume: 0.3,
+      }),
+      smooth: new Howl({
+        src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'], // Light tick/smooth
+        volume: 0.2,
       }),
     };
   }
 
-  play(sound: 'hover' | 'click' | 'transition' | 'success') {
+  play(sound: 'hover' | 'click' | 'transition' | 'success' | 'smooth') {
     if (this.muted) return;
     this.sounds[sound]?.play();
   }
