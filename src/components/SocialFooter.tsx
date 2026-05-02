@@ -96,7 +96,7 @@ export default function SocialFooter({ visible, fullWidth, isMobile, footerYear 
             {vcount !== null && (
               <div className="visitor-count flex items-center gap-2 font-mono text-[9px] md:text-[10px] text-black/15 uppercase tracking-widest">
                 <span className="opacity-40">/</span>
-                <span>{vcount.toLocaleString()} Visits</span>
+                <span>{vcount.toLocaleString()} visitors so far</span>
               </div>
             )}
           </div>

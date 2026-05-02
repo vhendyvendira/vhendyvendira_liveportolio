@@ -79,8 +79,11 @@ const SatelliteInstance: React.FC<{
       onClick={handleInteraction}
       initial={false}
       animate={{
-        opacity: isHidden ? 0 : (isHovered || isInteracted || sat.isDragging ? 1 : 0.25),
+        opacity: isHidden ? 0 : (isHovered || isInteracted || sat.isDragging ? 1 : 0.5),
         scale: isInteracted || isHovered ? 1.05 : 1,
+        filter: isHovered || isInteracted || sat.isDragging 
+          ? 'drop-shadow(0 0 8px rgba(167, 139, 250, 0.2))' 
+          : 'drop-shadow(0 0 4px rgba(167, 139, 250, 0.05))'
       }}
       transition={{
         duration: 0.4,
@@ -102,29 +105,29 @@ const SatelliteInstance: React.FC<{
       <div style={{ position: 'relative' }}>
         {/* Trails */}
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
-          {[...Array(5)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0 }}
               animate={{ 
-                opacity: sat.isPaused ? 0 : [0, 0.4, 0],
-                scale: [0.5, 1.2, 0.5],
+                opacity: sat.isPaused ? 0 : [0, 0.2, 0],
+                scale: [0.8, 1, 0.8],
               }}
               transition={{
-                duration: 2,
+                duration: 3,
                 repeat: Infinity,
-                delay: i * 0.4,
+                delay: i * 0.7,
                 ease: "easeInOut"
               }}
               style={{
                 position: 'absolute',
-                width: '4px',
-                height: '4px',
-                background: 'rgba(139, 92, 246, 0.4)',
+                width: '3px',
+                height: '3px',
+                background: 'rgba(167, 139, 250, 0.3)',
                 borderRadius: '50%',
-                left: `${-20 - (i * 12)}px`,
+                left: `${-18 - (i * 10)}px`,
                 top: '0px',
-                filter: 'blur(1px)'
+                filter: 'blur(2px)'
               }}
             />
           ))}
@@ -135,78 +138,126 @@ const SatelliteInstance: React.FC<{
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           animate={{
-            scale: [1, 1.03, 1],
-            rotate: [-1, 1, -1]
+            y: [0, -2, 0],
+            rotate: [0, 0.5, 0]
           }}
           transition={{
-            duration: 4,
+            duration: 6,
             repeat: Infinity,
             ease: "easeInOut"
           }}
           style={{ position: 'relative' }}
         >
           {/* Main Satellite Visual */}
-          <div style={{ position: 'relative' }}>
-            {/* Antennas */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '3px',
+            filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.05))'
+          }}>
+            {/* Left Solar Panel */}
             <motion.div 
-              animate={{ rotate: sat.isPaused ? 0 : [0, 8, 0, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              style={{ 
-                position: 'absolute', 
-                top: '-8px', 
-                left: '50%', 
-                width: '1px', 
-                height: '10px', 
-                background: '#6b7280',
-                transformOrigin: 'bottom'
+              animate={{ 
+                opacity: [0.8, 1, 0.8],
+                skewY: sat.isPaused ? 0 : [0, 2, 0, -2, 0] 
               }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              style={{ 
+                width: '10px', 
+                height: '14px', 
+                background: 'linear-gradient(135deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9))', 
+                borderRadius: '1.5px', 
+                border: '0.5px solid rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(2px)'
+              }} 
             />
-            
-            {/* Solar Panels */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-              <motion.div 
-                animate={{ skewY: sat.isPaused ? 0 : [0, 10, 0, -10, 0] }}
-                transition={{ duration: 6, repeat: Infinity }}
-                style={{ width: '12px', height: '18px', background: 'linear-gradient(to bottom, #4b5563, #1f2937)', borderRadius: '2px', border: '0.5px solid rgba(139, 92, 246, 0.3)' }} 
-              />
-              <div style={{ width: '18px', height: '14px', background: '#9ca3af', borderRadius: '3px', boxShadow: '0 0 10px rgba(0,0,0,0.1)', border: '1px solid #6b7280', position: 'relative', overflow: 'hidden' }}>
-                {/* Eyes (Cute Factor) */}
-                <div style={{ display: 'flex', gap: '4px', position: 'absolute', top: '4px', left: '50%', transform: 'translateX(-50%)' }}>
-                  <motion.div 
-                    animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
-                    transition={{ duration: 3, repeat: Infinity, times: [0, 0.8, 0.85, 0.9, 1] }}
-                    style={{ width: '2px', height: '3px', background: '#1f2937', borderRadius: '1px' }}
-                  />
-                  <motion.div 
-                    animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
-                    transition={{ duration: 3, repeat: Infinity, times: [0, 0.8, 0.85, 0.9, 1] }}
-                    style={{ width: '2px', height: '3px', background: '#1f2937', borderRadius: '1px' }}
-                  />
-                </div>
 
-                {/* Blinking Power Light */}
-                <motion.div 
-                  animate={{ opacity: sat.isPaused ? 0.2 : [0.3, 1, 0.3] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  style={{ 
-                    position: 'absolute', 
-                    top: '1px', 
-                    right: '1px', 
-                    width: '2px', 
-                    height: '2px', 
-                    background: '#8b5cf6', 
-                    borderRadius: '50%',
-                    boxShadow: '0 0 4px #8b5cf6'
-                  }} 
-                />
+            {/* Central Body */}
+            <div style={{ 
+              width: '16px', 
+              height: '16px', 
+              background: 'rgba(255, 255, 255, 0.9)', 
+              borderRadius: '5px', 
+              border: '0.5px solid rgba(0, 0, 0, 0.05)',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 -1px 2px rgba(0,0,0,0.05)'
+            }}>
+              {/* Single Refined Lens / Sensor */}
+              <div style={{ 
+                width: '4px', 
+                height: '4px', 
+                background: '#1f2937', 
+                borderRadius: '50%',
+                opacity: 0.8,
+                position: 'relative'
+              }}>
+                <div style={{
+                  position: 'absolute',
+                  top: '1px',
+                  left: '1px',
+                  width: '1px',
+                  height: '1px',
+                  background: 'white',
+                  borderRadius: '50%',
+                  opacity: 0.6
+                }} />
               </div>
+
+              {/* Status Indicator (Purely decorative/premium glow) */}
               <motion.div 
-                animate={{ skewY: sat.isPaused ? 0 : [0, -10, 0, 10, 0] }}
-                transition={{ duration: 6, repeat: Infinity }}
-                style={{ width: '12px', height: '18px', background: 'linear-gradient(to bottom, #4b5563, #1f2937)', borderRadius: '2px', border: '0.5px solid rgba(139, 92, 246, 0.3)' }} 
+                animate={{ 
+                  opacity: sat.isPaused ? 0.3 : [0.4, 0.8, 0.4],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                style={{ 
+                  position: 'absolute', 
+                  bottom: '2px', 
+                  right: '2px', 
+                  width: '2px', 
+                  height: '2px', 
+                  background: 'rgba(167, 139, 250, 0.8)', 
+                  borderRadius: '50%',
+                  boxShadow: '0 0 4px rgba(167, 139, 250, 0.6)'
+                }} 
+              />
+              
+              {/* Top Antenna */}
+              <motion.div 
+                animate={{ rotate: sat.isPaused ? 0 : [-2, 2, -2] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                style={{ 
+                  position: 'absolute', 
+                  top: '-6px', 
+                  width: '0.5px', 
+                  height: '8px', 
+                  background: 'rgba(0,0,0,0.2)',
+                  transformOrigin: 'bottom'
+                }}
               />
             </div>
+
+            {/* Right Solar Panel */}
+            <motion.div 
+              animate={{ 
+                opacity: [0.8, 1, 0.8],
+                skewY: sat.isPaused ? 0 : [0, -2, 0, 2, 0] 
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              style={{ 
+                width: '10px', 
+                height: '14px', 
+                background: 'linear-gradient(135deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9))', 
+                borderRadius: '1.5px', 
+                border: '0.5px solid rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(2px)'
+              }} 
+            />
           </div>
+
 
           {/* Hover Controls & Label */}
           <AnimatePresence>
