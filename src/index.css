@@ -1170,3 +1170,20 @@ body {
     margin: 0 auto;
   }
 }
+
+.mobile-widget-expanded > div {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 auto !important;
+  opacity: 1 !important;
+  scale: 1 !important;
+  filter: none !important;
+}
+
+.mobile-widget-expanded > div > div {
+  margin: 0 auto !important;
+}

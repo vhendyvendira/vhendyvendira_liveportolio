@@ -166,12 +166,63 @@ export default function AboutView({ navigate }: AboutViewProps) {
 
   // Animation Variants
   const [isMobile, setIsMobile] = useState(false);
+  
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      // Close expanded widget if resizing back to desktop
+      if (!mobile) {
+        setExpandedWidget(null);
+      }
+    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  const [expandedWidget, setExpandedWidget] = useState<string | null>(null);
+
+  const MicroActivity = ({ id, icon, style }: { id: string, icon: string, style?: React.CSSProperties }) => (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ 
+        opacity: 0.5, 
+        scale: 1,
+        y: [0, -4, 0],
+      }}
+      transition={{
+        opacity: { duration: 1.5, delay: 0.5 },
+        scale: { duration: 1.5, delay: 0.5 },
+        y: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+      }}
+      whileHover={{ opacity: 1, scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={(e) => {
+        e.stopPropagation();
+        setExpandedWidget(id);
+        soundService.play('click');
+      }}
+      style={{
+        position: 'absolute',
+        width: '18px',
+        height: '18px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(67, 97, 238, 0.05)',
+        borderRadius: '50%',
+        cursor: 'pointer',
+        fontSize: '9px',
+        color: 'rgba(67, 97, 238, 0.6)',
+        border: '1px solid rgba(67, 97, 238, 0.08)',
+        zIndex: 5,
+        ...style
+      }}
+    >
+      {icon}
+    </motion.button>
+  );
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -262,6 +313,78 @@ export default function AboutView({ navigate }: AboutViewProps) {
     },
   ];
 
+  const renderExpandedWidget = () => {
+    if (!expandedWidget) return null;
+    
+    const widgets: Record<string, React.ReactNode> = {
+      music: <MusicPlayer />,
+      clock: <WorldClock />,
+      run: <RunningActivity />,
+      read: <ReadingActivity />,
+      lang: <LanguageActivity />,
+      garden: <GardeningActivity />
+    };
+
+    return (
+      <motion.div
+        key="widget-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        onClick={() => setExpandedWidget(null)}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(250, 249, 246, 0.7)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '2rem'
+        }}
+      >
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.8, opacity: 0, y: 15 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          onClick={(e) => e.stopPropagation()}
+          className="mobile-widget-expanded"
+          style={{
+            boxShadow: '0 32px 64px rgba(0,0,0,0.08)',
+            borderRadius: '16px',
+            background: '#fff',
+            padding: '1rem',
+            maxWidth: '100%'
+          }}
+        >
+          {widgets[expandedWidget]}
+          <motion.button 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            onClick={() => setExpandedWidget(null)}
+            style={{
+              marginTop: '1.5rem',
+              fontSize: '10px',
+              fontFamily: 'var(--font-mono)',
+              color: 'rgba(0,0,0,0.3)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              width: '100%',
+              textAlign: 'center'
+            }}
+          >
+            [ close ]
+          </motion.button>
+        </motion.div>
+      </motion.div>
+    );
+  };
+
   return (
     <motion.div 
       className="about-full-container" 
@@ -328,8 +451,9 @@ export default function AboutView({ navigate }: AboutViewProps) {
       <div className="about-content" style={{ paddingBottom: '8rem' }}>
         <div className="about-page">
           {/* Header */}
-          <motion.div variants={itemVariants} style={{ marginBottom: '2.5rem' }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: '2.5rem', position: 'relative' }}>
             <span className="about-label">Personal Narrative</span>
+            {isMobile && <MicroActivity id="music" icon="♪" style={{ top: '-10px', right: '0' }} />}
           </motion.div>
 
           <motion.div 
@@ -342,7 +466,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
                 }
               }
             }}
-            style={{ marginBottom: '2rem' }}
+            style={{ marginBottom: '2rem', position: 'relative' }}
           >
             <h1 style={{ fontSize: '3rem', lineHeight: 1.2, fontWeight: 600, letterSpacing: '-0.04em', color: '#1a1a1a' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
@@ -355,10 +479,11 @@ export default function AboutView({ navigate }: AboutViewProps) {
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
               </div>
-              <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
+              <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em', position: 'relative' }}>
                 {"for the future.".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
+                {isMobile && <MicroActivity id="clock" icon="🕒" style={{ top: '10px', right: '-10px' }} />}
               </div>
             </h1>
           </motion.div>
@@ -408,6 +533,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
           </motion.div>
           
           <div ref={storyContainerRef} style={{ position: 'relative' }}>
+            {isMobile && <MicroActivity id="run" icon="🏃" style={{ top: '-40px', left: '40%' }} />}
             {/* The Narrative Thread */}
             <motion.div
               style={{
@@ -515,12 +641,16 @@ export default function AboutView({ navigate }: AboutViewProps) {
             variants={itemVariants} 
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            style={{ marginTop: '6rem', marginBottom: '6rem' }}
+            style={{ marginTop: '6rem', marginBottom: '6rem', position: 'relative' }}
           >
+            {isMobile && <MicroActivity id="read" icon="📚" style={{ top: '-20px', right: '5%' }} />}
             <div style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>Beyond What I Know</h3>
+              <h3 style={{ fontSize: '24px', fontWeight: 600, marginTop: '0.5rem', letterSpacing: '-0.02em' }}>
+                Beyond What I Know
+              </h3>
             </div>
-            <p style={{ fontSize: '18px', lineHeight: 1.6, color: 'rgba(0,0,0,0.7)', maxWidth: '600px' }}>
+            <p style={{ fontSize: '18px', lineHeight: 1.6, color: 'rgba(0,0,0,0.7)', maxWidth: '600px', position: 'relative' }}>
+              {isMobile && <MicroActivity id="lang" icon="🗣️" style={{ top: '50%', right: '-10px', transform: 'translateY(-50%)' }} />}
               I grew by taking on problems I wasn’t fully ready for —{' '}
               <motion.span
                 initial={{ opacity: 0.2, filter: 'blur(4px)' }}
@@ -531,6 +661,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
               >
                 and learning through them.
               </motion.span>
+              {isMobile && <MicroActivity id="garden" icon="🌱" style={{ bottom: '-20px', left: '10%' }} />}
             </p>
           </motion.div>
         </div>
@@ -565,44 +696,35 @@ export default function AboutView({ navigate }: AboutViewProps) {
         </div>
       </div>
 
-      {/* Floating Widgets / Life Context Section */}
-      <div className={isMobile ? "about-widgets-section" : ""}>
-        {isMobile && (
-          <motion.div 
-            variants={itemVariants}
-            style={{ 
-              padding: '0 2rem', 
-              marginBottom: '2rem', 
-              maxWidth: '640px', 
-              margin: '0 auto 2rem' 
-            }}
-          >
-            <h3 style={{ fontSize: '20px', fontWeight: 600, letterSpacing: '-0.02em', color: 'rgba(0,0,0,0.8)' }}>Life Context</h3>
-            <p style={{ fontSize: '13px', color: 'rgba(0,0,0,0.4)', marginTop: '0.25rem' }}>Atmosphere & interests while building.</p>
-          </motion.div>
-        )}
-        
-        <div className={isMobile ? "about-widgets-grid" : ""}>
-          <motion.div variants={decorativeEntranceVariants}>
-            <MusicPlayer />
-          </motion.div>
-          <motion.div variants={decorativeEntranceVariants}>
-            <WorldClock />
-          </motion.div>
-          <motion.div variants={decorativeEntranceVariants}>
-            <RunningActivity />
-          </motion.div>
-          <motion.div variants={decorativeEntranceVariants}>
-            <ReadingActivity />
-          </motion.div>
-          <motion.div variants={decorativeEntranceVariants}>
-            <LanguageActivity />
-          </motion.div>
-          <motion.div variants={decorativeEntranceVariants}>
-            <GardeningActivity />
-          </motion.div>
+      {/* Desktop Only Floating Widgets Layer */}
+      {!isMobile && (
+        <div className="about-widgets-section">
+          <div className="about-widgets-grid">
+            <motion.div variants={decorativeEntranceVariants}>
+              <MusicPlayer />
+            </motion.div>
+            <motion.div variants={decorativeEntranceVariants}>
+              <WorldClock />
+            </motion.div>
+            <motion.div variants={decorativeEntranceVariants}>
+              <RunningActivity />
+            </motion.div>
+            <motion.div variants={decorativeEntranceVariants}>
+              <ReadingActivity />
+            </motion.div>
+            <motion.div variants={decorativeEntranceVariants}>
+              <LanguageActivity />
+            </motion.div>
+            <motion.div variants={decorativeEntranceVariants}>
+              <GardeningActivity />
+            </motion.div>
+          </div>
         </div>
-      </div>
+      )}
+
+      <AnimatePresence>
+        {isMobile && renderExpandedWidget()}
+      </AnimatePresence>
     </motion.div>
   );
 }
