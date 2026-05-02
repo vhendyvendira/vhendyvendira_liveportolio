@@ -28,6 +28,14 @@ export default function MusicPlayer() {
 
   const bars = Array.from({ length: 12 }, (_, i) => i);
 
+  const TRACK_LINK = "https://youtu.be/4VlLT7LsZ44?si=upITy9o9U8p1Gv_1";
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsPlaying(!isPlaying);
+    window.open(TRACK_LINK, '_blank');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
@@ -39,16 +47,18 @@ export default function MusicPlayer() {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => window.open(TRACK_LINK, '_blank')}
       style={{
         position: 'absolute',
         right: isMobile ? '2rem' : 'clamp(1rem, 5vw, 4rem)',
         top: isMobile ? '5rem' : '15rem',
         zIndex: 10,
         pointerEvents: 'auto',
-        transformOrigin: 'top right'
+        transformOrigin: 'top right',
+        cursor: 'pointer'
       }}
     >
-      <HoverTooltip text="on repeat" isMobile={isMobile}>
+      <HoverTooltip text="listen on repeat" isMobile={isMobile}>
         <div style={{
           background: isHovered ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.5)',
           backdropFilter: 'blur(10px)',
@@ -109,14 +119,15 @@ export default function MusicPlayer() {
                 color: '#1a1a1a',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>Street Corner</div>
+                textOverflow: 'ellipsis',
+                textDecoration: isHovered ? 'underline' : 'none'
+              }}>Stories and a Turntable</div>
               <div style={{ 
                 fontSize: '10px', 
                 color: 'rgba(0,0,0,0.4)', 
                 fontWeight: 500,
                 fontFamily: 'var(--font-mono)' 
-              }}>High John</div>
+              }}>Soulitune</div>
             </div>
           </div>
 
@@ -190,7 +201,7 @@ export default function MusicPlayer() {
               <SkipBack size={14} fill="currentColor" stroke="none" />
             </button>
             <button 
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={togglePlay}
               style={{ 
                 background: '#fff', 
                 width: '32px', 

@@ -54,8 +54,8 @@ export default function RunningActivity() {
             right: '20px',
             width: '40px',
             height: '14px',
-            background: 'rgba(67, 97, 238, 0.05)',
-            border: '1px solid rgba(67, 97, 238, 0.05)',
+            background: 'rgba(252, 76, 2, 0.05)',
+            border: '1px solid rgba(252, 76, 2, 0.05)',
             borderRadius: '2px',
             transform: 'rotate(2deg)'
           }} />
@@ -64,12 +64,12 @@ export default function RunningActivity() {
             <div style={{ 
               width: '28px', 
               height: '28px', 
-              background: 'rgba(67, 97, 238, 0.1)', 
+              background: 'rgba(252, 76, 2, 0.1)', 
               borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#4361ee'
+              color: '#fc4c02'
             }}>
               <Activity size={14} />
             </div>
@@ -94,7 +94,7 @@ export default function RunningActivity() {
              <svg width="100%" height="100%" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
                <motion.path
                  d="M0 25 L15 18 L25 22 L40 10 L55 20 L70 5 L85 15 L100 12"
-                 stroke="#4361ee"
+                 stroke="#fc4c02"
                  strokeWidth="2"
                  strokeLinecap="round"
                  strokeLinejoin="round"
@@ -114,7 +114,7 @@ export default function RunningActivity() {
             paddingTop: '10px'
           }}>
             <span>3 runs this week</span>
-            <span style={{ fontWeight: 600, color: '#4361ee' }}>+12%</span>
+            <span style={{ fontWeight: 600, color: '#fc4c02' }}>+12%</span>
           </div>
         </div>
       </HoverTooltip>
