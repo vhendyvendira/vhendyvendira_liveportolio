@@ -547,7 +547,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <a 
-                href="https://drive.google.com/file/d/1n7QADZR_P1iGWJFb2-FYH4X-tDGFix3Y/view?usp=sharing" 
+                href="https://drive.google.com/file/d/1dzD2RoKC7XdhaWGlXEnSwCzk1T35rYYY/view?usp=sharing" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="about-cta-link" 
