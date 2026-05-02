@@ -28,7 +28,7 @@ export default function MusicPlayer() {
 
   const bars = Array.from({ length: 12 }, (_, i) => i);
 
-  const TRACK_LINK = "https://youtu.be/4VlLT7LsZ44?si=upITy9o9U8p1Gv_1";
+  const TRACK_LINK = "https://youtu.be/RcQHfk85jag?si=uLNs_mu7UY4FD79s";
 
   const togglePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -121,13 +121,13 @@ export default function MusicPlayer() {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 textDecoration: isHovered ? 'underline' : 'none'
-              }}>Stories and a Turntable</div>
+              }}>One Piece Lofi Mix</div>
               <div style={{ 
                 fontSize: '10px', 
                 color: 'rgba(0,0,0,0.4)', 
                 fontWeight: 500,
                 fontFamily: 'var(--font-mono)' 
-              }}>Soulitune</div>
+              }}>Barely Cloudy</div>
             </div>
           </div>
 
