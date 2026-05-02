@@ -18,18 +18,59 @@ export default function WorldClock() {
       setNow(new Date());
     }, 1000);
 
-    // Detect visitor context via timezone
-    try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      if (tz) {
-        const parts = tz.split('/');
-        const cityPart = parts[parts.length - 1];
-        const formattedCity = cityPart.replace(/_/g, ' ');
-        setVisitorCity(formattedCity);
+    // Detect visitor context
+    const detectContext = async () => {
+      // Mapping function for Indonesian regions to islands
+      const mapToIsland = (region: string, city: string, country: string): string => {
+        if (country !== 'ID' && country !== 'Indonesia') return region || city;
+        
+        const target = (region || city || '').toLowerCase();
+        
+        if (/jakarta|banten|jawa barat|west java|jawa tengah|central java|jawa timur|east java|yogyakarta/.test(target)) return 'Java';
+        if (/aceh|sumatera|sumatra|riau|jambi|bengkulu|lampung|bangka belitung/.test(target)) return 'Sumatra';
+        if (/kalimantan|borneo/.test(target)) return 'Kalimantan';
+        if (/sulawesi|gorontalo|makassar|manado|palu|kendari/.test(target)) return 'Sulawesi';
+        if (/bali/.test(target)) return 'Bali';
+        if (/nusa tenggara|lombok|flores|timor/.test(target)) return 'Nusa Tenggara';
+        if (/maluku/.test(target)) return 'Maluku';
+        if (/papua/.test(target)) return 'Papua';
+        
+        return region || city;
+      };
+
+      try {
+        // Try IP-based detection first for better precision
+        const response = await fetch('https://ipapi.co/json/');
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            const displayLocation = mapToIsland(data.region || '', data.city || '', data.country_code || data.country_name || '');
+            if (displayLocation) {
+              setVisitorCity(displayLocation);
+              return;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("IP-based geolocation failed, falling back to timezone", e);
       }
-    } catch (e) {
-      console.warn("Could not detect timezone", e);
-    }
+
+      // Fallback: Use timezone from browser
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (tz) {
+          const parts = tz.split('/');
+          const cityPart = parts[parts.length - 1];
+          const formattedCity = cityPart.replace(/_/g, ' ');
+          setVisitorCity(formattedCity);
+        }
+      } catch (e) {
+        console.warn("Could not detect timezone", e);
+        setVisitorCity('your location');
+      }
+    };
+
+    detectContext();
 
     return () => {
       window.removeEventListener('resize', checkMobile);
