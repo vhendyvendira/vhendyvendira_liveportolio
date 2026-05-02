@@ -239,6 +239,7 @@ body {
   padding: 4rem 6rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  position: relative;
 }
 
 .right-panel::-webkit-scrollbar {

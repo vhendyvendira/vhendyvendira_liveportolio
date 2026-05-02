@@ -27,10 +27,14 @@ class SoundService {
         src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'], // Light tick/smooth
         volume: 0.2,
       }),
+      magic: new Howl({
+        src: ['https://assets.mixkit.co/active_storage/sfx/2631/2631-preview.mp3'], // Magic sparkle
+        volume: 0.3,
+      }),
     };
   }
 
-  play(sound: 'hover' | 'click' | 'transition' | 'success' | 'smooth') {
+  play(sound: 'hover' | 'click' | 'transition' | 'success' | 'smooth' | 'magic') {
     if (this.muted) return;
     this.sounds[sound]?.play();
   }

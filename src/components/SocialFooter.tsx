@@ -75,7 +75,7 @@ export default function SocialFooter({ visible, fullWidth, isMobile, footerYear 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(email);
-      soundService.play('smooth');
+      soundService.play('magic');
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {

@@ -5,6 +5,7 @@ import { CASE_STUDIES } from './constants';
 import { soundService } from './services/soundService';
 import { trackVisit } from './services/firebase';
 import CaseStudyModal from './components/CaseStudyModal';
+import Satellite from './components/Satellite';
 import CaseStudyCard from './components/CaseStudyCard';
 import AboutView from './components/AboutView';
 import PresenceView from './components/PresenceView';
@@ -153,6 +154,7 @@ export default function App() {
   });
 
   const rightPanelRef = useRef<HTMLDivElement>(null);
+  const satelliteAnchorRef = useRef<HTMLSpanElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -187,6 +189,36 @@ export default function App() {
     rightPanelRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const [listVisible, setListVisible] = useState(false);
+  const [subheadVisible, setSubheadVisible] = useState(false);
+
+  useEffect(() => {
+    if (listVisible) {
+      import('./lib/satelliteEngine').then(({ startSatelliteEngine }) => {
+        startSatelliteEngine();
+      });
+    } else if (satelliteAnchorRef.current) {
+      // Set initial "idle" position based on anchor, but don't start engine yet
+      const rect = satelliteAnchorRef.current.getBoundingClientRect();
+      const scrollY = window.scrollY; // Fixed is relative to viewport, so we use rect directly
+      
+      import('./lib/satelliteStore').then(({ satelliteStore }) => {
+        const sat = satelliteStore.getSatellite('primary-sat');
+        if (sat && !sat.isVisible) {
+          satelliteStore.updateSatellite('primary-sat', {
+            x: rect.left,
+            y: rect.top,
+            baseX: rect.left,
+            baseY: rect.top,
+            isVisible: true,
+            vx: 0,
+            vy: 0
+          });
+        }
+      });
+    }
+  }, [listVisible]);
+
   useEffect(() => {
     if (route.page === 'about') sessionStorage.setItem('navSource', 'about');
     if (route.page === 'presence') sessionStorage.setItem('navSource', 'presence');
@@ -204,9 +236,6 @@ export default function App() {
     HEADLINE_DATA.headline, 
     !isLoading && shouldType
   );
-
-  const [listVisible, setListVisible] = useState(false);
-  const [subheadVisible, setSubheadVisible] = useState(false);
 
   // Interaction Skip: scroll, wheel, or key to instantly finish intro
   useEffect(() => {
@@ -381,6 +410,7 @@ export default function App() {
   return (
     <div className="relative min-h-full">
       <CustomCursor />
+      <Satellite isHidden={route.page !== 'home'} />
 
       {(route.page === "about" || route.page === "presence" || route.page === "report") && (
         <button 
@@ -664,7 +694,7 @@ export default function App() {
                 animate={listVisible ? { opacity: 1, y: 0 } : (hasSeenIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 })}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>MISSION LAUNCHED </span>
+                <span ref={satelliteAnchorRef} style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>MISSION LAUNCHED </span>
                 <span style={{ fontSize: "11px", color: "rgba(0,0,0,0.3)", fontFamily: "var(--font-mono)" }}>0{CASE_STUDIES.length} // OPS</span>
               </motion.div>
               {CASE_STUDIES.map((cs, i) => (
