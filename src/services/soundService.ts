@@ -31,12 +31,25 @@ class SoundService {
         src: ['https://assets.mixkit.co/active_storage/sfx/2631/2631-preview.mp3'], // Magic sparkle
         volume: 0.3,
       }),
+      typing: new Howl({
+        src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'], // Light tick for typing
+        volume: 0.1,
+      }),
+      chime: new Howl({
+        src: ['https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3'], // Soft notification chime
+        volume: 0.3,
+      }),
     };
   }
 
-  play(sound: 'hover' | 'click' | 'transition' | 'success' | 'smooth' | 'magic') {
+  play(sound: 'hover' | 'click' | 'transition' | 'success' | 'smooth' | 'magic' | 'typing' | 'chime', options?: { volume?: number; rate?: number }) {
     if (this.muted) return;
-    this.sounds[sound]?.play();
+    const s = this.sounds[sound];
+    if (s) {
+      const id = s.play();
+      if (options?.volume !== undefined) s.volume(options.volume, id);
+      if (options?.rate !== undefined) s.rate(options.rate, id);
+    }
   }
 
   toggleMute() {

@@ -148,6 +148,23 @@ export default function PresenceView({ navigate }: PresenceViewProps) {
         }}
       />
 
+      {/* Grid Background Layer with Center Mask */}
+      <div 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: '120px 120px',
+          maskImage: 'linear-gradient(to right, black 0%, black 10%, transparent 50%, black 90%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 0%, black 10%, transparent 50%, black 90%, black 100%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+
       <AnimatePresence>
         {selectedImage && (
           <motion.div 

@@ -18,7 +18,8 @@ export default function LearningSection({ visible, hasSeenIntro = false }: { vis
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       style={{ 
         marginTop: "6rem",
-        paddingBottom: "8rem"
+        paddingBottom: "2.5rem",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.05)"
       }}
     >
       <div style={{ marginBottom: "4rem" }}>

@@ -169,7 +169,7 @@ export default function AboutView({ navigate }: AboutViewProps) {
   
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
+      const mobile = window.innerWidth <= 1024;
       setIsMobile(mobile);
       // Close expanded widget if resizing back to desktop
       if (!mobile) {
@@ -468,19 +468,25 @@ export default function AboutView({ navigate }: AboutViewProps) {
             }}
             style={{ marginBottom: '2rem', position: 'relative' }}
           >
-            <h1 style={{ fontSize: '3rem', lineHeight: 1.2, fontWeight: 600, letterSpacing: '-0.04em', color: '#1a1a1a' }}>
+            <h1 style={{ 
+              fontSize: isMobile ? 'clamp(3rem, 11vw, 4rem)' : '3rem', 
+              lineHeight: 1.1, 
+              fontWeight: 600, 
+              letterSpacing: '-0.04em', 
+              color: '#1a1a1a' 
+            }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                {"I make things legible —".split(" ").map((word, i) => (
+                {"Hi, I'm Vhendy —".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
               </div>
               <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                {"for people, for teams,".split(" ").map((word, i) => (
+                {"Product Design".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
               </div>
               <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em', position: 'relative' }}>
-                {"for the future.".split(" ").map((word, i) => (
+                {"& Builder".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
                 {isMobile && <MicroActivity id="clock" icon="🕒" style={{ top: '10px', right: '-10px' }} />}
@@ -676,17 +682,30 @@ export default function AboutView({ navigate }: AboutViewProps) {
               Curriculum vitae — available on request or below.
             </p>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <a 
-                href="https://drive.google.com/file/d/1dzD2RoKC7XdhaWGlXEnSwCzk1T35rYYY/view?usp=sharing" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-cta-link" 
-                style={{ fontSize: '16px', fontWeight: 600 }}
-              >
-                View full CV
-                <span style={{ fontSize: '18px' }}>→</span>
-              </a>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <a 
+                  href="https://drive.google.com/file/d/1dzD2RoKC7XdhaWGlXEnSwCzk1T35rYYY/view?usp=sharing" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-cta-link" 
+                  style={{ fontSize: '16px', fontWeight: 600 }}
+                >
+                  View full CV
+                  <span style={{ fontSize: '18px' }}>→</span>
+                </a>
+
+                <a 
+                  href="https://github.com/vhendyvendira" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-cta-link" 
+                  style={{ fontSize: '16px', fontWeight: 600 }}
+                >
+                  GitHub
+                  <span style={{ fontSize: '18px' }}>→</span>
+                </a>
+              </div>
               
               <div style={{ marginTop: '0.75rem', fontSize: '14px', color: 'rgba(0,0,0,0.4)', lineHeight: 1.6 }}>
                 Built with Love · Jakarta, ID · Open to Collaboration

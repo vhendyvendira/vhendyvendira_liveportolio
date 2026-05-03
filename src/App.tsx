@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import { CASE_STUDIES } from './constants';
@@ -12,10 +12,12 @@ import PresenceView from './components/PresenceView';
 import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LearningSection from './components/LearningSection';
+import TestimonialSection from './components/TestimonialSection';
 import LoadingScreen from './components/LoadingScreen';
 import ReportView from './components/ReportView';
 import CustomCursor from './components/CustomCursor';
 import Magnetic from './components/Magnetic';
+import HoverTooltip from './components/HoverTooltip';
 
 /* ================================================
    HOOKS
@@ -62,24 +64,41 @@ function useHashRouter() {
   return { route, navigate };
 }
 
-function useTypewriter(text: string, active = true) {
+function useTypewriter(text: string, active = true, callbacks?: { 
+  onStart?: () => void; 
+  onChar?: (char: string, index: number) => void; 
+  onComplete?: () => void; 
+}) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  // We use refs for callbacks to avoid re-running the effect if callbacks change
+  const callbacksRef = useRef(callbacks);
+  useEffect(() => {
+    callbacksRef.current = callbacks;
+  }, [callbacks]);
 
   useEffect(() => {
     if (!active) return;
     
     let timeoutId: number;
     let i = 0;
+    let started = false;
     
     setDisplayed("");
     setDone(false);
     setProgress(0);
 
     const type = () => {
+      if (!started) {
+        started = true;
+        callbacksRef.current?.onStart?.();
+      }
+
       if (i < text.length) {
         const char = text[i];
+        callbacksRef.current?.onChar?.(char, i);
         
         // Consistent, premium speed
         let delay = char === " " ? 40 : 35; 
@@ -97,6 +116,7 @@ function useTypewriter(text: string, active = true) {
       } else {
         setDone(true);
         setProgress(1);
+        callbacksRef.current?.onComplete?.();
       }
     };
 
@@ -229,12 +249,31 @@ export default function App() {
     }
   }, [route.page]);
 
+  const typewriterCallbacks = useMemo(() => ({
+    onChar: (_char: string, index: number) => {
+      // Play typing sound intermittently (every 3 characters)
+      if (index % 3 === 0) {
+        soundService.play('typing', { 
+          volume: 0.08 + Math.random() * 0.04, 
+          rate: 0.97 + Math.random() * 0.06 
+        });
+      }
+    },
+    onComplete: () => {
+      // Wait a short bit after typing finishes to play completion chime
+      setTimeout(() => {
+        soundService.play('chime', { volume: 0.22 });
+      }, 250);
+    }
+  }), []);
+
   // Logic: Typewriter only for first_visit IF intro not seen yet and not skipped
   const shouldType = !hasSeenIntro && !skipIntro;
 
   const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(
     HEADLINE_DATA.headline, 
-    !isLoading && shouldType
+    !isLoading && shouldType,
+    typewriterCallbacks
   );
 
   // Interaction Skip: scroll, wheel, or key to instantly finish intro
@@ -648,28 +687,64 @@ export default function App() {
                 {[
                   { label: "Selected Work", path: "home" },
                   { label: "About Story", path: "about" },
-                  { label: "Public Presence", path: "presence" }
+                  { label: "Public Presence", path: "presence" },
+                  { label: "Laboratory", path: "lab", isComingSoon: true }
                 ].map((item, i) => {
-                  const isActive = (route.page === item.path) || (route.page === "work" && item.path === "home") || (route.page === "home" && item.path === "home");
+                  const isActive = !item.isComingSoon && (
+                    (route.page === item.path) || 
+                    (route.page === "work" && item.path === "home") || 
+                    (route.page === "home" && item.path === "home")
+                  );
+                  
+                  const buttonContent = (
+                    <motion.button
+                      className={`nav-item${isActive ? " active" : ""}`}
+                      onClick={() => {
+                        if (item.isComingSoon) return;
+                        soundService.play('click');
+                        handleNavigate(item.path === "home" ? "/" : `/${item.path}`);
+                      }}
+                      onMouseEnter={() => {
+                        if (!item.isComingSoon) soundService.play('hover');
+                      }}
+                      disabled={item.isComingSoon}
+                      initial={hasSeenIntro ? false : { opacity: 0, x: -8 }}
+                      animate={subheadVisible ? { opacity: 1, x: 0 } : (hasSeenIntro ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 })}
+                      transition={{ 
+                        duration: 0.5, 
+                        delay: (subheadVisible && !hasSeenIntro) ? 0.3 + (i * 0.1) : 0,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                      style={{
+                        opacity: item.isComingSoon ? 0.35 : 1,
+                        cursor: item.isComingSoon ? "default" : "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.6rem"
+                      }}
+                    >
+                      <span>{item.label}</span>
+                      {item.isComingSoon && (
+                        <span style={{ 
+                          fontSize: "8px", 
+                          letterSpacing: "0.12em", 
+                          color: "rgba(0,0,0,0.25)", 
+                          fontWeight: 500,
+                          textTransform: "uppercase"
+                        }}>
+                          COMING SOON
+                        </span>
+                      )}
+                    </motion.button>
+                  );
+
                   return (
-                    <Magnetic key={item.label} strength={0.1}>
-                      <motion.button
-                        className={`nav-item${isActive ? " active" : ""}`}
-                        onClick={() => {
-                          soundService.play('click');
-                          handleNavigate(item.path === "home" ? "/" : `/${item.path}`);
-                        }}
-                        onMouseEnter={() => soundService.play('hover')}
-                        initial={hasSeenIntro ? false : { opacity: 0, x: -8 }}
-                        animate={subheadVisible ? { opacity: 1, x: 0 } : (hasSeenIntro ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 })}
-                        transition={{ 
-                          duration: 0.5, 
-                          delay: (subheadVisible && !hasSeenIntro) ? 0.3 + (i * 0.1) : 0,
-                          ease: [0.16, 1, 0.3, 1]
-                        }}
-                      >
-                        {item.label}
-                      </motion.button>
+                    <Magnetic key={item.label} strength={item.isComingSoon ? 0 : 0.1}>
+                      {item.isComingSoon ? (
+                        <HoverTooltip text="Currently in progress" isMobile={isMobile}>
+                          {buttonContent}
+                        </HoverTooltip>
+                      ) : buttonContent}
                     </Magnetic>
                   );
                 })}
@@ -702,6 +777,7 @@ export default function App() {
               ))}
 
               <LearningSection visible={listVisible} hasSeenIntro={hasSeenIntro} />
+              <TestimonialSection visible={listVisible} hasSeenIntro={hasSeenIntro} />
             </div>
 
             {/* Scroll to Top Button */}
