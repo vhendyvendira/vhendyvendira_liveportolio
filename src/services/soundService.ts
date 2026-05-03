@@ -37,9 +37,17 @@ class SoundService {
       }),
       chime: new Howl({
         src: ['https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3'], // Soft notification chime
-        volume: 0.3,
+        volume: 0.2, // Lower default volume for chime
       }),
     };
+  }
+
+  unlock() {
+    // Howler.js handles most of this but we can trigger a silent wash to be sure
+    // and resume the context if it is suspended
+    if (Howler.ctx && Howler.ctx.state === 'suspended') {
+      Howler.ctx.resume();
+    }
   }
 
   play(sound: 'hover' | 'click' | 'transition' | 'success' | 'smooth' | 'magic' | 'typing' | 'chime', options?: { volume?: number; rate?: number }) {

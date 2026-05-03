@@ -249,21 +249,44 @@ export default function App() {
     }
   }, [route.page]);
 
+  // 2. Audio Unlock & Interaction
+  useEffect(() => {
+    const handleUnlock = () => {
+      soundService.unlock();
+      // Remove listener after first interaction
+      window.removeEventListener('mousedown', handleUnlock);
+      window.removeEventListener('keydown', handleUnlock);
+      window.removeEventListener('touchstart', handleUnlock);
+    };
+
+    window.addEventListener('mousedown', handleUnlock);
+    window.addEventListener('keydown', handleUnlock);
+    window.addEventListener('touchstart', handleUnlock);
+
+    return () => {
+      window.removeEventListener('mousedown', handleUnlock);
+      window.removeEventListener('keydown', handleUnlock);
+      window.removeEventListener('touchstart', handleUnlock);
+    };
+  }, []);
+
   const typewriterCallbacks = useMemo(() => ({
     onChar: (_char: string, index: number) => {
-      // Play typing sound intermittently (every 3 characters)
-      if (index % 3 === 0) {
+      // Sporadic rhythm: don't play every X chars, but based on probability and clusters
+      // More organic than index % 3
+      const chance = Math.random();
+      if (chance > 0.65 || index === 0) {
         soundService.play('typing', { 
-          volume: 0.08 + Math.random() * 0.04, 
-          rate: 0.97 + Math.random() * 0.06 
+          volume: 0.05 + Math.random() * 0.04, 
+          rate: 0.9 + Math.random() * 0.2 // Wider range for more character
         });
       }
     },
     onComplete: () => {
-      // Wait a short bit after typing finishes to play completion chime
-      setTimeout(() => {
-        soundService.play('chime', { volume: 0.22 });
-      }, 250);
+      // Chime plays exactly when the headline is done, 
+      // but the actual fade-in usually happens slightly after
+      // No fixed settimeout delay, trigger right away or with minimal buffer
+      soundService.play('chime', { volume: 0.18 });
     }
   }), []);
 
