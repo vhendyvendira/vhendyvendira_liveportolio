@@ -33,11 +33,11 @@ class SoundService {
       }),
       typing: new Howl({
         src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'], // Light tick for typing
-        volume: 0.1,
+        volume: 0.15, // Increased from 0.1
       }),
       chime: new Howl({
         src: ['https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3'], // Soft notification chime
-        volume: 0.2, // Lower default volume for chime
+        volume: 0.25, // Increased from 0.2
       }),
     };
   }

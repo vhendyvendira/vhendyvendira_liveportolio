@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CRITICAL_IMAGES, preloadAllAssets } from '../assets';
 
@@ -81,11 +81,19 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
     return () => clearInterval(lineTimer);
   }, [isReload, finalProgress]);
 
-  const handleEnter = () => {
-    if (isFinishedCalled.current) return;
+  const handleEnter = useCallback(() => {
+    if (isFinishedCalled.current || !isReadyToEnter) return;
     isFinishedCalled.current = true;
     onFinished();
-  };
+  }, [onFinished, isReadyToEnter]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') handleEnter();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleEnter]);
 
   if (isReload) {
     return (
@@ -132,7 +140,8 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         justifyContent: 'center',
         padding: '2rem',
         overflow: 'hidden',
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        cursor: 'default'
       }}
     >
       <motion.div 
@@ -251,48 +260,64 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
                   </p>
                 </motion.div>
               ) : (
-                <motion.button
-                  key="enter-button"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleEnter}
-                  style={{
-                    padding: '0.8rem 2rem',
-                    background: 'transparent',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    color: '#ffffff',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '11px',
-                    letterSpacing: '0.3em',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    cursor: 'pointer',
-                    borderRadius: '0px',
-                    outline: 'none',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    boxShadow: '0 0 20px rgba(255,255,255,0.05)'
-                  }}
-                >
-                  <motion.div 
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+                  <motion.button
+                    key="enter-button"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleEnter}
                     style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'white',
-                      opacity: 0.1
+                      padding: '0.8rem 2rem',
+                      background: 'transparent',
+                      border: '1px solid rgba(255,255,255,0.3)',
+                      color: '#ffffff',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.3em',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      borderRadius: '0px',
+                      outline: 'none',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      boxShadow: '0 0 20px rgba(255,255,255,0.05)'
                     }}
-                    animate={{
-                      opacity: [0.05, 0.15, 0.05]
+                  >
+                    <motion.div 
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'white',
+                        opacity: 0.1
+                      }}
+                      animate={{
+                        opacity: [0.05, 0.15, 0.05]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity
+                      }}
+                    />
+                    ENTER ORBIT
+                  </motion.button>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    style={{
+                      fontSize: '9px',
+                      fontFamily: 'var(--font-mono)',
+                      color: 'rgba(255,255,255,0.35)',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase'
                     }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity
-                    }}
-                  />
-                  ENTER ORBIT
-                </motion.button>
+                  >
+                    or press enter
+                  </motion.p>
+                </div>
               )}
             </AnimatePresence>
           </div>

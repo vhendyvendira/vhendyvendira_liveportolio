@@ -279,26 +279,35 @@ export default function App() {
   const typewriterCallbacks = useMemo(() => ({
     onChar: (_char: string, index: number) => {
       // Sporadic rhythm: don't play every X chars, but based on probability and clusters
-      // More organic than index % 3
+      // Increased probability to 0.45 (from 0.35) for better audibility
       const chance = Math.random();
-      if (chance > 0.65 || index === 0) {
+      if (chance > 0.55 || index === 0) {
         soundService.play('typing', { 
-          volume: 0.05 + Math.random() * 0.04, 
-          rate: 0.9 + Math.random() * 0.2 // Wider range for more character
+          volume: 0.12 + Math.random() * 0.08, 
+          rate: 0.85 + Math.random() * 0.3 // Slightly wider range
         });
       }
     },
     onComplete: () => {
-      // Chime plays exactly when the headline is done, 
-      // but the actual fade-in usually happens slightly after
-      // No fixed settimeout delay, trigger right away or with minimal buffer
-      soundService.play('chime', { volume: 0.18 });
+      // Chime plays exactly when the headline is done
+      soundService.play('chime', { volume: 0.28 });
     }
   }), []);
 
   // Logic: Typewriter only for first_visit IF intro not seen yet and not skipped
   // AND the user has interacted to insure audio context is unlocked
-  const shouldType = !hasSeenIntro && !skipIntro && hasInteracted;
+  const [canStartTypewriter, setCanStartTypewriter] = useState(false);
+
+  useEffect(() => {
+    if (hasInteracted && !isLoading) {
+      // Small buffer to ensure the loading screen fade out transition is smooth
+      // and audio context is fully ready
+      const timer = setTimeout(() => setCanStartTypewriter(true), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [hasInteracted, isLoading]);
+
+  const shouldType = !hasSeenIntro && !skipIntro && canStartTypewriter;
 
   const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(
     HEADLINE_DATA.headline, 
