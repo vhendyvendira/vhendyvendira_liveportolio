@@ -12,7 +12,7 @@ import PresenceView from './components/PresenceView';
 import OrbitalCanvas from './components/OrbitalCanvas';
 import SocialFooter from './components/SocialFooter';
 import LearningSection from './components/LearningSection';
-import TestimonialSection from './components/TestimonialSection';
+// import TestimonialSection from './components/TestimonialSection';
 import LoadingScreen from './components/LoadingScreen';
 import ReportView from './components/ReportView';
 import CustomCursor from './components/CustomCursor';
@@ -814,7 +814,7 @@ export default function App() {
               ))}
 
               <LearningSection visible={listVisible} hasSeenIntro={hasSeenIntro} />
-              <TestimonialSection visible={listVisible} hasSeenIntro={hasSeenIntro} />
+              {/* <TestimonialSection visible={listVisible} hasSeenIntro={hasSeenIntro} /> */}
             </div>
 
             {/* Scroll to Top Button */}
