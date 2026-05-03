@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CRITICAL_IMAGES, preloadAllAssets } from '../assets';
 
 const LOG_LINES = [
-  "Finding the right light...",
-  "Mapping out the journey...",
-  "Gathering scattered thoughts...",
-  "Putting the final pieces together...",
-  "Almost there. Welcome home."
+  "Synchronizing data streams...",
+  "Calibrating orbital parameters...",
+  "Optimizing cognitive load...",
+  "Powering core systems...",
+  "All systems operational."
 ];
 
 export default function LoadingScreen({ onFinished, isReload = false }: { onFinished: () => void, isReload?: boolean }) {
@@ -15,6 +15,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
   const [assetProgress, setAssetProgress] = useState(0);
   const [currentLine, setCurrentLine] = useState(0);
   const [assetsReady, setAssetsReady] = useState(false);
+  const [isReadyToEnter, setIsReadyToEnter] = useState(false);
   const isFinishedCalled = useRef(false);
 
   // Sync assets
@@ -59,18 +60,32 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
 
   useEffect(() => {
     if (finalProgress === 100 && !isFinishedCalled.current) {
-      isFinishedCalled.current = true;
-      setTimeout(onFinished, isReload ? 100 : 400); 
+      if (isReload) {
+        isFinishedCalled.current = true;
+        setTimeout(onFinished, 100);
+      } else {
+        setIsReadyToEnter(true);
+      }
     }
   }, [finalProgress, onFinished, isReload]);
 
   useEffect(() => {
     if (isReload) return;
     const lineTimer = setInterval(() => {
-      setCurrentLine(prev => (prev < LOG_LINES.length - 1 ? prev + 1 : prev));
-    }, 1600);
+      if (finalProgress < 100) {
+        setCurrentLine(prev => (prev < LOG_LINES.length - 1 ? prev + 1 : prev));
+      } else {
+        setCurrentLine(LOG_LINES.length - 1);
+      }
+    }, 1200);
     return () => clearInterval(lineTimer);
-  }, [isReload]);
+  }, [isReload, finalProgress]);
+
+  const handleEnter = () => {
+    if (isFinishedCalled.current) return;
+    isFinishedCalled.current = true;
+    onFinished();
+  };
 
   if (isReload) {
     return (
@@ -117,7 +132,7 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
         justifyContent: 'center',
         padding: '2rem',
         overflow: 'hidden',
-        pointerEvents: finalProgress === 100 ? 'none' : 'auto'
+        pointerEvents: 'auto'
       }}
     >
       <motion.div 
@@ -202,38 +217,83 @@ export default function LoadingScreen({ onFinished, isReload = false }: { onFini
             </div>
           </div>
 
-          <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ height: '70px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
             <AnimatePresence mode="wait">
-              <motion.div
-                key={currentLine}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.02 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem'
-                }}
-              >
-                <div style={{ 
-                  width: '4px', 
-                  height: '4px', 
-                  borderRadius: '1px', 
-                  background: '#ffffff',
-                  boxShadow: '0 0 8px rgba(255,255,255,0.5)' 
-                }} />
-                <p style={{
-                  fontSize: '14px',
-                  fontFamily: 'var(--font-mono)',
-                  color: 'rgba(255,255,255,0.9)',
-                  textAlign: 'center',
-                  fontWeight: 500,
-                  textTransform: 'none'
-                }}>
-                  {LOG_LINES[currentLine]}
-                </p>
-              </motion.div>
+              {!isReadyToEnter ? (
+                <motion.div
+                  key={currentLine}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem'
+                  }}
+                >
+                  <div style={{ 
+                    width: '4px', 
+                    height: '4px', 
+                    borderRadius: '1px', 
+                    background: '#ffffff',
+                    boxShadow: '0 0 8px rgba(255,255,255,0.5)' 
+                  }} />
+                  <p style={{
+                    fontSize: '13px',
+                    fontFamily: 'var(--font-mono)',
+                    color: 'rgba(255,255,255,0.8)',
+                    textAlign: 'center',
+                    fontWeight: 500,
+                    letterSpacing: '0.02em'
+                  }}>
+                    {LOG_LINES[currentLine]}
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.button
+                  key="enter-button"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleEnter}
+                  style={{
+                    padding: '0.8rem 2rem',
+                    background: 'transparent',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    color: '#ffffff',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    letterSpacing: '0.3em',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    borderRadius: '0px',
+                    outline: 'none',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    boxShadow: '0 0 20px rgba(255,255,255,0.05)'
+                  }}
+                >
+                  <motion.div 
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'white',
+                      opacity: 0.1
+                    }}
+                    animate={{
+                      opacity: [0.05, 0.15, 0.05]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity
+                    }}
+                  />
+                  ENTER ORBIT
+                </motion.button>
+              )}
             </AnimatePresence>
           </div>
         </div>

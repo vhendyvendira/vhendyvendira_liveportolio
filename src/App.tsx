@@ -250,16 +250,17 @@ export default function App() {
     }
   }, [route.page]);
 
-  // 2. Audio Unlock & Interaction
+  // 2. Audio Unlock handled by 'Enter Orbit' button in LoadingScreen
   useEffect(() => {
+    // If user lands directly on a page without loading screen (reloads)
+    // we still need a way to unlock audio on first interaction
+    if (isLoading) return;
+    
     const handleUnlock = () => {
-      soundService.unlock();
-      setHasInteracted(true);
-      // Remove listener after first interaction
-      window.removeEventListener('mousedown', handleUnlock);
-      window.removeEventListener('keydown', handleUnlock);
-      window.removeEventListener('touchstart', handleUnlock);
-      window.removeEventListener('wheel', handleUnlock);
+      if (!hasInteracted) {
+        soundService.unlock();
+        setHasInteracted(true);
+      }
     };
 
     window.addEventListener('mousedown', handleUnlock);
@@ -273,7 +274,7 @@ export default function App() {
       window.removeEventListener('touchstart', handleUnlock);
       window.removeEventListener('wheel', handleUnlock);
     };
-  }, []);
+  }, [isLoading, hasInteracted]);
 
   const typewriterCallbacks = useMemo(() => ({
     onChar: (_char: string, index: number) => {
@@ -508,6 +509,8 @@ export default function App() {
             isReload={false} 
             onFinished={() => {
               sessionStorage.setItem('hasSeenLoadingScreen', 'true');
+              soundService.unlock();
+              setHasInteracted(true);
               setIsLoading(false);
             }} 
           />
