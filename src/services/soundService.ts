@@ -32,12 +32,14 @@ class SoundService {
         volume: 0.3,
       }),
       typing: new Howl({
-        src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'], // Light tick for typing
-        volume: 0.15, // Increased from 0.1
+        src: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'], // Use the click sound (more audible)
+        volume: 0.5, 
+        pool: 10
       }),
       chime: new Howl({
         src: ['https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3'], // Soft notification chime
-        volume: 0.25, // Increased from 0.2
+        volume: 0.6, 
+        pool: 5
       }),
     };
   }

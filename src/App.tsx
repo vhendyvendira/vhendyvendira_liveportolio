@@ -277,16 +277,12 @@ export default function App() {
   }, [isLoading, hasInteracted]);
 
   const typewriterCallbacks = useMemo(() => ({
-    onChar: (_char: string, index: number) => {
-      // Sporadic rhythm: don't play every X chars, but based on probability and clusters
-      // Increased probability to 0.45 (from 0.35) for better audibility
-      const chance = Math.random();
-      if (chance > 0.55 || index === 0) {
-        soundService.play('typing', { 
-          volume: 0.12 + Math.random() * 0.08, 
-          rate: 0.85 + Math.random() * 0.3 // Slightly wider range
-        });
-      }
+    onChar: (_char: string, _index: number) => {
+      // Play for EVERY character to ensure user can hear it during this fix attempt
+      soundService.play('typing', { 
+        volume: 0.5 + Math.random() * 0.2, 
+        rate: 0.8 + Math.random() * 0.4 
+      });
     },
     onComplete: () => {
       // Chime plays exactly when the headline is done
