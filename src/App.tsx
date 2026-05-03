@@ -211,6 +211,7 @@ export default function App() {
 
   const [listVisible, setListVisible] = useState(false);
   const [subheadVisible, setSubheadVisible] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     if (listVisible) {
@@ -253,20 +254,24 @@ export default function App() {
   useEffect(() => {
     const handleUnlock = () => {
       soundService.unlock();
+      setHasInteracted(true);
       // Remove listener after first interaction
       window.removeEventListener('mousedown', handleUnlock);
       window.removeEventListener('keydown', handleUnlock);
       window.removeEventListener('touchstart', handleUnlock);
+      window.removeEventListener('wheel', handleUnlock);
     };
 
     window.addEventListener('mousedown', handleUnlock);
     window.addEventListener('keydown', handleUnlock);
     window.addEventListener('touchstart', handleUnlock);
+    window.addEventListener('wheel', handleUnlock, { passive: true });
 
     return () => {
       window.removeEventListener('mousedown', handleUnlock);
       window.removeEventListener('keydown', handleUnlock);
       window.removeEventListener('touchstart', handleUnlock);
+      window.removeEventListener('wheel', handleUnlock);
     };
   }, []);
 
@@ -291,7 +296,8 @@ export default function App() {
   }), []);
 
   // Logic: Typewriter only for first_visit IF intro not seen yet and not skipped
-  const shouldType = !hasSeenIntro && !skipIntro;
+  // AND the user has interacted to insure audio context is unlocked
+  const shouldType = !hasSeenIntro && !skipIntro && hasInteracted;
 
   const { displayed: typedTitle, done: titleDone, progress: titleProgress } = useTypewriter(
     HEADLINE_DATA.headline, 
