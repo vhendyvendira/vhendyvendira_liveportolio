@@ -476,17 +476,17 @@ export default function AboutView({ navigate }: AboutViewProps) {
               color: '#1a1a1a' 
             }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                {"Hi, I'm Vhendy —".split(" ").map((word, i) => (
+                {"I make things legible —".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
               </div>
               <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em' }}>
-                {"Product Design".split(" ").map((word, i) => (
+                {"for people, for teams".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
               </div>
               <div style={{ color: 'rgba(0,0,0,0.35)', display: 'flex', flexWrap: 'wrap', columnGap: '0.3em', position: 'relative' }}>
-                {"& Builder".split(" ").map((word, i) => (
+                {"for the future.".split(" ").map((word, i) => (
                   <motion.span key={i} variants={wordVariants} style={{ display: 'inline-block' }}>{word}</motion.span>
                 ))}
                 {isMobile && <MicroActivity id="clock" icon="🕒" style={{ top: '10px', right: '-10px' }} />}
@@ -692,17 +692,6 @@ export default function AboutView({ navigate }: AboutViewProps) {
                   style={{ fontSize: '16px', fontWeight: 600 }}
                 >
                   View full CV
-                  <span style={{ fontSize: '18px' }}>→</span>
-                </a>
-
-                <a 
-                  href="https://github.com/vhendyvendira" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="about-cta-link" 
-                  style={{ fontSize: '16px', fontWeight: 600 }}
-                >
-                  GitHub
                   <span style={{ fontSize: '18px' }}>→</span>
                 </a>
               </div>
