@@ -1,37 +1,46 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Default deny
+    
+    // Global Deny
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // Site Stats
-    match /stats/{statId} {
-      allow get: if true;
-      
-      // Allow incrementing ONLY if the visitor record is created in the same batch
-      allow update: if (
-        statId == 'global' &&
-        request.resource.data.visitorCount == resource.data.visitorCount + 1 &&
-        // Secure way: force the client to create their IP record in this same write operation
-        existsAfter(/databases/$(database)/documents/uniqueVisitors/$(request.auth.token.ip_hash_placeholder)) ||
-        // If we don't have auth, we'll rely on the client providing a 'visitorRecord' path or just open it slightly for this demo
-        // For a generic portfolio, we'll allow update if the incoming data matches the increment logic
-        true 
-      );
+    // Helper functions
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
 
-      allow create: if (
-        statId == 'global' &&
-        request.resource.data.visitorCount == 1
-      );
+    // Analytics: Global Stats
+    match /stats/{statId} {
+      allow get: if isValidId(statId);
+      
+      // Allow creation of the global stats doc if it doesn't exist
+      allow create: if statId == 'global' 
+        && incoming().visitorCount == 1
+        && incoming().keys().size() == 1;
+
+      // Allow incrementing the visitor count
+      // In a production app, we would strictly link this to the uniqueVisitors creation
+      allow update: if statId == 'global'
+        && incoming().visitorCount == existing().visitorCount + 1
+        && incoming().diff(existing()).affectedKeys().hasOnly(['visitorCount']);
     }
 
-    // Unique Visitors
+    // Analytics: Unique Visitors
     match /uniqueVisitors/{visitorId} {
-      // Allow create only, no updates or reads of other IPs
-      allow create: if true;
-      allow get: if true;
+      // Allow checking if visitor exists
+      allow get: if isValidId(visitorId);
+      
+      // Allow recording a new unique visitor
+      allow create: if isValidId(visitorId)
+        && incoming().visitedAt is string
+        && incoming().visitedAt.size() <= 64
+        && incoming().keys().size() == 1;
     }
   }
 }

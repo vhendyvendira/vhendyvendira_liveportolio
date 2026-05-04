@@ -725,7 +725,7 @@ export default function App() {
                   { label: "Selected Work", path: "home" },
                   { label: "About Story", path: "about" },
                   { label: "Public Presence", path: "presence" },
-                  { label: "Laboratory", path: "lab", isComingSoon: true }
+                  { label: "Labs", path: "lab", isComingSoon: true }
                 ].map((item, i) => {
                   const isActive = !item.isComingSoon && (
                     (route.page === item.path) || 

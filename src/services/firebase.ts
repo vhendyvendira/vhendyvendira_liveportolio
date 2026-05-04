@@ -7,19 +7,42 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 
 const getIPHash = async (): Promise<string | null> => {
+  const providers = [
+    'https://api.ipify.org?format=json',
+    'https://api.seeip.org/jsonip',
+    'https://ipapi.co/json/'
+  ];
+
+  for (const url of providers) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(3000) });
+      if (!response.ok) continue;
+      const data = await response.json();
+      const ip = data.ip || data.jsonip || data.ip_address;
+      
+      if (ip) {
+        // Create a simple hash of the IP for privacy
+        const msgUint8 = new TextEncoder().encode(ip);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+      }
+    } catch (error) {
+      // Silently try next provider
+      continue;
+    }
+  }
+
+  // Fallback: use a persistent local ID if IP detection fails
   try {
-    const response = await fetch('https://api.ipify.org?format=json');
-    const data = await response.json();
-    const ip = data.ip;
-    
-    // Create a simple hash of the IP for privacy
-    const msgUint8 = new TextEncoder().encode(ip);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
-  } catch (error) {
-    console.error("Error detecting IP:", error);
+    let localId = localStorage.getItem('visitor_local_id');
+    if (!localId) {
+      localId = crypto.randomUUID();
+      localStorage.setItem('visitor_local_id', localId);
+    }
+    return localId;
+  } catch (e) {
     return null;
   }
 };
